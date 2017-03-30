@@ -1,0 +1,73 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[onehalfspacing]{setspace}
+
+\usepackage{fontspec}
+\setmainfont[
+	BoldFont=MinionPro-Bold.otf,
+	ItalicFont=Minion Pro Italic.ttf
+	]{MinionPro-Regular.otf}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\Cnn}{\mathbb{C}^{n,n}}
+\newcommand{\C}{\mathbb{C}}
+\newtheorem{prop}{Proposition}
+
+\begin{document}
+\title{Der FEAST-Algorithmus}
+\author{Thorsten Lucke}
+
+\maketitle
+
+\tableofcontents
+
+\vfill
+\section{Einleitung} %fuer bA noch: wie filtere ich eigenwerte einer matrix auf einem intervall
+Das L"osen von Eigenwertproblemen ist eine Standarddisziplin in der
+numerischen linearen Algebra. Gleichungen der Gestalt
+\[
+Ax = \lambda Bx
+\]
+begegnet man in ganz unterschiedlichen Kontexten. So sind sie beispielsweise bei der Bestimmung von Eigenfrequenzen oder dem Ermitteln von Fixpunkten beim Rotieren eines Fu"sballs\footnote{Hier wird auf den bekannten \emph{Satz vom Fu"sball} angespielt. Dieser
+besagt, dass auf einem Fu"sball zwei Punkte existieren, die zu Spielbeginn und zur Halbzeit
+an der gleichen Stelle liegen -- informell formuliert.} ebenso wie beim Untersuchen des PageRanks einer Website von
+Bedeutung.
+Entsprechend strotz der Kanon von angebotenen numerischen
+L"osungsmethoden von Vielfalt und Virtuosit"at.
+
+\section{Mathematische Idee}
+Es seien nun zwei  Zahlen $\lambda_1, \lambda_2 \in \mathbb{R}$ vorgegeben, die
+das reelle Intervall $I:=[\lambda_1, \lambda_2] \subseteq \mathbb{R}$ definieren.
+F"ur zwei hermitesche Matrizen $A, B \in \Cnn$ mit der zus"atzlichen
+Forderung, dass $B$ positiv definit ist, sollen Paare der Gestalt
+$(\lambda, x) \in I \times \mathbb{C}^n$ ermittelt werden, welche der verallgemeinerten
+Eigenwertgleichung
+\begin{equation}
+Ax = \lambda Bx
+\end{equation}
+gen"ugen.\\
+
+Zur Bestimmung der Transformationsmatrix $Q$ wird eine Konturintegration bem"uht.
+Ausgangspunkt dieser Integration ist die durch
+\begin{align*}
+G\colon\Omega &\to\mathbb{C}^{n,n}\\
+\omega &\mapsto (\omega B - A)^{-1}
+\end{align*}
+
+definierte  \textsc{Green}-Funktion, wobei $\Omega \subseteq \C$ eine passende
+Teilmenge der komplexen Zahlen ist. Insbesondere m"ussen $\Omega$ und das
+Spektrum von $B^{-1}A$ disjunkt sein, da $G$ andernfalls nicht wohldefiniert ist.\\
+
+Die Funktion $G$ wird nun "uber eine geschlossene komplexe Kurve $\gamma$,
+die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt
+\[
+-\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
+\]
+integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
+also $\iota = \sqrt{-1}$.}
+
+\end{document}

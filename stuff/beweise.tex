@@ -1,0 +1,49 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage[onehalfspacing]{setspace}
+
+\usepackage{fontspec}
+\setmainfont[
+	BoldFont=MinionPro-Bold.otf,
+	ItalicFont=Minion Pro Italic.ttf
+	]{MinionPro-Regular.otf}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\Cnn}{\mathbb{C}^{n,n}}
+\newcommand{\Cn}{\mathbb{C}^n}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Co}{\mathbb{\C}\setminus\{0\}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\GL}{\text{GL}_n (\C)}
+
+\newtheorem{prop}{Proposition}
+
+\begin{document}
+
+\begin{prop}
+Es seien $A, B \in \Cnn$ hermitesch und $B$ invertierbar. Ist $(\lambda, x)\in\C\times\Co$ ein
+Paar, welches der verallgemeinerten Eigenwertgleichung
+\[
+Ax = \lambda Bx
+\]
+gen"ugt, so ist $\lambda$ reell.
+\end{prop}
+
+\begin{proof}
+Wir bem"uhen das euklidische Skalarprodukt: Ist $(\lambda, x)\in\C\times\Co$ ein zul"assiges
+Eigenpaar, so gilt
+\[
+\lambda(x,Bx) = (x,Ax) = (Ax,x) = \bar{\lambda}(Bx,x)
+\]
+nach Voraussetzung. Der Hermitizit"at und der Invertierbarkeit von $B$ wegen, gilt 
+\[
+(x,Bx)=(Bx,x) \neq 0
+\]
+und daher folgt aus $\lambda = \bar{\lambda}$ die Behauptung.
+\end{proof}
+
+\end{document}
