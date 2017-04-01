@@ -1,9 +1,33 @@
-\documentclass[11pt]{book}
+\documentclass[12pt, twoside]{report} %no headers, no twosided layout by default
 
-\usepackage{/style/myba}
-
+\usepackage{style/myba}
 
 \begin{document}
-Test
+
+\input{chapter/titlepage.tex}
+
+\chapter*{Dedicatio}
+Für Fari.
+
+\chapter*{Declaratio}
+Hiermit erkläre ich, dass ich alles von Wikipedia abgeschrieben habe, so
+wie sich das gehört für eine großartige arbeit.
+
+\chapter*{Recognitio}
+Danke an.
+
+\tableofcontents
+
+\chapter{Einleitung}
+\input{chapter/chap1_intro.tex}
+
+\chapter{Mal sehen}
+\input{chapter/chap2.tex}
+
+\appendix
+\chapter{yolo}
+\input{chapter/appendix.tex}
+
+\printbibliography
 
 \end{document}

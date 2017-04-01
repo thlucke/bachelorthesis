@@ -4,24 +4,60 @@
 % ------- P A C K A G E S -------- %
 % -------------------------------- %
 
+% language of writing
 \usepackage[ngerman]{babel}
-\usepackage{fontspec} % fontrelated
+\usepackage{lipsum}
 
+% fontrelated
+\usepackage{fontspec}
+\usepackage{setspace}
+
+% layout related
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+
+% math related
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+
+% reference related
+\usepackage{biblatex}
+\addbibresource{chapter/references.bib}
 
 % -------------------------------- %
 % - G L O B A L  S E T T I N G S - %
 % -------------------------------- %
 
 \setmainfont[
+  Path = style/,
   BoldFont    = MinionPro-Bold.otf,
   ItalicFont  = Minion Pro Italic.ttf
   ]{MinionPro-Regular.otf}
+
 \setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\onehalfspacing
+
+\geometry{
+  a4paper,            % since it sets us letter as default
+  width=150mm,
+  top=25mm,
+  bottom=25mm,
+  bindingoffset=6mm}  % space for binding
+
+\pagestyle{fancy}     % initialize header
 
 % -------------------------------- %
 % ------- C O M M A N D S -------- %
 % -------------------------------- %
 
+\newcommand{\Cnn}{\mathbb{C}^{n,n}}
+\newcommand{\Cn}{\mathbb{C}^n}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Co}{\mathbb{\C}\setminus\{0\}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\GL}{\text{GL}_n (\C)}
 
 
 \endinput

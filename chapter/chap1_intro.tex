@@ -1,0 +1,44 @@
+Das Lösen von Eigenwertproblemen ist eine Standarddisziplin in der
+numerischen linearen Algebra. Gleichungen der Gestalt
+\[
+Ax = \lambda Bx
+\]
+begegnet man in ganz unterschiedlichen Kontexten. So sind sie beispielsweise
+bei der Bestimmung von Eigenfrequenzen oder dem Ermitteln von Fixpunkten beim
+Rotieren eines Fußballs\footnote{Hier wird auf den bekannten
+\emph{Satz vom Fußball} angespielt. Dieser besagt, dass auf einem Fußball
+zwei Punkte existieren, die zu Spielbeginn und zur Halbzeit
+an der gleichen Stelle liegen -- informell formuliert.} ebenso wie beim
+Untersuchen des PageRanks einer Website von
+Bedeutung. Entsprechend strotz der Kanon von angebotenen numerischen
+Lösungsmethoden von Vielfalt und Virtuosität.\\
+
+Mit dem FEAST-Algorithmus, den \textsc{Eric Polizzi} in seinem Paper
+\glqq\emph{Density-marix-based algorithm for solving eigenvalue problems}\grqq %~\cite{Pol}
+vorstellt, wird ein Werkzeug zur Verfügung gestellt, um obiges Problem
+für eine hermitesche Matrix $A$ und eine hermitesche, positiv definite
+Matrix $B$ zu lösen.\\
+
+Die vorliegende Arbeit wird die grundlegenden mathematischen Ideen dieses Algorithmus'
+vorstellen. Neben einer naiven Implementation in MATLAB soll au"serdem
+eine weitere Umsetzung besprochen werden, welche durch die von
+\textsc{Mario Berljafa} und \textsc{Stefan G"uttel} entwickelte
+\glqq\emph{Rational Krylov Toolbox for MATLAB}\grqq %~\cite{RKT}
+ermöglicht wird.
+
+
+
+\section{Grundlagen}
+
+Um das Lesen dieser Arbeit mehr zu einer Freude denn zu einer Schikane zu
+machen, soll dieser Abschnitt einige Grundlagen der linearen Algebra und
+der Funktionentheorie bereitstellen. Obschon sich der Autor bem"uht hat,
+in der Literatur g"angige Notation zu benutzen, bittet er den
+verst"andnissvollen Leser bei Unklarheiten im Anhang \glqq Notationen\grqq\
+nachzuschlagen.\\
+
+Beginnen wir mit Definitionen und Resultaten aus der Matrizentheorie.
+Eine Matrix $A\in\Cnn$ wird als \emph{hermitesch} bezeichnet, falls
+sie die Identit"at $A=A^H$ erf"ullt. Diese l"asst sich nach dem
+\emph{Spektralsatz} unit"ar diagonalisieren. Das hei"st,
+unter Aufbringung einiger kognitiven Anstregungen lassen sich ... finden.
