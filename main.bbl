@@ -1,0 +1,55 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.6 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{vanbarel}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Barel}{B.}%
+     {Marc}{M.}%
+     {van}{v.}%
+     {}{}}%
+  }
+  \strng{namehash}{BMv1}
+  \strng{fullhash}{BMv1}
+  \field{labelalpha}{Bar15}
+  \field{sortinit}{B}
+  \field{title}{Designing rational filter functions for solving eigenvalue
+  problems by contour integration.}
+  \field{year}{2015}
+\endentry
+
+\entry{liesen}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Liesen}{L.}%
+     {Jörg}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{LJ1}
+  \strng{fullhash}{LJ1}
+  \field{labelalpha}{Lie99}
+  \field{sortinit}{L}
+  \field{title}{Krylovgedöns}
+  \field{year}{2099}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput

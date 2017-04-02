@@ -1,27 +1,42 @@
 \documentclass[12pt, twoside]{report} %no headers, no twosided layout by default
 
-\usepackage{style/myba}
+% -------------------------------- %
+% ------- P A C K A G E S -------- %
+% -------------------------------- %
+
+\usepackage{style/myba} %so noch nicht
+%\usepackage{myba}  %so gehts
+
+% -------------------------------- %
+% ------- D O C U M E N T -------- %
+% -------------------------------- %
 
 \begin{document}
 
+% titlepage
 \input{chapter/titlepage.tex}
 
+% preface
 \chapter*{Dedicatio}
-Für Fari.
+For anyone.
 
 \chapter*{Declaratio}
 Hiermit erkläre ich, dass ich alles von Wikipedia abgeschrieben habe, so
 wie sich das gehört für eine großartige arbeit.
 
 \chapter*{Recognitio}
-Danke an.
+Thanks to anyone.
 
+% content
 \tableofcontents
 
+% chapters
 \chapter{Einleitung}
 \input{chapter/chap1_intro.tex}
 
 \chapter{Mal sehen}
+blablah \ref{liesen}
+
 \input{chapter/chap2.tex}
 
 \appendix
