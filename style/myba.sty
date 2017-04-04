@@ -6,7 +6,6 @@
 
 % language of writing
 \usepackage[ngerman]{babel}
-\usepackage{lipsum}
 
 % fontrelated
 \usepackage{fontspec}
@@ -19,10 +18,15 @@
 
 % math related
 \usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{style/mcode}
 
 % reference related
 \usepackage[backend=bibtex,style=alphabetic]{biblatex}
 \addbibresource{chapter/references.bib}
+
+% useful tools
+\usepackage{color}
+\usepackage{lipsum}
 
 % -------------------------------- %
 % - G L O B A L  S E T T I N G S - %
@@ -52,12 +56,15 @@
 % ------- C O M M A N D S -------- %
 % -------------------------------- %
 
-\newcommand{\Cnn}{\mathbb{C}^{n,n}}
-\newcommand{\Cn}{\mathbb{C}^n}
-\newcommand{\C}{\mathbb{C}}
-\newcommand{\Co}{\mathbb{\C}\setminus\{0\}}
 \newcommand{\R}{\mathbb{R}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Cn}{\mathbb{C}^n}
+\newcommand{\Cnn}{\mathbb{C}^{n,n}}
+\newcommand{\Co}{\mathbb{\C}^n \setminus\{0\}}
+
 \newcommand{\GL}{\text{GL}_n (\C)}
 
+\renewcommand{\sp}[2]{\langle #2 \rangle_{#1}}
 
 \endinput

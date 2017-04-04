@@ -33,6 +33,22 @@
   \field{year}{2015}
 \endentry
 
+\entry{rkt}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Berljafa}{B.}%
+     {Mario}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{BM1}
+  \strng{fullhash}{BM1}
+  \field{labelalpha}{Ber16}
+  \field{sortinit}{B}
+  \field{title}{Rational Krylov Toolbox for MATLAB.}
+  \field{year}{2016}
+\endentry
+
 \entry{liesen}{book}{}
   \name{author}{1}{}{%
     {{}%
@@ -43,10 +59,27 @@
   }
   \strng{namehash}{LJ1}
   \strng{fullhash}{LJ1}
-  \field{labelalpha}{Lie99}
+  \field{labelalpha}{Lie13}
   \field{sortinit}{L}
-  \field{title}{Krylovgedöns}
-  \field{year}{2099}
+  \field{title}{Krylov Subspace Methods. Principles and Analysis.}
+  \field{year}{2013}
+\endentry
+
+\entry{polizzi}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{PE1}
+  \strng{fullhash}{PE1}
+  \field{labelalpha}{Pol09}
+  \field{sortinit}{P}
+  \field{title}{Density-matrix-based algorithm for solving eigenvalue
+  problems.}
+  \field{year}{2009}
 \endentry
 
 \lossort
