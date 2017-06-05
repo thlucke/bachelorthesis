@@ -9,18 +9,23 @@
 
 % fontrelated
 \usepackage{fontspec}
-\usepackage{setspace}
 
 % layout related
 \usepackage{geometry}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{setspace}
+
+% picture stuff
+\usepackage{pgfplots}
 
 % math related
-\usepackage{amsmath, amsfonts, amssymb, amsthm}
-\usepackage{style/mcode}
+\usepackage{amsmath, amsfonts, amssymb, amsthm, amsopn}
+\usepackage[numbered, framed]{style/mcode}
+\renewcommand\lstlistingname{Algorithmus}
 
 % reference related
+\usepackage{hyperref}
 \usepackage[backend=bibtex,style=alphabetic]{biblatex}
 \addbibresource{chapter/references.bib}
 
@@ -55,16 +60,19 @@
 % -------------------------------- %
 % ------- C O M M A N D S -------- %
 % -------------------------------- %
+\newcommand{\N}{\mathbb{N}}
 
 \newcommand{\R}{\mathbb{R}}
 
-\newcommand{\C}{\mathbb{C}}
+\renewcommand{\C}{\mathbb{C}}
 \newcommand{\Cn}{\mathbb{C}^n}
 \newcommand{\Cnn}{\mathbb{C}^{n,n}}
-\newcommand{\Co}{\mathbb{\C}^n \setminus\{0\}}
+\newcommand{\Co}{\mathbb{C}^n \setminus\{0\}}
 
-\newcommand{\GL}{\text{GL}_n (\C)}
+\newcommand{\GL}{\text{GL}_n (\mathbb{C}}
 
 \renewcommand{\sp}[2]{\langle #2 \rangle_{#1}}
+
+\newcommand{\spn}{\text{Span}}
 
 \endinput

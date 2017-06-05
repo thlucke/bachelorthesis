@@ -1,0 +1,12 @@
+\BOOKMARK [0][-]{chapter.1}{Introductio}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Grundlagen}{chapter.1}% 2
+\BOOKMARK [0][-]{chapter.2}{Polynomfilter}{}% 3
+\BOOKMARK [0][-]{chapter.3}{Rationalfunktionelle\040Filter}{}% 4
+\BOOKMARK [0][-]{chapter.4}{Konturintegration\040am\040Beispiel\040des\040FEAST-Algorithmus'}{}% 5
+\BOOKMARK [1][-]{section.4.1}{Mathematische\040Idee}{chapter.4}% 6
+\BOOKMARK [1][-]{section.4.2}{Beispiel}{chapter.4}% 7
+\BOOKMARK [1][-]{section.4.3}{Realisierung\040des\040FEAST-Algorithmus'}{chapter.4}% 8
+\BOOKMARK [2][-]{subsection.4.3.1}{Naive\040Implementation}{section.4.3}% 9
+\BOOKMARK [2][-]{subsection.4.3.2}{Rational\040Krylov\040Toolbox}{section.4.3}% 10
+\BOOKMARK [0][-]{chapter.5}{Conclusio}{}% 11
+\BOOKMARK [0][-]{appendix.A}{yolo}{}% 12
