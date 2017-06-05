@@ -1,4 +1,4 @@
-Das Lösen von Eigenwertproblemen ist eine Standarddisziplin in der
+Das L"osen von Eigenwertproblemen ist eine Standarddisziplin in der
 numerischen linearen Algebra. Gleichungen der Gestalt
 
 \begin{equation}\label{eq:eigenproblem}
@@ -28,22 +28,6 @@ dieser Größenordnung dürfte der Rechenknecht allerdings eine ordentliche Weil
 beschäftigt sein und das Leben ist fürwahr zu knapp, um auf das Terminieren
 von Algorithmen zu warten.\\
 
-Viel eleganter lässt sich dieses Problem mit einem Verfahren lösen, welches in
-dem von \emph{Eric Polizzi} geschriebenen Paper \glqq Density-matrix-based
-algorithm for solving eigenvalue problems\grqq\ \cite{polizzi} vorgestellt wird.
-Speziell ist dieser mit \emph{FEAST} abgekürzte Algorithmus darauf ausgelegt,
-Probleme der Art \eqref{eq:eigenproblem} für eine hermitesche Matrix $A$ und
-eine hermitesche, positiv definite Matrix $B$ zu lösen.\footnote{Die Definitionen
-dieser Begriffe werden im anschließenden Abschnitt wiederholt.}\\
-
-Die vorliegende Arbeit wird die grundlegenden mathematischen Ideen dieses Algorithmus'
-vorstellen. Es werden Möglichkeiten der Implementation präsentiert und neben
-einer naiven Implementation in \emph{MATLAB} auch effizientere Umsetzungen
-besprochen -- etwa vermöge der von \emph{Mario Berljafa} und \emph{Stefan G"uttel}
-entwickelten \glqq\emph{Rational Krylov Toolbox for MATLAB}\grqq\ \cite{rkt}.
-
-
-
 \section{Grundlagen}
 
 \textcolor{red}{gauss-legendre quadratur, spektral projektoren (sp"ater?), rationale funktionen, spektralzerlegung f"ur allg eigenwertproblem}
@@ -67,4 +51,8 @@ nennen, wenn sie sowohl hermitesch als auch positiv definit ist.\\
 
 Ist $A\in\Cnn$ eine solche HPD-Matrix und sind $x,y\in\Cn$, so werden wir anstelle von
 $x^H A y$ die Notation $\sp{A}{x,y}$ verwenden. Im Falle $A=I_n$ schreiben wir
-kurz $\sp{}{x,y}$.
+kurz $\sp{}{x,y}$.\\
+
+ne anders: $\langle x,y \rangle = y^H x$
+
+Im Rahmen dieser Arbeit werden "uberwiegend Hermitesche Eigenwertprobleme betrachtet.

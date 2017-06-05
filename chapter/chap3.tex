@@ -1,15 +1,16 @@
 Nachdem vorgestellt wurde, wie mit Polynomen Eigenwerte extrahiert werden k"onnen,
 verpflichtet sich diese Kapitel der Vorstellung einer anderen Klasse von Methoden, die
-das Filtern von Eigenwerten erm"oglichen. Die Protagonisten dieser Methoden werden
-durch sogenannte \emph{rationale Funktionen} verk"orpert. Ausgehend
-von zwei Polynomfunktionen $p, q\colon{\R}\to\R$ mit
+das Filtern von Eigenwerten erm"oglichen. Die Protagonisten dieser Methoden sind
+die sogenannten \emph{rationale Funktionen}. Ausgehend
+von zwei Polynomen $p, q\in\C [t]$ mit
 \[
-p(t) := \sum_{k=0}^n p_k t^k \text{ \ und\ } q(t) := \sum_{k=0}^n q_k t^k
+p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
 \]
-f"ur reelle/rationale? Koeffizienten $(p_i)_{i=1:n}$ und $(q_i)_{i=1:n}$
-definieren wir eine \emph{rationale Funktion} $f\colon\R\to\R$ verm"oge
+definieren wir eine rationale Funktion $r\colon\C\setminus{N_q}\to\C$ verm"oge
 \[
-f(t) := \frac{p(t)}{q(t)}
+r(t) := \frac{p(t)}{q(t)}
 \]
-wobei freilich darauf geachtet werden muss, dass zu keiner Zeit durch Null
-geteilt wird.
+und identifizieren wie "ublich die Argumente von $p$ und $q$ mit der Unbestimmten $t$.
+Eine rationale Funktion wird als \emph{echt gebrochen} bezeichnet, falls die
+Bedingung $\Grad(p) < \Grad(q)$ erf"ullt ist.
+\textcolor{red}{Nullstellen von $q$ m"ussen aus dem Definitionsbereich verschwinden.}

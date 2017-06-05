@@ -7,8 +7,9 @@
 % language of writing
 \usepackage[ngerman]{babel}
 
+
 % fontrelated
-\usepackage{fontspec}
+%\usepackage{fontspec}
 
 % layout related
 \usepackage{geometry}
@@ -37,11 +38,11 @@
 % - G L O B A L  S E T T I N G S - %
 % -------------------------------- %
 
-\setmainfont[
-  Path = style/,
-  BoldFont    = MinionPro-Bold.otf,
-  ItalicFont  = Minion Pro Italic.ttf
-  ]{MinionPro-Regular.otf}
+%\setmainfont[
+%  Path = style/,
+%  BoldFont    = MinionPro-Bold.otf,
+%  ItalicFont  = Minion Pro Italic.ttf
+%  ]{MinionPro-Regular.otf}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
@@ -64,7 +65,7 @@
 
 \newcommand{\R}{\mathbb{R}}
 
-\renewcommand{\C}{\mathbb{C}}
+\newcommand{\C}{\mathbb{C}}
 \newcommand{\Cn}{\mathbb{C}^n}
 \newcommand{\Cnn}{\mathbb{C}^{n,n}}
 \newcommand{\Co}{\mathbb{C}^n \setminus\{0\}}
@@ -74,5 +75,7 @@
 \renewcommand{\sp}[2]{\langle #2 \rangle_{#1}}
 
 \newcommand{\spn}{\text{Span}}
+
+\DeclareMathOperator{\Grad}{Grad}
 
 \endinput
