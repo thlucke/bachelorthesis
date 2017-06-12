@@ -16,6 +16,23 @@
   {}
 \endgroup
 
+\entry{vanbarel}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Barel}{B.}%
+     {Marc}{M.}%
+     {van}{v.}%
+     {}{}}%
+  }
+  \strng{namehash}{BMv1}
+  \strng{fullhash}{BMv1}
+  \field{labelalpha}{Bar15}
+  \field{sortinit}{B}
+  \field{title}{Designing rational filter functions for solving eigenvalue
+  problems by contour integration.}
+  \field{year}{2015}
+\endentry
+
 \entry{RKT}{article}{}
   \name{author}{1}{}{%
     {{}%
@@ -30,6 +47,22 @@
   \field{sortinit}{B}
   \field{title}{Rational Krylov Toolbox for MATLAB.}
   \field{year}{2016}
+\endentry
+
+\entry{liesen}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Liesen}{L.}%
+     {Jörg}{J.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{LJ1}
+  \strng{fullhash}{LJ1}
+  \field{labelalpha}{Lie13}
+  \field{sortinit}{L}
+  \field{title}{Krylov subspace methods. Principles and analysis.}
+  \field{year}{2013}
 \endentry
 
 \entry{polizzi}{article}{}
@@ -47,6 +80,45 @@
   \field{title}{Density-matrix-based algorithm for solving eigenvalue
   problems.}
   \field{year}{2009}
+\endentry
+
+\entry{stewart}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Stewart}{S.}%
+     {Gilbert~W.}{G.~W.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SGW1}
+  \strng{fullhash}{SGW1}
+  \field{labelalpha}{Ste13}
+  \field{sortinit}{S}
+  \field{title}{Matrix algorithms}
+  \field{volume}{2: Eigensystems}
+  \field{year}{2013}
+\endentry
+
+\entry{ptep}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Tang}{T.}%
+     {Ping Tak~Peter}{P.~T.~P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{TPTPPE1}
+  \strng{fullhash}{TPTPPE1}
+  \field{labelalpha}{TP16}
+  \field{sortinit}{T}
+  \field{title}{Feast as a subspace iteration eigensolver accelerated by
+  approximate spectral projection.}
+  \field{year}{2016}
 \endentry
 
 \lossort

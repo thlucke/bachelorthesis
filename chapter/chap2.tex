@@ -1,15 +1,27 @@
+Dieses Kapitel widmet sich der Frage, wie man aus der Menge aller Eigenpaare
+des Problems
+\[
+Ax = \lambda Bx
+\]
+eine gezielte Teilmenge ausw"ahlen kann. Vorgestellt werden das Konzept von projektiven Verfahren
+sowie eine Methode, die das Filtern mit Hilfe komplexer Konturintegration erm"oglicht.\\
+
 Ein M"oglicheit das eingangs geschilderte Eigenwertproblem zu l"osen, ist
 das Anwenden einer Klasse von Verfahren, die sich \emph{Rayleigh-Ritz-Verfahren}
 nennen. Die Idee besteht darin die Eigenr"aume/ den Eigenraum \textcolor{red}{(was nun genau? bekomme ich alle
-Eigenr"aume? nur einen? was genau approximiere ich?)} durch eine Folge von Unterr"aumen
+Eigenr"aume? nur einegn? was genau approximiere ich?)} durch eine Folge von Unterr"aumen
 zu approximieren, die durch orthogonale Projektionen konstruiert werden.\textcolor{red}{was ist genau
 mit approximieren gemeint? in welchem sinne? und ist das "uberhaupt korrekt?} In diesem
 Abschnitt wird die mathematische Idee dieser Projektionsverfahren vorgestellt und
 die Verwendung von Filtern motiviert \textcolor{red}{kam die motivation nicht schon
 in der einleitung?}
 
-\section{Orthogonale Projektionsverfahren}
+\section{Projektionsverfahren}
 \footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
+Die Idee projektiver Verfahren besteht darin, den von den gesuchten Eigenvektoren aufgespannten
+Unterraum bez"uglich vorgegebener Kriterien bestm"oglich zu approximieren. Dies soll --
+wie der Name vermuten l"asst -- durch Projektionen geschehen.\\
+
 Bevor wir das allgemeine Eigenproblem untersuchen, konzentrieren wir uns zun"achst auf das gew"ohnliche Eigenproblem
 \[
 Ax = \lambda x% \textcolor{red}{variablen wieder neu einf"uhren? oder in der einleitung: im folgenden sei stets...}
@@ -22,7 +34,7 @@ welche die Eigenschaft
 \begin{equation}\label{eq:orthogonal}
 \langle A\widetilde{x} - \widetilde{\lambda}\widetilde{x}, v\rangle=0
 \end{equation}
-f"ur alle $v\in V$ erf"ullen.\footnote{Paare $(\widetilde{\lambda}, \widetilde{x})$ der
+f"ur alle $v \in \mathcal{V} $ erf"ullen.\footnote{Paare $(\widetilde{\lambda}, \widetilde{x})$ der
 eben beschriebenen Art werden auch \emph{Ritz-Paare} genannt.}
 Das Residuum $A\widetilde{x} - \widetilde{\lambda}\widetilde{x}$
 soll also orthogonal auf dem Suchraum stehen.\\%residuum bzgl was???
@@ -55,14 +67,14 @@ Berechne die Ritz Paare
 Die folgende Proposition weist nach, dass der eben vorgestellte Algorithmus tats"achlich
 ein Projektionsverfahren ist.
 
-\begin{prop}
+\begin{prop}\label{prop:projektor}
 Die durch die Matrix $V_m V_m^H \in \Cnn$ induzierte lineare Abbildung
 \[
 P\colon \Cn \to \Cn, x\mapsto V_m V_m^H x
 \]
 ist eine orthogonale Projektion auf den Unterraum V und l"ost das Minimierungsproblem
 \[
-\min_{y\in V}\|x-y\|.
+\min_{y\in V}\|x-y\|, x\in\Cn (\|x-P(x)\| = ...)
 \]
 \end{prop}
 
@@ -75,10 +87,8 @@ P^2 = V_m V_m^H V_m V_m^H = V_m V_m^H = P
 folgt, ist $P$ somit eine Projektion auf $V$. Dar"uber hinaus gilt f"ur alle
 Vektoren $y\in V$
 \[
-\langle x-P(x), y\rangle = y^H (x - V_m V_m^H x) = y^H (I - V_m V_m^H)x
-= y^H x - y^H V_m V_m^H x = y^H x - y^H x = 0
+\langle y, x-P(x)\rangle = y^H (x - V_m V_m^H x) = y^H x - P(y)^H x = 0
 \]
-\textcolor{red}{Bem.: $y^H V_m V_m^H = P(y)^H = y^H$, da $y \in V$.}
 Also ist $x-P(x) \in V^{\bot}$ und $P$ tats"achlich eine orthogonale Projektion.
 Wegen $P(x)-y \in V$ folgt die Minimalit"at aus der Absch"atzung
 \begin{align*}
@@ -90,9 +100,78 @@ Wegen $P(x)-y \in V$ folgt die Minimalit"at aus der Absch"atzung
 \end{align*}
 Damit ist die Behauptung bewiesen, da Gleichheit nur mit $y=P(x)$ folgen kann.
 \end{proof}
-Projektio $P=V$... siehe skript liesen
+
+Wir wollen nun die eben erarbeitete Theorie auf das verallgemeinerte Eigenwertproblem
+\[
+Ax = \lambda Bx
+\]
+"ubertragen. Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor.
+Es sei daher wieder $\mathcal{V}_m\subseteq \Cn$ ein $m$-dimensionaler Suchraum.
+Dann suchen wir wie oben Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
+\times \mathcal{V}_m \setminus\{ 0\}$ die nun der Orthogonalit"atsbedingung
+\begin{equation}\label{eq:borthogonal}
+A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \mathcal{V}_m
+\end{equation}
+gen"ugen sollen. Wieder substituieren wir $V_m y=\widetilde{x}$ und erhalten die
+zu \eqref{eq:borthogonal} "aquivalente Forderung
+\[
+V_m^H(AV_m y - \widetilde{\lambda} BV_m y) = 0.
+\]
+Schlie"slich l"osen wir das transformierte allgemeine Eigenwertproblem
+\begin{equation}\label{eq:transformedevp}
+(V_m^H AV_m) y = \widetilde{\lambda} (V_m^H B V_m) y.
+\end{equation}
+Jede L"osung $(\widetilde{\lambda}, y)$ von \eqref{eq:transformedevp} liefert
+dann mit $(\widetilde{\lambda}, V_m y)$ ein Ritzpaar. Eine algorithmische Umsetzung
+\textcolor{red}{erwartet man hier jetzt echte code oder ist pseudocode ok?}
+kann dann wie folgt verallgemeinern
+
+\begin{lstlisting}[caption = Verallgemeinertes Rayleigh-Ritz-Verfahren (Vgl. ~\cite{ptep} Algorithmus A\text{,} S. 356 \textcolor{red}{wie richtig angeben?}), captionpos=b]
+blubbblubb
+blubbblubb
+\end{lstlisting}
+
+Nun verallgemeinern wir das Resultat \ref{prop:projektor}.
+
+\begin{prop}
+Sei $B$ eine HPD-Matrix und $V_m$ habe $B$-orthogonale Vektoren aus $\mathcal{V}$,
+das hei"st, es gelte $V_m^H B V_m = I_m$.
+Die durch die Matrix $V_m V_m^H B \in \Cnn$ induzierte lineare Abbildung
+\[
+P_B \colon \Cn \to \Cn, x\mapsto V_m V_m^H Bx
+\]
+ist eine $B$-orthogonale Projektion auf den Unterraum $\mathcal{V}$ und l"ost das Minimierungsproblem
+\[
+\min_{y\in\mathcal{V}} \|x - y\|_B, x\in\Cn.
+\]
+\end{prop}
+
+\begin{proof}
+Der Beweis geht ganz analog zu $\ref{prop:projektor}$. Es gilt
+\[
+P_B^2 = V_m \underbrace{V_m^H B V_m}_{=I_m} V_m^H B = V_m V_m^H B = P_B
+\]
+und $P_B(\Cn) = \mathcal{V}$ folgt nach Konstruktion ($\Rang{P_B} = \dim(\mathcal{V})$). Ist nun $y\in\mathcal{V}$
+und $x\in\Cn$, dann folgt wegen $P_B (y) = y$ und $B=B^H$ auch
+\begin{align*}
+\langle y, x-P_B(x)\rangle_B &= y^H (Bx - B V_m V_m^H Bx) \\
+&= y^H (Bx - B^H V_m V_m^H Bx) \\
+&= y^H Bx - P_B(y)^H Bx = 0.
+\end{align*}
+Es gilt demnach $x-P_B(x) \ \bot_B \ \mathcal{V}$. Schlie"slich gilt
+\[
+\|x-y\|_B^2 = \|x-P(x) + P(x)-y\|_B^2 = \|x-P(x)\|_B^2 + \|P(x)-y\|_B^2
+\ge \|x-P(x)\|_B^2
+\]
+mit Gleichheit genau dann, wenn $P(x)=x$ erf"ullt ist.
+\end{proof}
+
 
 Auf diesen "Uberlegungen aufbauend, l"asst sich nun das folgende Verfahren konstruieren.
 blabla saad... s. 98.
 
-\textcolor{red}{WIE DAS ALLGEMEINE PROBLEM EINBRINGEN? WO IST DANN B? Direkt allgemein machen?}
+%\section{Analytische Konstruktion des Spektralprojektors}
+
+\section{Konturintegration}
+Das Filtern von Eigenpaaren durch Integration "uber komplexe Kurven scheint
+zun"achst nicht sehr naheliegend. Wie ist der Zusammenhang
