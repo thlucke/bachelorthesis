@@ -61,15 +61,16 @@ Wir werden sp"ater aus den Untersuchungen des allgemeinen Eigenwertproblems folg
 dass im Falle der Invarianz von $\U_m$ unter $A$ jedes Ritz-Paar von $A$ sogar ein Eigenpaar ist.
 An dieser Stelle begn"ugen wir uns schlicht mit dieser erfreulichen Botschaft.\\
 
-Fassen wir die eben geschilderte Vorgehensweise algorithmisch zusammen, so ist
-der folgende Pseudocode denkbar:
-\textcolor{red}{
-\begin{itemize}
-\item do stuff
-\item do further stuff
-\item stuff stuff stuff
-\item finish the stuff
-\end{itemize}}
+%Fassen wir die eben geschilderte Vorgehensweise algorithmisch zusammen, so ist
+%der folgende Pseudocode denkbar:
+Mit den obigen "Uberlegungen ergibt sich folgender Algorithmus.
+
+\begin{lstlisting}[caption = Rayleigh-Ritz-Verfahren (Vgl. Saad Algo. 4.5), captionpos=b]
+Berechne eine ONB {v1,...,vm} von V und setze Vm = [v1,...,vm]
+Berechne Eigenwerte von Vm^H * A * Vm und wähle die gewünschten aus
+Berechne die zu den eben ermittelten Eigenwerte zugehörigen EVektoren
+Berechne die Ritz Paare
+\end{lstlisting}
 
 Doch wozu dient die M"uhe, das urspr"ungliche Eigenwertproblem in ein anderes
 Eigenwertproblem zu "uberf"uhren? Zwar gelingt es, aus dem transformierten Problem
@@ -84,14 +85,92 @@ genauerer Betrachtung der Gleichung \eqref{eq:transform} f"allt auf, dass die
 Matrix $(U_m^H A U_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
 Format hat, als die Matrix $A$ im urspr"unglichen Problem. Man darf hier also erwarten,
 dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \textcolor{red}{(XXX)}
-geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$.
+geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Dies
+wird in Kapitel 4 an einigen Beispielen illustriert.\\
 
-\begin{lstlisting}[caption = Rayleigh-Ritz-Verfahren (Vgl. Saad Algo. 4.5), captionpos=b]
-Berechne eine ONB {v1,...,vm} von V und setze Vm = [v1,...,vm]
-Berechne Eigenwerte von Vm^H * A * Vm und wähle die gewünschten aus
-Berechne die zu den eben ermittelten Eigenwerte zugehörigen EVektoren
-Berechne die Ritz Paare
+Wir gehen nun einen Schritt weiter und erweitern die obigen Theorie auf das
+verallgemeinerte Eigenwertproblem
+\[
+Ax = \lambda Bx.
+\]
+Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor.
+Es sei daher wieder $\U_m\subseteq \Cn$ ein $m$-dimensionaler Suchraum.
+Gefunden werden sollen nun Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
+\times \U_m \setminus\{ 0\}$ die der Orthogonalit"atsbedingung
+\begin{equation}\label{eq:borthogonal}
+A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \U_m
+\end{equation}
+gen"ugen sollen. Wieder substituieren wir $U_m y=\widetilde{x}$ und erhalten die
+zu \eqref{eq:borthogonal} "aquivalente Forderung
+\[
+U_m^H(AU_m y - \widetilde{\lambda} BU_m y) = 0.
+\]
+Schlie"slich l"osen wir das transformierte Eigenwertproblem
+\begin{equation}\label{eq:transformedevp}
+(U_m^H AU_m) y = \widetilde{\lambda} (U_m^H B U_m) y.
+\end{equation}
+Wie bereits beim gew"ohnlichen Eigenwertproblem kann aus jeder L"osung $(\widetilde{\lambda}, y)$ von \eqref{eq:transformedevp}
+mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar f"ur das verallgemeinerte Eigenwertproblem
+gewonnen werden.\\
+
+Der Algorithmus \textcolor{red}{(XXX)} wird entsprechend wie folgt angepasst:
+
+\begin{lstlisting}[caption = Verallgemeinertes Rayleigh-Ritz-Verfahren (Vgl. ~\cite{ptep} Algorithmus A\text{,} S. 356 \textcolor{red}{wie richtig angeben?}), captionpos=b]
+blubbblubb
+blubbblubb
 \end{lstlisting}
+
+Es stellt sich nun die Frage, was die erarbeiteten Methoden mit Projektionen zu
+tun haben. Dies zu beantworten verpflichtet sich der folgende Satz.
+
+\begin{thm}
+Es sei $B\in\Cnn$ eine HPD-Matrix und f"ur $m\in\N$ mit $m\le n$ sei $\U_m \subseteq \Cn$
+ein $m$-dimensionaler Suchraum. Sei weiter $\{u_i\}_{i=1:m}\subseteq\U_m$ eine
+Basis $B$-orthogonaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
+\in\C^{n,m}$ erf"ullt die Gleichung $U_m^H B U_m = I_m$. Dann ist die von der Matrix
+ $U_m U_m^H B \in \Cnn$ induzierte lineare Abbildung
+\[
+P_B \colon \Cn \to \Cn, x\mapsto U_m U_m^H Bx
+\]
+eine $B$-orthogonale Projektion auf den Unterraum $\U_m$ und l"ost das Minimierungsproblem
+\[
+\min_{y\in\U} \|x - y\|_B, x\in\Cn.
+\]
+\end{thm}
+
+\begin{proof}
+Aus der $B$-Orthogonalit"at von $U_m$ folgt
+\[
+P_B^2 = U_m U_m^H B U_m U_m^H B = U_m U_m^H B = P_B
+\]
+und damit gilt die Mengengleichheit $P_B(\Cn) = \U$ nach Konstruktion. %($\Rang{P_B} = \dim(\U)$).
+Ist nun $y\in\U$ und $x\in\Cn$, dann folgt wegen $P_B (y) = y$ und $B=B^H$ auch
+\begin{align*}
+\langle y, x-P_B(x)\rangle_B &= y^H (Bx - B U_m U_m^H Bx) \\
+&= y^H (Bx - B^H U_m U_m^H Bx) \\
+&= y^H Bx - P_B(y)^H Bx = 0.
+\end{align*}
+Es gilt demnach $x-P_B(x) \ \bot_B \ \U$. Die Optimierungsaufgabe wird wegen
+\begin{align*}
+\|x-y\|_B^2 &= \|x-P(x) + P(x)-y\|_B^2 \\
+&= \|x-P(x)\|_B^2 + \|P(x)-y\|_B^2\\
+&\ge \|x-P(x)\|_B^2
+\end{align*}
+gel"ost, denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,
+wenn $P(x)=x$ erf"ullt ist.
+\end{proof}
+
+
+Auf diesen "Uberlegungen aufbauend, l"asst sich nun das folgende Verfahren konstruieren.
+blabla saad... s. 98.
+
+%\section{Analytische Konstruktion des Spektralprojektors}
+
+\section{Konturintegration}
+Das Filtern von Eigenpaaren durch Integration "uber komplexe Kurven scheint
+zun"achst nicht sehr naheliegend. Wie ist der Zusammenhang
+
+
 
 Die folgende Proposition weist nach, dass der eben vorgestellte Algorithmus tats"achlich
 ein Projektionsverfahren ist.
@@ -134,73 +213,4 @@ Wir wollen nun die eben erarbeitete Theorie auf das verallgemeinerte Eigenwertpr
 \[
 Ax = \lambda Bx
 \]
-"ubertragen. Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor.
-Es sei daher wieder $\mathcal{V}_m\subseteq \Cn$ ein $m$-dimensionaler Suchraum.
-Dann suchen wir wie oben Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
-\times \mathcal{V}_m \setminus\{ 0\}$ die nun der Orthogonalit"atsbedingung
-\begin{equation}\label{eq:borthogonal}
-A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \mathcal{V}_m
-\end{equation}
-gen"ugen sollen. Wieder substituieren wir $V_m y=\widetilde{x}$ und erhalten die
-zu \eqref{eq:borthogonal} "aquivalente Forderung
-\[
-V_m^H(AV_m y - \widetilde{\lambda} BV_m y) = 0.
-\]
-Schlie"slich l"osen wir das transformierte allgemeine Eigenwertproblem
-\begin{equation}\label{eq:transformedevp}
-(V_m^H AV_m) y = \widetilde{\lambda} (V_m^H B V_m) y.
-\end{equation}
-Jede L"osung $(\widetilde{\lambda}, y)$ von \eqref{eq:transformedevp} liefert
-dann mit $(\widetilde{\lambda}, V_m y)$ ein Ritzpaar. Eine algorithmische Umsetzung
-\textcolor{red}{erwartet man hier jetzt echte code oder ist pseudocode ok?}
-kann dann wie folgt verallgemeinern
-
-\begin{lstlisting}[caption = Verallgemeinertes Rayleigh-Ritz-Verfahren (Vgl. ~\cite{ptep} Algorithmus A\text{,} S. 356 \textcolor{red}{wie richtig angeben?}), captionpos=b]
-blubbblubb
-blubbblubb
-\end{lstlisting}
-
-Nun verallgemeinern wir das Resultat \ref{prop:projektor}.
-
-\begin{prop}
-Sei $B$ eine HPD-Matrix und $V_m$ habe $B$-orthogonale Vektoren aus $\mathcal{V}$,
-das hei"st, es gelte $V_m^H B V_m = I_m$.
-Die durch die Matrix $V_m V_m^H B \in \Cnn$ induzierte lineare Abbildung
-\[
-P_B \colon \Cn \to \Cn, x\mapsto V_m V_m^H Bx
-\]
-ist eine $B$-orthogonale Projektion auf den Unterraum $\mathcal{V}$ und l"ost das Minimierungsproblem
-\[
-\min_{y\in\mathcal{V}} \|x - y\|_B, x\in\Cn.
-\]
-\end{prop}
-
-\begin{proof}
-Der Beweis geht ganz analog zu $\ref{prop:projektor}$. Es gilt
-\[
-P_B^2 = V_m \underbrace{V_m^H B V_m}_{=I_m} V_m^H B = V_m V_m^H B = P_B
-\]
-und $P_B(\Cn) = \mathcal{V}$ folgt nach Konstruktion ($\Rang{P_B} = \dim(\mathcal{V})$). Ist nun $y\in\mathcal{V}$
-und $x\in\Cn$, dann folgt wegen $P_B (y) = y$ und $B=B^H$ auch
-\begin{align*}
-\langle y, x-P_B(x)\rangle_B &= y^H (Bx - B V_m V_m^H Bx) \\
-&= y^H (Bx - B^H V_m V_m^H Bx) \\
-&= y^H Bx - P_B(y)^H Bx = 0.
-\end{align*}
-Es gilt demnach $x-P_B(x) \ \bot_B \ \mathcal{V}$. Schlie"slich gilt
-\[
-\|x-y\|_B^2 = \|x-P(x) + P(x)-y\|_B^2 = \|x-P(x)\|_B^2 + \|P(x)-y\|_B^2
-\ge \|x-P(x)\|_B^2
-\]
-mit Gleichheit genau dann, wenn $P(x)=x$ erf"ullt ist.
-\end{proof}
-
-
-Auf diesen "Uberlegungen aufbauend, l"asst sich nun das folgende Verfahren konstruieren.
-blabla saad... s. 98.
-
-%\section{Analytische Konstruktion des Spektralprojektors}
-
-\section{Konturintegration}
-Das Filtern von Eigenpaaren durch Integration "uber komplexe Kurven scheint
-zun"achst nicht sehr naheliegend. Wie ist der Zusammenhang
+"ubertragen.
