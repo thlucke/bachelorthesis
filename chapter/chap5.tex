@@ -1,1 +1,42 @@
-Finale
+Die folgende Proposition weist nach, dass der eben vorgestellte Algorithmus tats"achlich
+ein Projektionsverfahren ist.
+
+\begin{prop}\label{prop:projektor}
+Die durch die Matrix $V_m V_m^H \in \Cnn$ induzierte lineare Abbildung
+\[
+P\colon \Cn \to \Cn, x\mapsto V_m V_m^H x
+\]
+ist eine orthogonale Projektion auf den Unterraum V und l"ost das Minimierungsproblem
+\[
+\min_{y\in V}\|x-y\|, x\in\Cn (\|x-P(x)\| = ...)
+\]
+\end{prop}
+
+\begin{proof}
+Sei $x\in\Cn$ vorgegeben. Dann gilt $P(x) = V_m V_m^H x \in \Bild(V_m) = V$ nach Konstruktion.
+Da aus der Orthogonalit"at der Spalten von $V_m$
+\[
+P^2 = V_m V_m^H V_m V_m^H = V_m V_m^H = P
+\]
+folgt, ist $P$ somit eine Projektion auf $V$. Dar"uber hinaus gilt f"ur alle
+Vektoren $y\in V$
+\[
+\langle y, x-P(x)\rangle = y^H (x - V_m V_m^H x) = y^H x - P(y)^H x = 0
+\]
+Also ist $x-P(x) \in V^{\bot}$ und $P$ tats"achlich eine orthogonale Projektion.
+Wegen $P(x)-y \in V$ folgt die Minimalit"at aus der Absch"atzung
+\begin{align*}
+\|x-y\|^2 &= \|x-P(x) + P(x)-y\|^2 \\
+&= \langle x-P(x) + P(x)-y, x-P(x) + P(x)-y \rangle \\
+&= \|x-P(x)\|^2 + \langle x-P(x), P(x)-y \rangle + \langle P(x)-y, x-P(x)\rangle + \|P(x)-y\|^2 \\
+&= \|x - P(x)\|^2 + \| P(x)-y \|^2\\
+&\ge \|x-P(x)\|^2.
+\end{align*}
+Damit ist die Behauptung bewiesen, da Gleichheit nur mit $y=P(x)$ folgen kann.
+\end{proof}
+
+Wir wollen nun die eben erarbeitete Theorie auf das verallgemeinerte Eigenwertproblem
+\[
+Ax = \lambda Bx
+\]
+"ubertragen.
