@@ -90,13 +90,16 @@ rationale Funktion $\rho$ um.\\
 Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
 $r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
 \[
-\mathcal{C} := \{z\in\C : |z-c|\le r\}
+\mathcal{C} := \{z\in\C : |z-c| = r\}
 \]
-gerade einer Kreisscheibe mit Radius $r$ um $c$. F"ur eine auf $\mathcal{C}$
-holomorphe Funktion $f\colon\C\to\C$ gilt dann gem"a"s der Cauchy'schen Integralformel
+gerade einer Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
+l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
 \[
-f(z) = \frac{1}{2\pi\iota}\int_{\partial \mathcal{C}}\frac{f(z)}{\omega-z}\text{ d}\omega
+\frac{1}{2\pi\iota}\int_{\partial \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+= \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
 \]
-f"ur jedes $z$ im offenen Inneren von $\mathcal{C}$ (Vgl. ~\cite[20]{jaenich}).
+gilt. Dieses Integral gilt es nun zu approximieren.\textcolor{red}{wie genau?}(Vgl. ~\cite[20]{jaenich}).\\
+
+
 
 \section{Der FEAST-Algorithmus}
