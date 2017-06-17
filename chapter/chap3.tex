@@ -4,13 +4,13 @@ Um dies zu Untermauern, orientieren sich die folgenden Abs"atze an den Ausf"uhru
 von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
 die Notation im Sinne der Konsistenz an einigen Stellen abweichen.
 
-\section{Beschleunigtes Rayleigh-Ritz Verfahren}
+\section{Beschleunigtes Rayleigh-Ritz Verfahren}\label{chap3:beschrr}
 
 Betrachten wir also wie bisher das verallgemeinerte Eigenwertproblem mit zwei
 komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
-zu"satzlich die positive Definitheit von $B$. Weiterhin sei $p(B^{-1}A)$ ein
-Polynom in $B^{-1}A$. Gem"a"s dem oben zitierten Paper, l"asst sich der Algorithmus
-() aus dem vorigen Kapitel wie folgt "andern
+zu"satzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
+mit $p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen um gem"a"s dem
+oben zitierten Paper den Algorithmus () aus dem vorigen Kapitel wie folgt zu "andern.
 
 \begin{algorithm}\label{alg:beschlrr}
 \caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
@@ -67,17 +67,36 @@ definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"og
 \[
 \rho(t) := \frac{p(t)}{q(t)}
 \]
-und identifizieren wie "ublich die Argumente von $p$ und $q$ mit der Unbestimmten $t$.
-Eine rationale Funktion wird als \emph{echt gebrochen} bezeichnet, falls die
-Bedingung $\Grad(p) < \Grad(q)$ erf"ullt ist.
-\textcolor{red}{Nullstellen von $q$ m"ussen aus dem Definitionsbereich verschwinden.}\\
+und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
+Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$. Eine rationale Funktion wird als \emph{echt gebrochen} bezeichnet,
+falls die Bedingung $\Grad(p) < \Grad(q)$ erf"ullt ist.
 
-Wir erinnern uns an das Rayleigh-Ritz-Verfahren aus Kapitel 2. Die Konvergenz (?)
-h"angt davon ab, mit welchem Startvektor das Verfahren beginnt...\\
-
-Ein optimaler Filter ist der Spektralprojektor $\rho(B^{-1}A) = X_k X_k^H B$... warum, siehe PTEP S. 356.
 
 
 \section{Approximation des Spektralprojektors}
+
+Nun da die f"ur den weiteren Verlauf der Arbeit wichtigen Eigenschaften rationaler
+Funktionen wiederholt wurden, widmen wir uns der Approximation des Spektralprojektors
+$P = X_k X_k^H B$. Daf"ur setzen wir den in Abschnitt \ref{chap3:beschrr} bereits begonnen Gedankengang aus ~\cite{ptep}
+fort und "ubernehmen die zu letzt vereinbarten Voraussetzungen und Notationen.\\
+
+Wenden wir uns also wieder dem reellen Intervall $I := [\lambda_1, \lambda_2]$ zu. Das Ziel ist
+die Konstruktion einer rationalen Funktion $\rho\colon\C\to\C$ mit $\rho|_\R \subseteq \R$,
+die auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht. Dazu
+bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
+wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
+rationale Funktion $\rho$ um.\\
+
+Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
+$r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
+\[
+\mathcal{C} := \{z\in\C : |z-c|\le r\}
+\]
+gerade einer Kreisscheibe mit Radius $r$ um $c$. F"ur eine auf $\mathcal{C}$
+holomorphe Funktion $f\colon\C\to\C$ gilt dann gem"a"s der Cauchy'schen Integralformel
+\[
+f(z) = \frac{1}{2\pi\iota}\int_{\partial \mathcal{C}}\frac{f(z)}{\omega-z}\text{ d}\omega
+\]
+f"ur jedes $z$ im offenen Inneren von $\mathcal{C}$ (Vgl. ~\cite[20]{jaenich}).
 
 \section{Der FEAST-Algorithmus}

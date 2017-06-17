@@ -9,14 +9,4 @@
 \BOOKMARK [1][-]{section.3.2}{Rationale Funktionen}{chapter.3}% 9
 \BOOKMARK [1][-]{section.3.3}{Approximation des Spektralprojektors}{chapter.3}% 10
 \BOOKMARK [1][-]{section.3.4}{Der FEAST-Algorithmus}{chapter.3}% 11
-\BOOKMARK [0][-]{chapter.4}{Implementation und numerische Experimente}{}% 12
-\BOOKMARK [1][-]{section.4.1}{Rayleigh-Ritz}{chapter.4}% 13
-\BOOKMARK [1][-]{section.4.2}{Beschleunigtes RR-Verfahren}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.3}{Feast}{chapter.4}% 15
-\BOOKMARK [1][-]{section.4.4}{Mathematische Idee}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.5}{Beispiel}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.6}{Realisierung des FEAST-Algorithmus'}{chapter.4}% 18
-\BOOKMARK [2][-]{subsection.4.6.1}{Naive Implementation}{section.4.6}% 19
-\BOOKMARK [2][-]{subsection.4.6.2}{Rational Krylov Toolbox}{section.4.6}% 20
-\BOOKMARK [0][-]{chapter.5}{}{}% 21
-\BOOKMARK [0][-]{appendix.A}{yolo}{}% 22
+\BOOKMARK [0][-]{appendix.A}{yolo}{}% 12
