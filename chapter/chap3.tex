@@ -1,17 +1,71 @@
-Dieses Kapitel wird aufzeigen, dass sich Projektive Verfahren und KOnturintegration
-verheiraten lassen :D
+In diesem Kapitel soll demonstriert werden, dass Konturintegration und
+Rayleigh-Ritz-Verfahren in einem engen Zusammenhang stehen \textcolor{red}{wird sich noch zeigen}.
+Um dies zu Untermauern, orientieren sich die folgenden Abs"atze an den Ausf"uhrungen
+von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
+die Notation im Sinne der Konsistenz an einigen Stellen abweichen.
 
-Nachdem vorgestellt wurde, wie mit Polynomen Eigenwerte extrahiert werden k"onnen,
-verpflichtet sich diese Kapitel der Vorstellung einer anderen Klasse von Methoden, die
-das Filtern von Eigenwerten erm"oglichen. Die Protagonisten dieser Methoden sind
-die sogenannten \emph{rationale Funktionen}. Ausgehend
-von zwei Polynomen $p, q\in\C [t]$ mit
+\section{Beschleunigtes Rayleigh-Ritz Verfahren}
+
+Betrachten wir also wie bisher das verallgemeinerte Eigenwertproblem mit zwei
+komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
+zu"satzlich die positive Definitheit von $B$. Weiterhin sei $p(B^{-1}A)$ ein
+Polynom in $B^{-1}A$. Gem"a"s dem oben zitierten Paper, l"asst sich der Algorithmus
+() aus dem vorigen Kapitel wie folgt "andern
+
+\begin{algorithm}\label{alg:beschlrr}
+\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
+\begin{algorithmic}[1]
+\State W"ahle $m$ Zufallsvektoren $Q_{(0)} \gets [q_i]_{i=1:m} \in\C^{n,m}$.
+Setze $k \gets 1$.
+\State \textbf{repeat}
+\State \ \ \ \ Approximiere den Unterraumprojektor: $Y_{(k)} \gets p(B^{-1}A)Q_{(k-1)}$
+\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Y_{(k)}^H A Y_{(k)}$,
+$\widetilde{B}_{(k)} \gets Y_{(k)}^H B Y_{(k)}$.
+\State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
+= \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
+$\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
+\State \ \ \ \ Setze $Q_{(k)} \gets Y_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ $k \gets k+1$.
+\State \textbf{until} Abbruchkriterium ist erf"ullt.
+\end{algorithmic}
+\end{algorithm}
+
+Das Polynom $p$ wird in diesem Kontext auch als \emph{Filter} oder \emph{Beschleuniger}
+bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
+werden. Es ist sogar m"oglich, gezielt solche Eigenpaare zu finden, wie sie im
+Abschnitt \ref{sec:kontur} gesucht waren.\\
+
+Um dies einzusehen, greifen wir erneut die Notationen aus besagtem Kapitel auf:
+Es sei $[\lambda_1, \lambda_2]$ dasjenige Intervall, auf dem die Eigenwerte und
+korresponierenden Eigenvektoren gefunden werden sollen und $X_k$ sei diejenige
+Matrix dessen Spalten aus gerade diesen Eigenvektoren besteht. Es wurde bereits
+diskutiert, dass die durch Konturintegration ermittelten Eigenvektoren
+$B$-orthogonal sind. Damit l"asst sich also -- wie im Satz \ref{thm:projektor}
+bewiesen -- der Spektralprojektor $P = X_k X_k^H B$ konstruieren. Falls nun
+$p(B^{-1}A)$ mit diesem Projektor "ubereinstimmt, dann terminiert Algorithmus
+\ref{alg:beschlrr} im Falle der Vollrangigkeit von $Y_{(1)}$ nach einer Iteration.\footnote{
+Hierbei ist entscheidend, dass die Anzahl der Spalten von $Q$ mit der Anzahl der
+Eigenpaare "ubereinstimmt, die auf dem Intervall zu finden sind (Vgl. ~\cite[356]{ptep}).}
+Dies folgt unter Ausnutzung der Invarianz des Bildes von $PQ_{(0)}$ unter $B^{-1}A$
+aus dem Satz $\ref{thm:invariant}$.\\
+
+Da der Spektralprojektor in den meisten F"allen unbekannt sein d"urfte, liegt
+die Idee nahe, ihn zumindest zu approximieren. Da in ~\cite[356]{ptep} bemerkt wird,
+dass dies gut funktioniert, wenn $p$ eine durch \emph{Gau"s-Legendre-Quadratur}
+konstruierte rationale Funktion ist, wird sich das folgende Intermezzo mit eben dieser
+Klasse von Funktionen besch"aftigen, bevor wir mit der Konstruktion des Projektors
+fortfahren.
+
+
+\section{Rationale Funktionen}
+
+Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
 \[
 p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
 \]
-definieren wir eine rationale Funktion $r\colon\C\setminus{N_q}\to\C$ verm"oge
+definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
 \[
-r(t) := \frac{p(t)}{q(t)}
+\rho(t) := \frac{p(t)}{q(t)}
 \]
 und identifizieren wie "ublich die Argumente von $p$ und $q$ mit der Unbestimmten $t$.
 Eine rationale Funktion wird als \emph{echt gebrochen} bezeichnet, falls die
@@ -23,6 +77,7 @@ h"angt davon ab, mit welchem Startvektor das Verfahren beginnt...\\
 
 Ein optimaler Filter ist der Spektralprojektor $\rho(B^{-1}A) = X_k X_k^H B$... warum, siehe PTEP S. 356.
 
-\section{Konturintegration}
+
+\section{Approximation des Spektralprojektors}
 
 \section{Der FEAST-Algorithmus}

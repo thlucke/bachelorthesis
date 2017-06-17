@@ -134,16 +134,33 @@ festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\U_m$ u
 $A$ dazu f"uhrt, dass jedes Ritz-Paar bez"uglich $\U_m$ ein Eigenpaar von $A$ ist.
 Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 
-\begin{thm}
+\begin{thm}\label{thm:invariant}
 Neben zwei Matrizen $A,B\in\Cnn$ -- wobei $B$ eine HPD-Matrix ist -- sei f"ur
 $m\in\N$ mit $m\le n$ ein $m$-dimensionaler Unterraum $\U_m \subseteq \C_n$ gegeben.
-Ist dieser invariant unter \textcolor{red}{???}, so ist jedes $B$-Ritzpaar
-von $A$ bez"uglich $\U_m$ auch ein verallgemeinertes Eigenpaar von $A$.
+Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritzpaar von $B^{-1}A$
+bez"uglich $\U_m$ auch ein verallgemeinertes Eigenpaar von $A$.
 \end{thm}
 
 \begin{proof}
-Ausstehend. Die erforderlichen Bedingungen und die Beweisf"uhrung ist noch nicht
-klar.
+Beginnen wir mit einer ONB $\{u_i\}_{i=1:m}\subseteq\U_m$ des Unterraums $\U_m$
+und setzen wie bisher $U_m := [u_i]_{i=1:m}\in\C^{n,m}$. Aufgrund der Invarianz
+von $\U_m$ unter $B^{-1}A$ muss eine Matrix $V_m \in \C^{m,m}$ existieren, welche
+die Gleichung
+\begin{equation}\label{eq:thminvariant}
+B^{-1}A U_m = U_m V_m
+\end{equation}
+erf"ullt. Insbesondere folgt unter Ausnutzung der Orthogonalit"at der Spalten
+von $U_m$ die Identit"at $U_m^H B^{-1}A U_m = V_m$.
+Sind nun $\lambda\in\C$ und $y\in\C^m\setminus\{0\}$ so gew"ahlt, dass $(\lambda, U_m y)$
+ein Ritz-Paar von $B^{-1}A$ ist, so folgt aus
+\[
+U_m^H B^{-1}A U_m y = V_m y
+\]
+mit \eqref{eq:thminvariant} die Gleichung
+\[
+B^{-1}AU_m y = U_m V_m y = \lambda U_m y
+\]
+und schlie"slich auch die Behauptung durch Umstellen.
 \end{proof}
 
 Da das gew"ohnliche Eigenwertproblem ein Spezialfall des allgemeinen Eigenwertproblems
@@ -163,10 +180,10 @@ Ax = \lambda Bx = \lambda x.
 Die Aussage folgt dann aus dem vorigen Satz.
 \end{proof}
 
-Diese Erkenntnis ist vor allem aus algorithmischer Sicht h"ochst n"utzlich. Implementieren
-man n"amlich das Rayleigh-Ritz-Verfahren iterativ \textcolor{red}{(siehe Quelle blablabla)}, so
-kann der Iterationsprozess abgebrochen werden, sobald der Unterraum $\Bild(U_m^(i))$
-invariant unter \textcolor{red}{(?)} ist.\\
+Diese Erkenntnis ist vor allem aus algorithmischer Sicht h"ochst n"utzlich. Implementiert
+man das Rayleigh-Ritz-Verfahren f"ur das gew"ohnliche Eigenwertproblem iterativ \textcolor{red}{(siehe Quelle blablabla)}, so
+kann der Iterationsprozess abgebrochen werden, sobald die Unterraumiterierte $\Bild(U_m^(i))$
+invariant unter $A$ ist.\\
 
 Das Rayleigh-Ritz-Verfahren steht in einem engen Zusammenhang zu Projektionsverfahren.
 Mit einer geeigneten Projektionsmatrix $P\in\Cnn$ ist ein Paar $(\lambda, x)\in\C\times\Co$
@@ -178,7 +195,7 @@ P^H APx = \lambda P^H BPx
 ist. Richtig definiert, besitzt $P$ noch weitere n"utzliche Eigenschaften, die
 der folgende Satz vorstellt.
 
-\begin{thm}
+\begin{thm}\label{thm:projektor}
 Es sei $B\in\Cnn$ eine HPD-Matrix und f"ur $m\in\N$ mit $m\le n$ sei
 ein $m$-dimensionaler Unterraum $\U_m \subseteq \Cn$ gegeben. Sei weiter $\{u_i\}_{i=1:m}\subseteq\U_m$ eine
 Basis $B$-orthogonaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
@@ -248,7 +265,12 @@ Geschick einen passenden Suchraum aufzustellen.\\
 Im kommenden Abschnitt wird daher eine Methode vorgestellt, mit dessen Hilfe gezielt
 Eigenpaare gefunden werden k"onnen.
 
-\section{Konturintegration}
+\textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
+werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
+ist man fertig, aber Projektor ist i.A.nicht bekannt, daher approximieren. siehe
+kapitel 3}
+
+\section{Konturintegration}\label{sec:kontur}
 
 Wir wollen nun anehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$ vorgegeben sind, die
 das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R$ definieren.
@@ -280,17 +302,16 @@ bestimmen zu k"onnen, f"uhren wir die durch%wird das Problem mit Hilfe einer
 
 %Zur Bestimmung der Transformationsmatrix $Q$ wird eine Konturintegration bem"uht.
 %Ausgangspunkt dieser Integration ist die durch
-
   \begin{align*}
   G\colon\Omega &\to\Cnn\\
   \omega &\mapsto (\omega B - A)^{-1}
   \end{align*}
 
-definierte \textsc{Green}-Funktion, wobei $\Omega \subseteq \C$ eine passende
+definierte \textsc{Green}-Funktion ein, wobei $\Omega \subseteq \C$ eine passende
 Teilmenge der komplexen Zahlen ist. Insbesondere m"ussen $\Omega$ und das
 Spektrum von $B^{-1}A$ disjunkt sein, da $G$ andernfalls nicht wohldefiniert ist.\\
 
-Die Funktion $G$ wird nun "uber eine Jordan-Kurve $\gamma$%geschlossene komplexe Kurve $\gamma$,
+Die Funktion $G$ wird nun "uber eine geschlossene Jordan-Kurve $\gamma$,
 die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt
 \[
 -\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
@@ -298,8 +319,7 @@ die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt
 integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
 also $\iota = \sqrt{-1}$.}\\
 
-Wir wollen nun annehmen,
-dass es genau $k\in\N$ Eigenwerte gibt,
+Wir wollen nun annehmen, dass es genau $k\in\N$ Eigenwerte gibt,
 die im Inneren des Intervalls $I$ liegen.\footnote{Diese Forderung ist wohldefiniert, da
 der Eigenschaften von $A$ und $B$ wegen alle Eigenwerte von $B^{-1}A$ reell sind.}
 F"ur zu diesen Eigenwerten passende Eigenvektoren $\{x_i\}_{i=1:k} \subseteq \Cn$ sei au"serdem die Matrix

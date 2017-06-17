@@ -25,6 +25,12 @@
 \usepackage[numbered, framed]{style/mcode}
 \renewcommand\lstlistingname{Algorithmus}
 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\renewcommand*\ALG@name{Algorithmus}
+\makeatother
+
 % reference related
 \usepackage{hyperref}
 \usepackage[backend=bibtex,style=alphabetic]{biblatex}
@@ -83,6 +89,7 @@
 \newcommand{\GL}{\text{GL}_n (\mathbb{C}}
 
 \renewcommand{\sp}[2]{\langle #2 \rangle_{#1}}
+\renewcommand{\rho}{\varrho}
 
 \newcommand{\spn}{\text{Span}}
 
