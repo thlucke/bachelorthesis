@@ -95,11 +95,54 @@ $r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die M
 gerade einer Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
 l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
 \[
-\frac{1}{2\pi\iota}\int_{\partial \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+\frac{1}{2\pi\iota}\oint_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
 = \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
 \]
 gilt. Dieses Integral gilt es nun zu approximieren.\textcolor{red}{wie genau?}(Vgl. ~\cite[20]{jaenich}).\\
 
+Wir werden das eben diskutierte Integral mit einer Gau"s-Legendre Quadraturformel ann"ahern.
+Dazu ist es n"otig die Kontur $\mathcal{C}$ so zu parametrisieren, dass eine Transformation
+der Integrationsgrenzen auf das Intervall $[-1,1]$ m"oglichst einfach m"oglich ist. Zu diesem Zweck sei
+\begin{align*}
+\gamma\colon[-1,3]&\to\C \\
+t&\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
+\end{align*}
+als Parametrisierung der Sph"are gew"ahlt. Die
+Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
+\[
+\gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
+\]
+gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $z\notin\mathcal{C}$
+\begin{align*}
+\frac{1}{2\pi\iota}\oint_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+&= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
+\int_{1}^3\frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \right) \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
+\int_{-1}^1\frac{\gamma'(2-t)}{\gamma(2-t)-z}\text{ d}t \right) \\
+&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
+\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\text{ d}t \right)
+\end{align*}
+wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
+von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.\\
 
+F"ur $q\in\N$ mit \textcolor{red}{wie gro"s ist $q$ genau?} seien $(w_j, t_j)_{j=1:q}$
+die f"ur die Gau"s-Legendre-Quadratur ben"otigten Gewichte und Diskretisierungspunkte.
+Dann setzen wir
+\[
+\rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^q \left(
+\frac{w_j \cdot \gamma'(t_j)}{\gamma(t_j)-z} - \frac{w_j \cdot \overline{\gamma'(t_j)}}{\overline{\gamma(t_j)}-z}
+\right)
+\]
+und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
+$\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
+Funktion
+\[
+\rho\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
+\frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
+\]
+zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
+rationale Funktion bereits in Partialbruchzerlegung vorliegt.\\
 
+Erinnerung an Konturkapitel: ... weiter auf Seite 358
 \section{Der FEAST-Algorithmus}
