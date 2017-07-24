@@ -168,7 +168,7 @@ ist, k"onnen wir aus dem eben bewiesenen Resultat unmittelbar das folgende Korol
 ableiten.
 
 \begin{kor}
-Ist $A\in\Cnn$ und $\U_m\subseteq \Cn$ ein $m$-dimensionaler Unterraum, so ist
+Ist $A\in\Cnn$ und $\U_m\subseteq \Cn$ ein $m$-dimensionaler $A$-invarianter Unterraum, so ist
 jedes Ritz-Paar von $A$ bez"uglich $\U_m$ ein Eigenpaar von $A$.
 \end{kor}
 
@@ -262,8 +262,7 @@ Unterr"aume approximiert werden, die von den Eigenvektoren mit den betragsm"a"si
 gr"o"sten Eigenwerten aufgespannt werden. Es obliegt daher dem pers"onlichen
 Geschick einen passenden Suchraum aufzustellen.\\
 
-Im kommenden Abschnitt wird daher eine Methode vorgestellt, mit dessen Hilfe gezielt
-Eigenpaare gefunden werden k"onnen.
+
 
 \textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
 werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
@@ -272,34 +271,35 @@ kapitel 3}
 
 \section{Konturintegration}\label{sec:kontur}
 
-Wir wollen nun anehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$ vorgegeben sind, die
-das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R$ definieren.
-F"ur zwei hermitesche Matrizen $A, B \in \Cnn$ mit der zus"atzlichen
-Forderung, dass $B$ positiv definit ist, sollen Paare der Gestalt
-$(\lambda, x) \in I \times \C^n$ ermittelt werden, welche der verallgemeinerten
-Eigenwertgleichung
+Die folgenden Zeilen pr"asentieren eine Vorgehensweise, die es gestattet den im vorigen
+Abschnitt eingef"uhrten Spektralprojektor analytisch zu konstruieren. Wir werden
+zu einem sp"ateren Zeitpunkt untersuchen, in wie weit die Numerik in der Lage ist, dieses
+Verfahren algorithmisch umzusetzen.\\
+
+Im weiteren Verlauf seien $A, B \in\Cnn$ hermitesche Matrizen und $B$ zus"atzlich
+positiv definit. Wir wollen annehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$
+vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R$ definieren.
+Wie bisher sollen Paare der Gestalt $(\lambda, x) \in I \times \Co$ ermittelt werden,
+welche der verallgemeinerten Eigenwertgleichung
 
   \begin{equation}\label{eq:eigen} %eventuell einfaches ewp
   Ax = \lambda Bx
   \end{equation}
 
-gen"ugen. Um diese Eigenpaare\footnote{Um der besseren Lesbarkeit Willen werden
+gen"ugen. Der Ausgangspunkt zur Bestimmung der gesuchten Eigenpaare\footnote{Um der besseren Lesbarkeit Willen werden
 im Folgenden die verallgemeinerten Eigenvektoren und deren verallgemeinerte
 Eigenwerte kurz als Eigenvektor und Eigenwert bezeichnet.}
-bestimmen zu k"onnen, f"uhren wir die durch%wird das Problem mit Hilfe einer
+ist die durch%wird das Problem mit Hilfe einer
 %gewissen Matrix $Q\in\Cnn$ in das "aquivalente Problem
-
 %  \begin{equation}\label{eq:Qeigen}
 %  A_Q \phi = \mu B_Q \phi
 %  \end{equation}
-
 %"uberf"uhrt. Hierbei sind $A_Q = Q^TAQ$, $B_Q = Q^TBQ$ und $(\mu, \phi)
 %\in I\times\C^n$.
 %Wird die Matrix $Q$ richtig gew"ahlt, so ist dann jeder zul"assige Eigenwert von
 %\eqref{eq:Qeigen} auch ein zul"assiger Eigenwert von \eqref{eq:eigen} und
 %umgekehrt.\footnote{Daher ist die Angabe $\mu\in I$ gerechtfertigt.}
 %F"ur die Ermittlung der gesuchten Eigenvektoren bedarf es hingegen zus"atzlicher Arbeit.\\
-
 %Zur Bestimmung der Transformationsmatrix $Q$ wird eine Konturintegration bem"uht.
 %Ausgangspunkt dieser Integration ist die durch
   \begin{align*}
@@ -307,56 +307,55 @@ bestimmen zu k"onnen, f"uhren wir die durch%wird das Problem mit Hilfe einer
   \omega &\mapsto (\omega B - A)^{-1}
   \end{align*}
 
-definierte \textsc{Green}-Funktion ein, wobei $\Omega \subseteq \C$ eine passende
-Teilmenge der komplexen Zahlen ist. Insbesondere m"ussen $\Omega$ und das
-Spektrum von $B^{-1}A$ disjunkt sein, da $G$ andernfalls nicht wohldefiniert ist.\\
-
-Die Funktion $G$ wird nun "uber eine geschlossene Jordan-Kurve $\gamma$,
+definierte \textsc{Green}-Funktion, wobei $\Omega \subseteq \C$ eine vom Spektrum
+von $B^{-1}A$ disjunkte Teilmenge der komplexen Zahlen ist.
+Diese Funktion $G$ wird nun "uber eine geschlossene Jordan-Kurve $\gamma$,
 die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt
 \[
 -\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
 \]
 integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
-also $\iota = \sqrt{-1}$.}\\
+also $\iota = \sqrt{-1}$.} Hierbei ist die Integration eintragsweise zu verstehen.\\
 
 Wir wollen nun annehmen, dass es genau $k\in\N$ Eigenwerte gibt,
 die im Inneren des Intervalls $I$ liegen.\footnote{Diese Forderung ist wohldefiniert, da
 der Eigenschaften von $A$ und $B$ wegen alle Eigenwerte von $B^{-1}A$ reell sind.}
-F"ur zu diesen Eigenwerten passende Eigenvektoren $\{x_i\}_{i=1:k} \subseteq \Cn$ sei au"serdem die Matrix
-$X_k := [x_i]_{i=1:k}$ gegeben.
-Dann l"asst die Konturintegration R"uckschl"usse auf die Eigenvektoren zu, denn mit
-Mitteln der komplexen Analysis kann man
-zeigen, dass die Identit"at
-\begin{equation}\label{eq:integral}
-X_k X_k^T = \sum_{i=1}^k x_i x_i^T =
--\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
-\end{equation}
-gilt. \textcolor{red}{genauer? Wie sieht X genau aus?}\\
+%F"ur zu diesen Eigenwerten passende Eigenvektoren $\{x_i\}_{i=1:k} \subseteq \Cn$ sei au"serdem die Matrix
+%$X_k := [x_i]_{i=1:k}$ gegeben.
+Dann kann man nachweisen, dass sich das Integral durch eine Matrix
+$X_k = [x_i]_{i=1:k}\in\C^{n,k}$ in
+\[
+-\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = X_k X_k^T
+\]
+faktorisieren l"asst, wobei $x_i$ f"ur jedes $i=1:k$ ein zu einem in $I$ liegenden
+Eigenwert korrespondierender Eigenvektor ist. "Uberdies ist $X_k$ eine $B$-orthogonale Matrix.\footnote{Beweis wo?}
+Als direkte Konsequenz erhalten wir folglich mit dem Produkt
+\[
+\left( -\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega \right) \cdot B
+\]
+den in Satz \ref{thm:projektor} eingef"uhrten Spektralprojektor. Mit diesem Projektor
+k"onnen wir nun vorgehen wie im vorigen Kapitel und alle Eigenpaare des Problems
+finden. Bedauerlicherweise bleibt die Dimension des Problems unver"andert. Daher
+begn"ugt man sich anstelle der Matrix $B$ mit einer vollrangigen Matrix $\widetilde{B}\in\C^{n,k}$
+um das Ausgangsproblem auf die Dimension $(k\times k)$ zu reduzieren.\\
 
-Wir w"ahlen nun $k$ linear unabh"angige Vektoren $\{y_i\}_{i=1:k} \subseteq \Cn$
-aus, die wir in der Matrix $Y_k := [ y_i ]_{i=1:k}$ zusammenfassen.
-Unsere gew"unschte Matrix $Q$ definieren wir nun durch Matrixmultiplikation
-verm"oge
-\begin{equation}\label{eq:Q}
-Q := X_k X_k^T Y_k.
-\end{equation}
-Die Spalten von $Q$ sind also gerade Linearkombinationen aus den Eigenvektoren.
-Sind dann $\{\phi_i\}_{i=1:k} \subseteq \Cn$ Vektoren die das transformierte
-Eigenwertproblem \eqref{eq:Qeigen} l"osen
-und ist $\Phi_k:=[\phi_i]_{i=1:k}$ gegeben,
-so gilt $X_k = Q \Phi_k$.\\
-
-In der Praxis sind nat"urlich weder die Anzahl der Eigenwerte noch die dazugeh"origen Eigenvektoren
-bekannt. W"ahrend die Anzahl mit Hilfe einer passenden Filterfunktion bestimmt werden kann,
-verhilft die wegen \eqref{eq:integral} und \eqref{eq:Q} g"ultige Gleichheit
-\begin{equation}\label{eq:solution}
-Q = -\frac{1}{2\pi\iota}\left(\int_\gamma G(\omega)\text{ d}\omega\right)\cdot Y
-\end{equation}
-zur Berechnung der Eigenvektoren.
-
+MEHR KOMPANA!
 %B-Orthogonalit"at der x-vektoren
 \newpage
-\section{Beispiel}\label{sec:bsp}
+\section{Illustration}\label{sec:bsp}
+
+Bevor wir uns vom zweiten Kapitel verabschieden, sollen die Erkenntnisse der vorangegangenen
+Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von einem
+verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
+mit der Ritz-Methode kombinieren.\\
+
+Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
+mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
+kleines Problem)
+
+
+
+
 
 In diesem Abschnitt soll mit Hilfe eines einfachen Beispiels die eben erarbeitete
 Theorie verifiziert werden. Daf"ur betrachten wir die beiden Matrizen
