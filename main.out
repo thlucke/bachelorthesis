@@ -4,9 +4,10 @@
 \BOOKMARK [1][-]{section.2.1}{Rayleigh-Ritz-Verfahren / Galerkin}{chapter.2}% 4
 \BOOKMARK [1][-]{section.2.2}{Konturintegration}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.3}{Illustration}{chapter.2}% 6
-\BOOKMARK [0][-]{chapter.3}{Beschleunigung durch rationale Funktionen}{}% 7
-\BOOKMARK [1][-]{section.3.1}{Beschleunigtes Rayleigh-Ritz Verfahren}{chapter.3}% 8
-\BOOKMARK [1][-]{section.3.2}{Rationale Funktionen}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.3}{Approximation des Spektralprojektors}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.4}{Der FEAST-Algorithmus}{chapter.3}% 11
-\BOOKMARK [0][-]{appendix.A}{yolo}{}% 12
+\BOOKMARK [0][-]{chapter.3}{Rationalfunktionelle Filter}{}% 7
+\BOOKMARK [0][-]{chapter.4}{Beschleunigung durch rationale Funktionen}{}% 8
+\BOOKMARK [1][-]{section.4.1}{Beschleunigtes Rayleigh-Ritz Verfahren}{chapter.4}% 9
+\BOOKMARK [1][-]{section.4.2}{Rationale Funktionen}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.3}{Approximation des Spektralprojektors}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.4}{Der FEAST-Algorithmus}{chapter.4}% 12
+\BOOKMARK [0][-]{appendix.A}{yolo}{}% 13

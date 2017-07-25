@@ -349,121 +349,92 @@ Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von 
 verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
 mit der Ritz-Methode kombinieren.\\
 
-Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
-mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
-kleines Problem)
-
-
-
-
-
-In diesem Abschnitt soll mit Hilfe eines einfachen Beispiels die eben erarbeitete
-Theorie verifiziert werden. Daf"ur betrachten wir die beiden Matrizen
-$A,B \in \Cnn$, welche durch
+Daf"ur wenden wir uns den beiden Matrizen
+%Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
+%mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
+%kleines Problem)
+$A,B \in \C^{3,3}$ zu, welche durch
 \[
-A:= \begin{bmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & -1 \end{bmatrix} \text{ und }
-B:= \begin{bmatrix} 1/2 & 0 & 0\\ 0 & 1/2 & 0 \\ 0 & 0 & 1/4 \end{bmatrix}
+A:= \begin{bmatrix} 7 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \text{ und }
+B:= \begin{bmatrix} 3 & 0 & 0\\ 0 & 6 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 \]
-gegeben sind. Durch einfaches Nachrechnen "uberpr"uft man, dass das
+gegeben sind. Klar ist: $A$ ist hermitesch und $B$ eine HPD Matrix.
+Durch einfaches Nachrechnen "uberpr"uft man, dass das
 verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
-$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 0$, Vektoren
-$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 2$, sowie
-Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = -4$
+$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 7/3$, Vektoren
+$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 2/3$, sowie
+Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 3$
 gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
 
-Wir wollen nun auf dem reellen Intervall $[-3,3]$ die Eigenpaare bestimmen.
-Als Integrationskontur w"ahlen wir daher den Kreis mit einem Radius von drei
-L"angeneinheiten und dem Mittelpunkt im Ursprung. Das hei"st, wir werden die
-\textsc{Green}-Funkion $G$ "uber die Kurve
+Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
+mit den vorgestellten Methoden die Eigenpaare auf dem reellen Intervall $[-1,1]$ zu bestimmen.
+Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur den Einheitskreis.
+Das hei"st, es gilt nun die Greenfunktion
+\[
+G(\omega) = \text{diag}\left(\frac{1}{3\omega - 7}, \frac{1}{6\omega - 4}, \frac{1}{\omega}\right).
+\]
+"uber die Kurve
 \begin{equation}\label{kurve}
-\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto 3e^{\iota \varphi}
+\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
 \end{equation}
-integrieren. Da nach Konstruktion keiner der Eigenwerte auf dem
-Graphen von $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
-
-\begin{figure}[h!]
-	\center
-	\begin{tikzpicture}
-	\draw[->] (-3.5cm,0cm) -- (3.5cm,0cm) node[right,fill=white] {Re};
-    \draw[->] (0cm,-2.5cm) -- (0cm,2.5cm) node[above,fill=white] {Im};
-    \draw[->] (0cm, 0cm) -- (1.41, 1.41);
-	\draw[red](0cm,0cm)circle(2cm);
-	\foreach \x in {-3,0,1.33} {
-	\filldraw[black] (\x cm,0) circle(2pt);
-	}
-	\draw (0.3,-0.3) node{$\lambda_1$};
-	\draw (1.33,-0.3) node{$\lambda_2$};
-	\draw (-3,-0.3) node{$\lambda_3$};
-	\node[rotate=45] at (0.5, 1) {$r=3$};
+zu integrieren. Da nach Konstruktion keiner der Eigenwerte im Bild von
+$\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
+%\begin{figure}[h!]
+%	\center
+%	\begin{tikzpicture}
+%	\draw[->] (-3.5cm,0cm) -- (3.5cm,0cm) node[right,fill=white] {Re};
+%    \draw[->] (0cm,-2.5cm) -- (0cm,2.5cm) node[above,fill=white] {Im};
+%    \draw[->] (0cm, 0cm) -- (.7, .7);
+%	\draw[red](0cm,0cm)circle(1cm);
+%	\foreach \x in {0,0.66,2.33} {
+%	\filldraw[black] (\x cm,0) circle(2pt);
+%	}
+%	\draw (0,-0.3) node{$\lambda_1$};
+%	\draw (0.66,-0.3) node{$\lambda_2$};
+%	\draw (2.33,-0.3) node{$\lambda_3$};
+	%\node[rotate=45] at (0.5, 1) {$r=1$};
 	%\node at (2.3,-2.3) {$\C$};
-	\end{tikzpicture}
-	\caption{Skizze der Kurve \textcolor{red}{$\gamma$} in der komplexen Ebene.}
-\end{figure}
+	%\end{tikzpicture}
+	%\caption{Skizze der Kurve \textcolor{red}{$\gamma$} in der komplexen Ebene.}
+%\end{figure}
+Folgen wir also dem Abschnitt \ref{sec:kontur}, erhalten wir
 
-Zun"achst "uberpr"ufen wir
-die Identit"at \eqref{eq:integral}. Mit $x_1 := \begin{bmatrix} \sqrt2 \iota & 0 & 0
-\end{bmatrix}^T$
-und $x_2 := \begin{bmatrix} 0 & \sqrt2 \iota &0\end{bmatrix}^T$ sind zwei passende
-Eigenvektoren f"ur unser Eigenwertproblem gegeben, und in der Tat gilt
 \begin{align*}
--\frac{1}{2\pi\iota} \int_\gamma G(\omega) \text{ d}\omega &=
--\frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
+\frac{1}{2\pi\iota} \int_\gamma G(\omega) \text{ d}\omega &=
+\frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
 \text{ d}\omega \\
-&= -\frac{1}{2\pi\iota}\int_0^{2\pi} \begin{bmatrix} \frac{2}{3e^{\iota\omega}}&0&0\\
-0 & \frac{2}{3e^{\iota\omega}-2}&0\\
-0&0&\frac{4}{3e^{\iota\omega}+4}
- \end{bmatrix}\cdot 3\iota e^{\iota\omega}
-\text{ d}\omega \\
-&= \text{diag}(-2,-2,0) \\
-&= x_1 x_1^{T} + x_2 x_2^T.
+&= -\frac{1}{2\pi\iota}\int_0^{2\pi} \text{diag}\left(\frac{1}{3 e^{\iota\omega} - 7}, \frac{1}{6 e^{\iota\omega} - 4},
+\frac{1}{e^{\iota\omega}}\right)\cdot \iota e^{\iota\omega} \text{ d}\omega \\
+&= \text{diag}(0,1/6, 1).
 \end{align*}
 
-Als N"achstes "uberpr"ufen wir, ob die Matrix $X_2 := \begin{bmatrix} x_1 & x_2\end{bmatrix}$ mit Hilfe der in Abschnitt \ref{sec:math} beschriebenen Methode rekonstruierbar ist.\\
+Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $x_1 = 1/\sqrt6 \cdot e_2$
+und $x_2 = e_3$ wie gew"unscht in
+\[
+\begin{bmatrix} 0 & 0 & 0 \\ 0 & 1/6 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+= \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1  \end{bmatrix}
+\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1 \end{bmatrix} =: X_2 X_2^T
+\]
+faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt
+bla diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
+Hilfe einer vollrangigen Matrix $Y\in\C^{3,2}$ auf ein Problem kleinerer Dimension
+reduzieren. Zu diesem Zwecke w"ahlen wir
+\[
+Y:=\begin{bmatrix} 1 & 1 \\ 0 & 1 \\ 0 & 0\end{bmatrix}
+\]
+und reduzieren mit der Matrix $Q:=X_2 X_2^T Y$ das Ausgangsproblem vem"oge
+$\widetilde{A}:= Q^T A Q$ und $\widetilde{B}:=Q^T B Q$ auf das Problem
+\[
+\widetilde{A}y = \mu \widetilde{B}y
+\]
+der Dimension $(2\times 2)$. Ritzpare blablabla... fertig
+%dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
+%Zu l"osen ist daher das Eigenwertproblem
+%\[
+%P^T A P x = \text{diag}(0,4,0)x = \lambda \cdot \text{diag}(0,6,1)x = \lambda P^T B P x.
+%\]
 
-Dort wird von uns zun"achst die Konstruktion der Matrix $Q$ aus \eqref{eq:Q} verlangt.
-Da wir bereits wissen, dass wir zwei Eigenvektoren finden wollen, w"ahlen wir also beliebig
-eine Matrix $Y_2 \in \C^{3,2}$ vollen Ranges -- die wir in diesem
-Beispiel mit $Y_2 := \begin{bmatrix} e_1 & e_1 + e_2 \end{bmatrix}$ festlegen wollen --
-und multiplizieren diese von rechts an das Integral der \textsc{Green}-Funktion "uber
-die durch \eqref{kurve} definierte Kontur.\footnote{Es mag den Leser verwundern,
-wie bei Unkenntnis "uber die Anzahl $k\in\N$ der zu findenden Eigenvektoren die
-Spaltenzahl von $Y_k$ korrekt zu ermitteln ist. Eine g"angige Methode ist zum Beispiel das Konstruieren einer
-passenden Filterfunktion, welche die nicht erw"unschten Eigenwerte aussortiert (Vgl. Abschnitt \ref{sec:rkt}).}
-Wir erhalten somit
-\[
-Q = -\frac{1}{2\pi\iota}\left(\int_{\gamma}G(\omega)\text{ d}\omega \right)\cdot Y_2
-= \begin{bmatrix} -2 & 0&0 \\ 0 & -2& 0\\ 0&0&0\end{bmatrix}
-\begin{bmatrix} 1 & 1 \\ 0 & 1\\0&0 \end{bmatrix}
-= \begin{bmatrix} -2 & -2 \\ 0 & -2\\0&0 \end{bmatrix}.
-\]
-Nun l"osen wir das in \eqref{eq:Qeigen} beschriebene
-Eigenwertproblem. Wir suchen also Paare $(\mu,\phi) \in \C\times\Cn$ die
-der Gleichung
-\[
-A_Q \phi = \mu B_Q \phi
-\]
-gen"ugen. Durch Nachrechnen "uberzeugt man sich davon, dass dieses von allen
-Vektoren $\phi_1 \in \spn_\C\{e_1\}$ mit dem Eigenwert $\mu_1 = 0$ sowie
-allen Vektoren $\phi_2 \in \spn_\C\{-e_1 + e_2\}$ mit dem Eigenwert
-$\mu_2 = 2$ gel"ost wird.\\
 
-Die soeben ermittelten Eigenwerte stimmen also schon mit den Eigenwerten
-unseres betrachteten Problems "uberein. W"ahlen wir schlie"slich die Matrix
-\[
-\Phi_2 := \begin{bmatrix} \phi_1 & \phi_2 \end{bmatrix} :=
-\begin{bmatrix} -\iota/\sqrt2  & \iota/\sqrt2 \\ 0 & -\iota/\sqrt2 \end{bmatrix},
-\]
-mit den Eigenvektoren $\phi_1$ und $\phi_2$, so erhalten wir wie gew"unscht
-\[
-Q\Phi_2 = \begin{bmatrix} -2 & -2 \\ 0 & -2\\0&0 \end{bmatrix}
-\begin{bmatrix} -\iota/\sqrt2  & \iota/\sqrt2 \\ 0 & -\iota/\sqrt2 \end{bmatrix} =
-\begin{bmatrix} \sqrt2 \iota & 0 \\ 0 & \sqrt2 \iota \\ 0 &0\end{bmatrix} = X_2.
-\]
-
-\textbf{Bemerkung.} An dieser Stelle sei darauf hingewiesen,
-dass die Matrix $\Phi_2$ aus kosmetischen Gr"unden gerade so
-gew"ahlt wurde, dass die Kalkulation am Ende $X_2$ ergibt und somit alles
-h"ubsch anzusehen ist.
-Der Wahl einer anderen Matrix $\Phi'_2$ mit skalaren Vielfachen der hier
-gew"ahlten Eigenvektoren steht selbstverst"andlich nichts im Wege und f"uhrt freilich zu einer anderen
-Matrix $X_2'$, deren Spalten ebenfalls zul"assige Eigenvektoren enth"alt.\\
+%Da wir bereits wissen, dass wir zwei Eigenpaare finden wollen, w"ahlen wir eine
+%beliebige Matrix $\widetilde{B}\in\C^{3,2}$ vollen Ranges -- die wir in diesem
+%Beispiel mit $\widetilde{B} = \begin{bmatrix}[5]$
