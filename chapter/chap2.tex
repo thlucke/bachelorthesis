@@ -4,24 +4,14 @@ des Problems
 Ax = \lambda Bx
 \]
 eine gew"unschte Teilmenge ausw"ahlen kann. Dazu werden im Rahmen dieser Arbeit aus dem Katalog der Verfahren
-die zwei Folgenden ausgew"ahlt und vorgestellt: das Rayleigh-Ritz-Verfahren / Galerkin-Methoden
-\footnote{Galerkin und Rayleigh ritz literatur blabla} und Konturintegration.
+die zwei Folgenden ausgew"ahlt und vorgestellt: Rayleigh-Ritz-Verfahren\footnote{Die im Folgenden pr"asentierte Vorgehensweise wird in der
+Literatur nicht einheitlich bezeichnet. Anstelle von Rayleigh-Ritz-Verfahren sind auch die Bezeichnungen Galerkin-Methoden oder ... "ublich (siehe da und da).
+In dieser Arbeit wird durchg"angig vom Rayleigh-Ritz-Verfahren oder der Rayleigh-Ritz-Methode
+gesprochen.} und Konturintegration. An einem abschlie"senden Beispiel wird au"serdem die Kompatibilit"at beider Konzepte dargelegt.
 
-Ob ein Zusammenhang zwischen beiden Konzepten besteht, wird im n"achsten Kapitel gekl"art.\\
-
-%Ein M"oglicheit das eingangs geschilderte Eigenwertproblem zu l"osen, ist
-%das Anwenden einer Klasse von Verfahren, die sich \emph{Rayleigh-Ritz-Verfahren}
-%nennen. Die Idee besteht darin die Eigenr"aume/ den Eigenraum \textcolor{red}{(was nun genau? bekomme ich alle
-%Eigenr"aume? nur einegn? was genau approximiere ich?)} durch eine Folge von Unterr"aumen
-%zu approximieren, die durch orthogonale Projektionen konstruiert werden.\textcolor{red}{was ist genau
-%mit approximieren gemeint? in welchem sinne? und ist das "uberhaupt korrekt?} In diesem
-%Abschnitt wird die mathematische Idee dieser Projektionsverfahren vorgestellt und
-%die Verwendung von Filtern motiviert \textcolor{red}{kam die motivation nicht schon
-%in der einleitung?}
-
-\section{Rayleigh-Ritz-Verfahren / Galerkin}
+\section{Rayleigh-Ritz-Verfahren}
 %\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
-Eine \textcolor{red}{Die?} Idee dieser Klasse von Verfahren ist das Approximieren des von
+Die Idee dieser Klasse von Verfahren ist das Approximieren des von
 den gesuchten Eigenvektoren aufgespannten Unterraums. %Dazu sollen -- wie der Name vermuten l"asst --
 %Projektionen bem"uht werden.\\
 Bevor wir das allgemeine Eigenwertproblem untersuchen, wenden wir unsere Aufmerksamkeit
@@ -38,9 +28,9 @@ welche die Eigenschaft
 \begin{equation}\label{eq:orthogonal}
 \langle u, A\widetilde{x} - \widetilde{\lambda}\widetilde{x} \rangle=0
 \end{equation}
-f"ur alle $u \in \U_m $ erf"ullen. Das Residuum $A\widetilde{x} - \widetilde{\lambda}\widetilde{x}$
+f"ur alle $u \in \U_m $ erf"ullen. Das Residuum $(A\widetilde{x} - \widetilde{\lambda}\widetilde{x})$
 soll also orthogonal auf dem Suchraum stehen. Paare, die diesem Anliegen nachkommen,
-werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\U_m$ genannt.\\
+werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\U_m$ genannt.\footnote{Ritz-Paare m"ussen nicht notwendigerweise eine Orthogonalit"atsbedingung erf"ullen... oder doch?}\\
 
 Wir wollen nun annehmen, dass mit der Menge von Vektoren $\{u_i\}_{i=1:m}\subseteq \Cn$ eine Orthonormalbasis
 des Unterraums $\U_m$ gegeben ist. Definieren wir dann die Matrix $U_m :=[u_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\U_m$
@@ -60,19 +50,27 @@ Eigenwertproblems bez"uglich des Suchraums $\U_m$. In Abh"angigkeit von der Wahl
 des Suchraumes variiert nat"urlich G"ute der Approximation. Ist etwa $\U_m$
 durch Eigenvektoren aufgespannt, so ist jedes Ritz-Paar schon ein Eigenpaar.
 Wir werden sp"ater aus den Untersuchungen des allgemeinen Eigenwertproblems folgern,
-dass bereits im Falle der Invarianz von $\U_m$ unter $A$ jedes Ritz-Paar von $A$ bereits ein Eigenpaar ist.
+dass bereits im Falle der Invarianz von $\U_m$ unter $A$ jedes Ritz-Paar von $A$ bez"uglich $\U_m$ bereits ein Eigenpaar von $A$ ist.
 An dieser Stelle begn"ugen wir uns vorerst mit dieser erfreulichen Botschaft.\\
 
 %Fassen wir die eben geschilderte Vorgehensweise algorithmisch zusammen, so ist
 %der folgende Pseudocode denkbar:
-Zusammengefasst ergibt sich mit den obigen "Uberlegungen f"ur die Berechnung von
-Ritz-Paaren folgender Algorithmus \textcolor{red}{(XXX)}:
-\begin{itemize}
-\item berechne ONB $\{u_i\}_{i=1:m}$ von $\U_m$, setze $U_m := [u_i]_{i=1:m}$
-\item setze $\widetilde{A} := U_m^H AU_m$ und l"ose $\widetilde{A} y_i = \lambda_i y_i$, $y_i \in \Cn, i=1:m$
-\item $x_i := U_m y_i$
-\item gib Ritz-Paare $(\lambda_i, x_i)$ aus
-\end{itemize}
+Die eben skizzierte Vorgehensweise zur Berechnung von Ritz-Paaren des gew"ohnlichen Eigenwertproblems
+l"asst sich algorithmisch wie folgt zusammenfassen.
+
+\begin{algorithm}\label{alg:rp}
+\caption{Berechnung von Ritz-Paaren}
+\begin{algorithmic}[1]
+\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets U_m^H A U_m$ und
+l"ose $\widetilde{A}Y = Y \Lambda$ in $Y$ und
+$\Lambda$.
+\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\end{algorithmic}
+\end{algorithm}
+
+Hierbei entsprechen die Spalten von $Y\in\C^{n,m}$ gewissen Eigenvektoren von \eqref{eq:transform}, w"ahrend auf der Diagonalen von $\Lambda\in\C^{m,m}$
+die zugeh"origen Eigenwerte zu finden sind.\\
 
 Die Idee dieser Methode ist also simpel: Transformiere das Eigenwertproblem mit
 einer gewissen Matrix in ein anderes Eigenwertproblem und benutze dessen L"osungen,
@@ -89,47 +87,48 @@ Berechnung aller Eigenpaare mitunter ein sehr zeitintensives Vergn"ugen. Bei
 genauerer Betrachtung der Gleichung \eqref{eq:transform} f"allt auf, dass die
 Matrix $(U_m^H A U_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
 Format hat, als die Matrix $A$ im urspr"unglichen Problem. Man darf hier also erwarten,
-dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \textcolor{red}{(XXX)}
+dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \ref{alg:rp}
 geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Dies
-wird im vierten Kapitel anhand ausgew"ahlter Beispiele illustriert.\\
+wird im vierten Kapitel anhand ausgew"ahlter Beispiele vorgef"uhrt.\\
 
-Wir gehen nun einen Schritt weiter und erweitern die obige Theorie auf das
+Nun, da wir der Existenz und Funktionsweise der Rayleigh-Ritz-Methode gewahr wurden, erweitern wie die obige Theorie auf das
 verallgemeinerte Eigenwertproblem
 \begin{equation}\label{chap2:gevp}
 Ax = \lambda Bx.
 \end{equation}
-Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor.
-Es sei daher wieder $\U_m\subseteq \Cn$ ein $m$-dimensionaler Suchraum.
-Gefunden werden sollen nun Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
+Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor und betrachten wieder
+einen $m$-dimensionaler Suchraum $\U_m\subseteq \Cn$.
+Gefunden werden sollen dieses Mal Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
 \times \U_m \setminus\{ 0\}$ die der Orthogonalit"atsbedingung
 \begin{equation}\label{eq:borthogonal}
 A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \U_m
 \end{equation}
-gen"ugen. Wieder substituieren wir $U_m y=\widetilde{x}$ und erhalten die
-zu \eqref{eq:borthogonal} "aquivalente Forderung
+gen"ugen. Durch die Wahl eines geeigneten Vektors $y\in\C^m$ kann die N"aherungsl"osung $\widetilde{x}$ wie zuvor durch das Produkt $U_m y$ ersetzt werden, wobei die Spalten von $U_m$ erneut eine ONB des Suchraums $\U_m$ bilden. Folglich l"asst sich die zu \eqref{eq:borthogonal} "aquivalente Forderung
 \[
 U_m^H(AU_m y - \widetilde{\lambda} BU_m y) = 0.
 \]
-Schlie"slich l"osen wir das transformierte Eigenwertproblem
+aufstellen. Wie bereits beim gew"ohnlichen Eigenwertproblem, l"asst sich nun aus jeder L"osung
+$(\widetilde{\lambda}, y)$ von
 \begin{equation}\label{eq:transformedevp}
 (U_m^H AU_m) y = \widetilde{\lambda} (U_m^H B U_m) y.
 \end{equation}
-Wie bereits beim gew"ohnlichen Eigenwertproblem kann aus jeder L"osung $(\widetilde{\lambda}, y)$ von \eqref{eq:transformedevp}
 mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar f"ur das verallgemeinerte Eigenwertproblem
-gewonnen werden.\\
+gewinnen.\\
 
-Mit dieser Konstruktion l"asst sich der Algorithmus \textcolor{red}{(XXX)}
-wie folgt abwandeln:
+Da mit der Matrix $B$ ein weiterer Darsteller auf der Eigenproblemb"uhne ber"ucksichtigt werden muss, zieht dies als Konsequenz eine Anpassung des Algorithmus' \ref{alg:rp} nach sich. Wir k"onnen diesen in der folgenden Manier abwandeln.
 
-\begin{itemize}
-\item berechne ONB $\{u_i\}_{i=1:m}$ von $\U_m$, setze $U_m := [u_i]_{i=1:m}$
-\item setze $\widetilde{A} := U_m^H AU_m$, $\widetilde{B}:= U_m^H BU_m$ und l"ose
-$\widetilde{A} y_i = \lambda_i \widetilde{B}y_i$, $y_i \in \Cn, i=1:m$
-\item $x_i := U_m y_i$
-\item gib Ritz-Paare $(\lambda_i, x_i)$ aus
-\end{itemize}
+\begin{algorithm}\label{alg:rp}
+\caption{Berechnung von Ritz-Paaren}
+\begin{algorithmic}[1]
+\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets U_m^H A U_m$,
+$\widetilde{B} \gets U_m^H BU_m$ und
+l"ose $\widetilde{A}Y = \widetilde{B}Y \Lambda$ in $Y$ und $\Lambda$.
+\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\end{algorithmic}
+\end{algorithm}
 
-Nun, da die Idee der Verfahren vorgestellt wurde, wollen wir einige Beobachtungen
+Wir wollen uns nun vorerst von der Algorithmik verabschieden und einige Beobachtungen
 festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\U_m$ unter
 $A$ dazu f"uhrt, dass jedes Ritz-Paar bez"uglich $\U_m$ ein Eigenpaar von $A$ ist.
 Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
@@ -138,7 +137,7 @@ Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 Neben zwei Matrizen $A,B\in\Cnn$ -- wobei $B$ eine HPD-Matrix ist -- sei f"ur
 $m\in\N$ mit $m\le n$ ein $m$-dimensionaler Unterraum $\U_m \subseteq \C_n$ gegeben.
 Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritzpaar von $B^{-1}A$
-bez"uglich $\U_m$ auch ein verallgemeinertes Eigenpaar von $A$.
+bez"uglich $\U_m$ auch ein Eigenpaar von $(A,B)$.
 \end{thm}
 
 \begin{proof}
@@ -180,25 +179,25 @@ Ax = \lambda Bx = \lambda x.
 Die Aussage folgt dann aus dem vorigen Satz.
 \end{proof}
 
-Diese Erkenntnis ist vor allem aus algorithmischer Sicht h"ochst n"utzlich. Implementiert
-man das Rayleigh-Ritz-Verfahren f"ur das gew"ohnliche Eigenwertproblem iterativ \textcolor{red}{(siehe Quelle blablabla)}, so
-kann der Iterationsprozess abgebrochen werden, sobald die Unterraumiterierte $\Bild(U_m^(i))$
-invariant unter $A$ ist.\\
+Es wird sich zu einem sp"ateren Zeitpunkt herausstellen, dass diese Erkenntnis aus algorithmischer Sicht h"ochst n"utzlich ist.
+Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden.\\
 
-Das Rayleigh-Ritz-Verfahren steht in einem engen Zusammenhang zu Projektionsverfahren.
-Mit einer geeigneten Projektionsmatrix $P\in\Cnn$ ist ein Paar $(\lambda, x)\in\C\times\Co$
-\textcolor{red}{(oder $\in\C\times\U_m\setminus\{0\}$?)} genau dann eine L"osung
-der Gleichung \eqref{chap2:gevp}, wenn es eine L"osung von
-\[
-P^H APx = \lambda P^H BPx
-\]
-ist. Richtig definiert, besitzt $P$ noch weitere n"utzliche Eigenschaften, die
-der folgende Satz vorstellt.
-
+Wenden wir uns einer weiteren Kuriosit"at zu. Zwischen obigem Verfahren und dem Konzept der Projektion besteht ein enger Zusammenhang.
+Um zu dieser Einsicht zu gelangen, bedarf es ein wenig
+Vorbereitung.
+%Das Rayleigh-Ritz-Verfahren steht in einem engen Zusammenhang zu Projektionsverfahren.
+%Mit einer geeigneten Projektionsmatrix $P\in\Cnn$ ist ein Paar $(\lambda, x)\in\C\times\Co$
+%\textcolor{red}{(oder $\in\C\times\U_m\setminus\{0\}$?)} genau dann eine L"osung
+%der Gleichung \eqref{chap2:gevp}, wenn es eine L"osung von
+%\[
+%P^H APx = \lambda P^H BPx
+%\]
+%ist. Richtig definiert, besitzt $P$ noch weitere n"utzliche Eigenschaften, die
+%der folgende Satz vorstellt.
 \begin{thm}\label{thm:projektor}
 Es sei $B\in\Cnn$ eine HPD-Matrix und f"ur $m\in\N$ mit $m\le n$ sei
 ein $m$-dimensionaler Unterraum $\U_m \subseteq \Cn$ gegeben. Sei weiter $\{u_i\}_{i=1:m}\subseteq\U_m$ eine
-Basis $B$-orthogonaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
+Basis $B$-orthonormaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
 \in\C^{n,m}$ erf"ulle die Gleichung $U_m^H B U_m = I_m$. Dann ist die von der Matrix
  $P := U_m U_m^H B \in \Cnn$ induzierte lineare Abbildung
 \[
@@ -207,67 +206,86 @@ p \colon \Cn \to \Cn, x\mapsto U_m U_m^H Bx
 eine $B$-orthogonale Projektion auf den Unterraum $\U_m$. Au"serdem gilt
 f"ur alle $x\in\Cn$ die Identit"at
 \[
-\|x-p(x)\|_B = \min_{y\in\U} \|x - y\|_B, x\in\Cn.
+\|x-p(x)\|_B = \min_{y\in\U_m} \|x - y\|_B.
 \]
 \end{thm}
 
 \begin{proof}
 Aus der $B$-Orthogonalit"at von $U_m$ folgt f"ur alle $x\in\Cn$
 \[
-p^2 (x) = U_m U_m^H B U_m U_m^H B x= U_m U_m^H Bx = p(x)
+p^2 (x) = U_m U_m^H B U_m U_m^H B x= U_m U_m^H Bx = p(x).
 \]
-und damit gilt die Mengengleichheit $p(\Cn) = \U$ nach Konstruktion. %($\Rang{P_B} = \dim(\U)$).
-Ist nun $y\in\U$ und $x\in\Cn$, dann folgt wegen $p(y) = y$ und $B=B^H$ auch
+%und damit gilt die Mengengleichheit $p(\Cn) = \U$ nach Konstruktion. %($\Rang{P_B} = \dim(\U)$).
+Ist nun $y\in\U_m$ und $x\in\Cn$, dann folgt wegen $p(y) = y$ und $B=B^H$ auch
 \begin{align*}
 \langle y, x-p(x)\rangle_B &= y^H (Bx - B U_m U_m^H Bx) \\
 &= y^H (Bx - B^H U_m U_m^H Bx) \\
 &= y^H Bx - p(y)^H Bx = 0.
 \end{align*}
-Es gilt demnach $x-p(x) \ \bot_B \ \U$. Die Optimierungsaufgabe wird wegen
+Es gilt demnach $x-p(x) \ \bot_B \ \U_m$. Die Optimierungsaufgabe wird schlie"slich wegen
 \begin{align*}
 \|x-y\|_B^2 &= \|x-p(x) + p(x)-y\|_B^2 \\
 &= \|x-p(x)\|_B^2 + \|p(x)-y\|_B^2\\
 &\ge \|x-p(x)\|_B^2
 \end{align*}
-gel"ost, denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,
-wenn $p(x)=x$ erf"ullt ist.
+gel"ost. Dabei ist bei der zweiten Gleichheit zu ber"ucksichtigen, dass $x-p(x) \in \U_m^{\bot_B}$
+und $p(x)-y \in \U_m$ gilt.
+ %denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,
+%wenn $p(x)=x$ erf"ullt ist.
 \end{proof}
 
-Mit Hilfe der im Satz eingef"uhrten Matrix $P$, l"asst sich die Gleichung
-\eqref{eq:transformedevp} elegant umformulieren. Durch Linksmultiplikation
+Mit Hilfe der im Satz eingef"uhrten Projektionsmatrix $P$, l"asst sich die Gleichung
+\eqref{eq:transformedevp} -- zu finden auf Seite \pageref{eq:transformedevp} -- umformulieren. Durch Linksmultiplikation
 mit $B^H U_m$ und dem Einschub der Identit"at $U_m^H B U_m$ gilt n"amlich
 \[
-B^H U_m (U_m^H A U_m)(U_m^H B U_m)y = \lambda B^H U_m (U_m^H B U_m)(U_m^H B U_m)y
+B^H U_m (U_m^H A U_m)(U_m^H B U_m)y = \widetilde{\lambda} B^H U_m (U_m^H B U_m)(U_m^H B U_m)y
 \]
 und folglich
 \[
-P^H A P U_m y = \lambda P^H B P U_m y.
+P^H A P U_m y = \widetilde{\lambda} P^H B P U_m y.
 \]
-Wenn wir uns an dieser Stelle erinnern, dass $x$ durch $U_m y$ ersetzt wurde, dann
-erhalten wir tats"achlich
+Wenn wir uns an dieser Stelle erinnern, dass $\widetilde{x}$ durch $U_m y$ ersetzt wurde, so
+erhalten wir
 \[
-P^H A P x = \lambda P^H B P x.
+P^H A P \widetilde{x} = \widetilde{\lambda} P^H B P \widetilde{x}.
 \]
 Im Fall der gew"ohnlichen Eigenwertgleichung erhalten wir speziell
 \[
-P A P x = \lambda x.
+P A P \widetilde{x} = \widetilde{\lambda} \widetilde{x}.
 \]
+Wenden wir uns nun nochmal dem Rayleigh-Ritz-Verfahren zu. Angenommen, uns st"unde
+mit dem Suchraum $\U_m$ bereits ein von Eigenvektoren
+aufgespannter Unterraum zur Verf"ugung ( die alle B orthonormal sind, X muss invertierbar sein oder reicht auch pseudoinverse? ). Dann w"are
+$\Bild{P}$ nach Konstruktion wegen
+\[
+B^{-1}(A U_m) U_m^H B = B^{-1}(BU_m\Lambda) U_m^H B
+= U_m\Lambda U_m^H B = U_m \Lambda U_m^{-1} = B^{-1}A
+\]
+ein $(B^{-1}A)$-invarianter Unterraum.
+Daher erscheint es
+wegen Satz \ref{thm:invariant} sinnvoll, den Spektralprojektor $P$ in den das Rayleigh-Ritz-Verfahren zu integrieren.
+Da jedoch im Allgemeinen nicht bekannt ist, wie
+$U_m$ aussehen muss, stellt sich die Frage, ob es
+"uberhaupt sinnvoll ist, nach dem Projektor zu suchen.
+Wir werden jedoch alsbald feststellen, dass zumindest
+die Matrix $U_m U_m^H$ analytisch berechnbar ist.
 
-%\section{Analytische Konstruktion des Spektralprojektors}
 
-Es ist leider nicht ohne Weiteres m"oglich einen bestimmten Eigenraum gezielt
-zu approximieren, wenn keine weiteren Informationen bekannt sind. G"angige
-Wahl f"ur Suchr"aume sind Krylow-R"aume. Deren Struktur f"uhrt dazu, dass
-Unterr"aume approximiert werden, die von den Eigenvektoren mit den betragsm"a"sig
-gr"o"sten Eigenwerten aufgespannt werden. Es obliegt daher dem pers"onlichen
-Geschick einen passenden Suchraum aufzustellen.\\
+%folgender teil vielleicht eher was f"ur den anfang des kaptitels
+
+%Im Allgemeinen ist es nicht ohne Weiteres m"oglich einen bestimmten Eigenraum gezielt
+%zu approximieren, wenn keine weiteren Informationen bekannt sind. G"angige
+%Wahl f"ur Suchr"aume sind Krylow-R"aume. Deren Struktur f"uhrt dazu, dass
+%Unterr"aume approximiert werden, die von den Eigenvektoren mit den betragsm"a"sig
+%gr"o"sten Eigenwerten aufgespannt werden. Es obliegt daher dem pers"onlichen
+%Geschick einen passenden Suchraum aufzustellen.\\
 
 
 
-\textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
-werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
-ist man fertig, aber Projektor ist i.A.nicht bekannt, daher approximieren. siehe
-kapitel 3}
+%\textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
+%werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
+%ist man fertig, aber Projektor ist i.A.nicht bekannt, daher approximieren. siehe
+%kapitel 3}
 
 \section{Konturintegration}\label{sec:kontur}
 
@@ -278,7 +296,7 @@ Verfahren algorithmisch umzusetzen.\\
 
 Im weiteren Verlauf seien $A, B \in\Cnn$ hermitesche Matrizen und $B$ zus"atzlich
 positiv definit. Wir wollen annehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$
-vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R$ definieren.
+vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R\subseteq\C$ definieren.
 Wie bisher sollen Paare der Gestalt $(\lambda, x) \in I \times \Co$ ermittelt werden,
 welche der verallgemeinerten Eigenwertgleichung
 
@@ -310,9 +328,9 @@ ist die durch%wird das Problem mit Hilfe einer
 definierte \textsc{Green}-Funktion, wobei $\Omega \subseteq \C$ eine vom Spektrum
 von $B^{-1}A$ disjunkte Teilmenge der komplexen Zahlen ist.
 Diese Funktion $G$ wird nun "uber eine geschlossene Jordan-Kurve $\gamma$,
-die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt
+die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt \textcolor{red}{ACHTUNG HIER $I\subseteq\C$}
 \[
--\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
+\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
 \]
 integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
 also $\iota = \sqrt{-1}$.} Hierbei ist die Integration eintragsweise zu verstehen.\\
@@ -325,13 +343,13 @@ der Eigenschaften von $A$ und $B$ wegen alle Eigenwerte von $B^{-1}A$ reell sind
 Dann kann man nachweisen, dass sich das Integral durch eine Matrix
 $X_k = [x_i]_{i=1:k}\in\C^{n,k}$ in
 \[
--\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = X_k X_k^T
+\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = X_k X_k^T
 \]
 faktorisieren l"asst, wobei $x_i$ f"ur jedes $i=1:k$ ein zu einem in $I$ liegenden
 Eigenwert korrespondierender Eigenvektor ist. "Uberdies ist $X_k$ eine $B$-orthogonale Matrix.\footnote{Beweis wo?}
 Als direkte Konsequenz erhalten wir folglich mit dem Produkt
 \[
-\left( -\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega \right) \cdot B
+\left( \frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega \right) \cdot B
 \]
 den in Satz \ref{thm:projektor} eingef"uhrten Spektralprojektor. Mit diesem Projektor
 k"onnen wir nun vorgehen wie im vorigen Kapitel und alle Eigenpaare des Problems
@@ -363,7 +381,7 @@ Durch einfaches Nachrechnen "uberpr"uft man, dass das
 verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
 $x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 7/3$, Vektoren
 $x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 2/3$, sowie
-Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 3$
+Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 0$
 gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
@@ -417,17 +435,22 @@ und $x_2 = e_3$ wie gew"unscht in
 \]
 faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt
 bla diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
-Hilfe einer vollrangigen Matrix $Y\in\C^{3,2}$ auf ein Problem kleinerer Dimension
-reduzieren. Zu diesem Zwecke w"ahlen wir
+Hilfe einer vollrangigen Matrix $Y\in\C^{3,2}$ auf ein Problem kleinerer Dimension.
+Zu diesem Zwecke w"ahlen wir
 \[
 Y:=\begin{bmatrix} 1 & 1 \\ 0 & 1 \\ 0 & 0\end{bmatrix}
 \]
-und reduzieren mit der Matrix $Q:=X_2 X_2^T Y$ das Ausgangsproblem vem"oge
+und transformieren mit der Matrix $Q:=X_2 X_2^T Y$ das Ausgangsproblem vem"oge
 $\widetilde{A}:= Q^T A Q$ und $\widetilde{B}:=Q^T B Q$ auf das Problem
 \[
-\widetilde{A}y = \mu \widetilde{B}y
+\widetilde{A}y = \begin{bmatrix}0 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}0 & 0\\0 & 1/6 \end{bmatrix} y = \mu \widetilde{B}y
 \]
-der Dimension $(2\times 2)$. Ritzpare blablabla... fertig
+der Dimension $(2\times 2)$. Die Eigenwerte $0$ und $2/3$ lassen sich leicht ablesen
+und stimmen wie erwartet mit den sich auf $[-1,1]$ befindlichen Eigenwerten des eingangs formulierten Problems "uberein.\\
+
+\textcolor{red}{Der Mist funktioniert nich... Die R"ucktransformation liefert keinen Eigenvektor zum Eigenwert 0. Q muss vollen Rang haben. Mistst"uck.}\\
+
+
 %dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
 %Zu l"osen ist daher das Eigenwertproblem
 %\[
