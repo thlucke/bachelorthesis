@@ -67,10 +67,12 @@
 % -------------------------------- %
 % --- E N V I R O N M E N T S ---- %
 % -------------------------------- %
+\newtheorem{defn}{Definition}[chapter]
+
 \theoremstyle{definition}
-\newtheorem{prop}{Proposition}[chapter]
-\newtheorem{thm}[prop]{Satz} % benutzt selben counter
-\newtheorem{kor}[prop]{Korollar} % benutzt propositions counter
+\newtheorem{prop}[defn]{Proposition}
+\newtheorem{thm}[defn]{Satz} % benutzt selben counter
+\newtheorem{kor}[defn]{Korollar} % benutzt propositions counter
 
 % -------------------------------- %
 % ------- C O M M A N D S -------- %

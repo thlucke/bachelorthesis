@@ -49,6 +49,22 @@
   \field{year}{2016}
 \endentry
 
+\entry{gohberg}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {I.~Gohberg}{I.~G.}%
+     {P.~Lancaster und L.~Rodman}{P.~L. u. L.~R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{IGPLuLR1}
+  \strng{fullhash}{IGPLuLR1}
+  \field{labelalpha}{IG96}
+  \field{sortinit}{I}
+  \field{title}{Invariant subspaces of matrices with applications}
+  \field{year}{1996}
+\endentry
+
 \entry{jaenich}{book}{}
   \name{author}{1}{}{%
     {{}%
@@ -69,7 +85,7 @@
   \name{author}{1}{}{%
     {{}%
      {Liesen}{L.}%
-     {Jörg}{J.}%
+     {J"org}{J.}%
      {}{}%
      {}{}}%
   }

@@ -230,10 +230,8 @@ Es gilt demnach $x-p(x) \ \bot_B \ \U_m$. Die Optimierungsaufgabe wird schlie"sl
 \end{align*}
 gel"ost. Dabei ist bei der zweiten Gleichheit zu ber"ucksichtigen, dass $x-p(x) \in \U_m^{\bot_B}$
 und $p(x)-y \in \U_m$ gilt.
- %denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,
-%wenn $p(x)=x$ erf"ullt ist.
+%denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,wenn $p(x)=x$ erf"ullt ist.
 \end{proof}
-
 Mit Hilfe der im Satz eingef"uhrten Projektionsmatrix $P$, l"asst sich die Gleichung
 \eqref{eq:transformedevp} -- zu finden auf Seite \pageref{eq:transformedevp} -- umformulieren. Durch Linksmultiplikation
 mit $B^H U_m$ und dem Einschub der Identit"at $U_m^H B U_m$ gilt n"amlich
@@ -253,24 +251,32 @@ Im Fall der gew"ohnlichen Eigenwertgleichung erhalten wir speziell
 \[
 P A P \widetilde{x} = \widetilde{\lambda} \widetilde{x}.
 \]
-Wenden wir uns nun nochmal dem Rayleigh-Ritz-Verfahren zu. Angenommen, uns st"unde
-mit dem Suchraum $\U_m$ bereits ein von Eigenvektoren
-aufgespannter Unterraum zur Verf"ugung ( die alle B orthonormal sind, X muss invertierbar sein oder reicht auch pseudoinverse? ). Dann w"are
-$\Bild{P}$ nach Konstruktion wegen
+Wenden wir uns nun nochmal dem Rayleigh-Ritz-Verfahren zu und betrachten das
+verallgemeinerte Eigenwertproblem f"ur eine hermitsche Matrix $A\in\Cnn$ sowie eine
+HPD-Matrix $B\in\Cnn$. Angenommen, uns st"unde mit dem Suchraum $\U_m$ bereits ein von Eigenvektoren
+aufgespannter Unterraum zur Verf"ugung. Dann existiert eine Matrix $U_m := [u_i]_{i=1:m}\in\C^{n,m}$ mit
+$B$-orthonormalen Spalten aus Eigenvektoren von $(A,B)$ und $\Bild(U_m)=\U_m$, sowie eine reelle Diagonalmatrix
+$\Lambda_m := \text{diag}(\lambda_i)_{i=1:m}\in\C^{m,m}$ mit
 \[
-B^{-1}(A U_m) U_m^H B = B^{-1}(BU_m\Lambda) U_m^H B
-= U_m\Lambda U_m^H B = U_m \Lambda U_m^{-1} = B^{-1}A
+AU_m = BU_m\Lambda_m.
 \]
-ein $(B^{-1}A)$-invarianter Unterraum.
-Daher erscheint es
-wegen Satz \ref{thm:invariant} sinnvoll, den Spektralprojektor $P$ in den das Rayleigh-Ritz-Verfahren zu integrieren.
-Da jedoch im Allgemeinen nicht bekannt ist, wie
-$U_m$ aussehen muss, stellt sich die Frage, ob es
-"uberhaupt sinnvoll ist, nach dem Projektor zu suchen.
-Wir werden jedoch alsbald feststellen, dass zumindest
+Dabei ensprechenden die Diagonaleintr"age von $\Lambda_m$ gerade den zu den Spalten
+von $U_m$ korrespondierenden Eigenwerten von $(A,B)$. Folglich w"are das Bild
+des Spektralprojektors $P=U_m U_m^H B$ nach Konstruktion wegen
+\[
+B^{-1}AP = B^{-1}(AU_m)U_m^H B = B^{-1}(BU_m \Lambda)U_m^H B
+= U_m\Lambda U_m^H B = \left(\sum_{i=1}^m \lambda_i u_i u_i^H\right)\cdot B
+\]
+ein $(B^{-1}A)$-invarianter Unterraum. Daher erscheint es
+wegen Satz \ref{thm:invariant} sinnvoll, den Spektralprojektor $P$ in das
+Rayleigh-Ritz-Verfahren zu integrieren.
+Da jedoch der Unterraum $\U_m$ im Allgemeinen nicht bekannt ist, stellt sich die Frage, ob es
+"uberhaupt sinnvoll ist nach dem Projektor zu suchen.
+Wir werden jedoch alsbald feststellen, dass %zumindest
 die Matrix $U_m U_m^H$ analytisch berechnbar ist.
 
 
+% nochmal ein wort verlieren, warum hier jetzt von filterung die rede sein kann
 %folgender teil vielleicht eher was f"ur den anfang des kaptitels
 
 %Im Allgemeinen ist es nicht ohne Weiteres m"oglich einen bestimmten Eigenraum gezielt
@@ -289,24 +295,42 @@ die Matrix $U_m U_m^H$ analytisch berechnbar ist.
 
 \section{Konturintegration}\label{sec:kontur}
 
-Die folgenden Zeilen pr"asentieren eine Vorgehensweise, die es gestattet den im vorigen
+Die folgenden Zeilen pr"asentieren eine Vorgehensweise, die es gestattet, den im vorigen
 Abschnitt eingef"uhrten Spektralprojektor analytisch zu konstruieren. Wir werden
 zu einem sp"ateren Zeitpunkt untersuchen, in wie weit die Numerik in der Lage ist, dieses
 Verfahren algorithmisch umzusetzen.\\
 
-Im weiteren Verlauf seien $A, B \in\Cnn$ hermitesche Matrizen und $B$ zus"atzlich
-positiv definit. Wir wollen annehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$
-vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2] \subseteq \R\subseteq\C$ definieren.
+Zun"achst ist es erforderlich einige Begriffe und Notationen einzuf"uhren. F"ur zwei Zahlen $z_1, z_2 \in\C$ sei mit der Menge
+\[
+[z_1, z_2] := \{(1-t)z_1 + tz_2 \in\C \mid t\in[0,1]\}
+\]
+die direkte Verbindungsstrecke zwischen $z_1$ und $z_2$ bezeichnet. Im Spezialfall $z_1,z_2 \in\R$
+stellen wir uns daher unter $[z_1,z_2]$ ein reellwertiges Intervall eingebettet in die komplexe Zahlenebene vor.
+Des Weiteren ben"otigen wir sogenannte \emph{Jordan-Kurven}. Diese definieren wir im Kontext
+dieser Arbeit wie folgt.
+
+\begin{defn}
+  Es sei $S:=\{z\in\C : |z| = 1\}$. Eine Menge
+  $\Gamma\subset\C$ hei"st \emph{Jordan-Kurve}, falls
+  ein Hom"oomorphismus $\gamma\colon S\to \C$ existiert mit $\Gamma = \Bild(\gamma)$. Dabei ist
+  ein \emph{Hom"oomorphismus} eine stetige Bijektion mit stetiger Umkehrabbildung.
+\end{defn}
+
+Insbesondere sind Jordan-Kurven also geschlossene und "uberschneidungsfreie Kurven.
+Ausgestattet mit diesen neuen Vokabeln kann die nun Pr"asentation des angek"undigten Verfahrens beginnen. Im weiteren Verlauf seien $A, B \in\Cnn$ hermitesche Matrizen und $B$ zus"atzlich
+positiv definit.\\
+
+Wir wollen annehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$ mit $\lambda_1 < \lambda_2$
+vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2]$ definieren.
 Wie bisher sollen Paare der Gestalt $(\lambda, x) \in I \times \Co$ ermittelt werden,
 welche der verallgemeinerten Eigenwertgleichung
-
   \begin{equation}\label{eq:eigen} %eventuell einfaches ewp
   Ax = \lambda Bx
   \end{equation}
 
-gen"ugen. Der Ausgangspunkt zur Bestimmung der gesuchten Eigenpaare\footnote{Um der besseren Lesbarkeit Willen werden
-im Folgenden die verallgemeinerten Eigenvektoren und deren verallgemeinerte
-Eigenwerte kurz als Eigenvektor und Eigenwert bezeichnet.}
+gen"ugen. Der Ausgangspunkt zur Bestimmung der gesuchten Eigenpaare %\footnote{Um der besseren Lesbarkeit Willen werden
+%im Folgenden die verallgemeinerten Eigenvektoren und deren verallgemeinerte
+%Eigenwerte kurz als Eigenvektor und Eigenwert bezeichnet.}
 ist die durch%wird das Problem mit Hilfe einer
 %gewissen Matrix $Q\in\Cnn$ in das "aquivalente Problem
 %  \begin{equation}\label{eq:Qeigen}
@@ -325,39 +349,40 @@ ist die durch%wird das Problem mit Hilfe einer
   \omega &\mapsto (\omega B - A)^{-1}
   \end{align*}
 
-definierte \textsc{Green}-Funktion, wobei $\Omega \subseteq \C$ eine vom Spektrum
-von $B^{-1}A$ disjunkte Teilmenge der komplexen Zahlen ist.
-Diese Funktion $G$ wird nun "uber eine geschlossene Jordan-Kurve $\gamma$,
-die um das vorgegebene Intervall $I$ heruml"auft, in der Gestalt \textcolor{red}{ACHTUNG HIER $I\subseteq\C$}
-\[
-\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega
-\]
+definierte \emph{Green-Funktion}, wobei $\Omega \subseteq \C$ eine vom Spektrum
+von $B^{-1}A$ disjunkte Teilmenge der komplexen Zahlen ist.\footnote{W"are $\Omega$ nicht disjunkt vom Spektrum von $B^{-1}A$, so g"abe es ein $\omega\in\Omega$, welches zur Singularit"at von $(\omega B-A)$ f"uhrte.}
+Diese Funktion $G$ wird nun "uber eine Jordan-Kurve $\Gamma$,
+die um das vorgegebene Intervall $I$ \glqq heruml"auft\grqq, %Pr"aziser!%
+in der Gestalt
+\begin{equation}\label{eq:intgreen}
+\frac{1}{2\pi\iota}\int_\Gamma G(\omega)\text{ d}\omega
+\end{equation}
 integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
-also $\iota = \sqrt{-1}$.} Hierbei ist die Integration eintragsweise zu verstehen.\\
+also $\iota = \sqrt{-1}$.} Das Integral ist hierbei eintragsweise zu verstehen.\\
 
-Wir wollen nun annehmen, dass es genau $k\in\N$ Eigenwerte gibt,
-die im Inneren des Intervalls $I$ liegen.\footnote{Diese Forderung ist wohldefiniert, da
-der Eigenschaften von $A$ und $B$ wegen alle Eigenwerte von $B^{-1}A$ reell sind.}
+Wir wollen nun annehmen, dass es genau $m\in\N$ Eigenwerte gibt,
+die im Inneren von $I$ liegen. %\footnote{Diese Forderung ist wohldefiniert, da
+%der Eigenschaften von $A$ und $B$ wegen alle %Eigenwerte von $B^{-1}A$ reell sind.}
 %F"ur zu diesen Eigenwerten passende Eigenvektoren $\{x_i\}_{i=1:k} \subseteq \Cn$ sei au"serdem die Matrix
 %$X_k := [x_i]_{i=1:k}$ gegeben.
-Dann kann man nachweisen, dass sich das Integral durch eine Matrix
-$X_k = [x_i]_{i=1:k}\in\C^{n,k}$ in
+Dann kann man nachweisen, dass sich \eqref{eq:intgreen} durch eine Matrix
+$U_m = [u_i]_{i=1:k}\in\C^{n,m}$ mit $B$-orthonormalen Spalten in
 \[
-\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = X_k X_k^T
+\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = U_m U_m^H
 \]
-faktorisieren l"asst, wobei $x_i$ f"ur jedes $i=1:k$ ein zu einem in $I$ liegenden
-Eigenwert korrespondierender Eigenvektor ist. "Uberdies ist $X_k$ eine $B$-orthogonale Matrix.\footnote{Beweis wo?}
+faktorisieren l"asst, wobei $u_i$ f"ur jedes $i=1:m$ ein zu einem in $I$ liegenden
+Eigenwert korrespondierender Eigenvektor ist.\footnote{F"ur einen Beweis des Spezialfalls $B=I$ sei auf \cite[64f]{gohberg} und \cite[222-226]{liesen} verwiesen.}
 Als direkte Konsequenz erhalten wir folglich mit dem Produkt
 \[
 \left( \frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega \right) \cdot B
 \]
-den in Satz \ref{thm:projektor} eingef"uhrten Spektralprojektor. Mit diesem Projektor
-k"onnen wir nun vorgehen wie im vorigen Kapitel und alle Eigenpaare des Problems
-finden. Bedauerlicherweise bleibt die Dimension des Problems unver"andert. Daher
-begn"ugt man sich anstelle der Matrix $B$ mit einer vollrangigen Matrix $\widetilde{B}\in\C^{n,k}$
-um das Ausgangsproblem auf die Dimension $(k\times k)$ zu reduzieren.\\
+den Spektralprojektor $U_m U_m^H B$. %Mit diesem Projektor
+%k"onnen wir nun vorgehen wie im vorigen Kapitel und alle Eigenpaare des Problems
+%finden.% Bedauerlicherweise bleibt die Dimension des Problems unver"andert. Daher
+%begn"ugt man sich anstelle der Matrix $B$ mit einer vollrangigen Matrix $\widetilde{B}\in\C^{n,k}$
+%um das Ausgangsproblem auf die Dimension $(k\times k)$ zu reduzieren.\\
 
-MEHR KOMPANA!
+%MEHR KOMPANA!
 %B-Orthogonalit"at der x-vektoren
 \newpage
 \section{Illustration}\label{sec:bsp}
@@ -367,35 +392,47 @@ Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von 
 verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
 mit der Ritz-Methode kombinieren.\\
 
+\textcolor{red}{zu komplizert...}
 Daf"ur wenden wir uns den beiden Matrizen
 %Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
 %mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
 %kleines Problem)
 $A,B \in \C^{3,3}$ zu, welche durch
 \[
-A:= \begin{bmatrix} 7 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \text{ und }
+A:= \begin{bmatrix} 3 & 3 & 0 \\ 3 & 9 & 0 \\ 0 & 0 & 1 \end{bmatrix} \text{ und }
 B:= \begin{bmatrix} 3 & 0 & 0\\ 0 & 6 & 0 \\ 0 & 0 & 1 \end{bmatrix}
 \]
-gegeben sind. Klar ist: $A$ ist hermitesch und $B$ eine HPD Matrix.
+gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
 Durch einfaches Nachrechnen "uberpr"uft man, dass das
 verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
-$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 7/3$, Vektoren
-$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 2/3$, sowie
-Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 0$
+$x_1 \in \spn_\C\{e_1+e_2\}$ mit zugeh"origem Eigenwert $\lambda_1 = 2$, Vektoren
+$x_2 \in \spn_\C\{2e_1 - e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/2$, sowie
+Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 1$
 gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
-mit den vorgestellten Methoden die Eigenpaare auf dem reellen Intervall $[-1,1]$ zu bestimmen.
-Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur den Einheitskreis.
-Das hei"st, es gilt nun die Greenfunktion
-\[
-G(\omega) = \text{diag}\left(\frac{1}{3\omega - 7}, \frac{1}{6\omega - 4}, \frac{1}{\omega}\right).
-\]
-"uber die Kurve
+mit den vorgestellten Methoden die Eigenpaare auf $I = [-3/2,3/2]$ zu bestimmen.
+Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
 \begin{equation}\label{kurve}
-\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
+\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto \frac{3}{2}e^{\iota \varphi}
 \end{equation}
-zu integrieren. Da nach Konstruktion keiner der Eigenwerte im Bild von
+und integrieren die Green-Funktion
+\[
+G(\omega) = \begin{bmatrix}
+3\omega-3 & -3 & 0 \\
+-3 & 6\omega-9 & 0 \\
+0 & 0 & \omega - 1
+\end{bmatrix}^{-1} = \begin{bmatrix}
+\frac{6\omega-9}{9(2\omega -1)(\omega - 2)} &
+\frac{3}{9(2\omega -1)(\omega - 2)} & 0 \\
+\frac{3}{9(2\omega -1)(\omega - 2)} &
+\frac{3\omega-3}{9(2\omega -1)(\omega - 2)} & 0 \\
+0 & 0 & \frac{1}{\omega - 1}
+\end{bmatrix}
+\]
+dar"uber.
+Als Skalierung der komplexen Einheitssph"are, ist $\Gamma$ eine Jordan-Kurve.
+Da nach Konstruktion keiner der Eigenwerte im Bild von
 $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
 %\begin{figure}[h!]
 %	\center
@@ -417,14 +454,16 @@ $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
 %\end{figure}
 Folgen wir also dem Abschnitt \ref{sec:kontur}, erhalten wir
 
-\begin{align*}
-\frac{1}{2\pi\iota} \int_\gamma G(\omega) \text{ d}\omega &=
+\[
+\frac{1}{2\pi\iota} \int_\Gamma G \text{ d}s =
 \frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
-\text{ d}\omega \\
-&= -\frac{1}{2\pi\iota}\int_0^{2\pi} \text{diag}\left(\frac{1}{3 e^{\iota\omega} - 7}, \frac{1}{6 e^{\iota\omega} - 4},
-\frac{1}{e^{\iota\omega}}\right)\cdot \iota e^{\iota\omega} \text{ d}\omega \\
-&= \text{diag}(0,1/6, 1).
-\end{align*}
+\text{ d}\omega
+= \frac{1}{18} \begin{bmatrix}
+4 & -2 & 0 \\
+-2 & -1 & 0 \\
+0 & 0 & 3
+\end{bmatrix}
+\]
 
 Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $x_1 = 1/\sqrt6 \cdot e_2$
 und $x_2 = e_3$ wie gew"unscht in
