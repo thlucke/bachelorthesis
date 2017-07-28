@@ -9,7 +9,7 @@ Literatur nicht einheitlich bezeichnet. Anstelle von Rayleigh-Ritz-Verfahren sin
 In dieser Arbeit wird durchg"angig vom Rayleigh-Ritz-Verfahren oder der Rayleigh-Ritz-Methode
 gesprochen.} und Konturintegration. An einem abschlie"senden Beispiel wird au"serdem die Kompatibilit"at beider Konzepte dargelegt.
 
-\section{Rayleigh-Ritz-Verfahren}
+\section{Rayleigh-Ritz-Verfahren}\label{sec:ritz}
 %\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
 Die Idee dieser Klasse von Verfahren ist das Approximieren des von
 den gesuchten Eigenvektoren aufgespannten Unterraums. %Dazu sollen -- wie der Name vermuten l"asst --
@@ -309,7 +309,7 @@ stellen wir uns daher unter $[z_1,z_2]$ ein reellwertiges Intervall eingebettet 
 Des Weiteren ben"otigen wir sogenannte \emph{Jordan-Kurven}. Diese definieren wir im Kontext
 dieser Arbeit wie folgt.
 
-\begin{defn}
+\begin{defn} \label{def:jordankurve}
   Es sei $S:=\{z\in\C : |z| = 1\}$. Eine Menge
   $\Gamma\subset\C$ hei"st \emph{Jordan-Kurve}, falls
   ein Hom"oomorphismus $\gamma\colon S\to \C$ existiert mit $\Gamma = \Bild(\gamma)$. Dabei ist
@@ -392,46 +392,36 @@ Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von 
 verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
 mit der Ritz-Methode kombinieren.\\
 
-\textcolor{red}{zu komplizert...}
 Daf"ur wenden wir uns den beiden Matrizen
 %Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
 %mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
 %kleines Problem)
 $A,B \in \C^{3,3}$ zu, welche durch
 \[
-A:= \begin{bmatrix} 3 & 3 & 0 \\ 3 & 9 & 0 \\ 0 & 0 & 1 \end{bmatrix} \text{ und }
-B:= \begin{bmatrix} 3 & 0 & 0\\ 0 & 6 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+A:= \text{diag}(3,1,4)\text{ und }
+B:= \text{diag}(1,5,9)
 \]
 gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
 Durch einfaches Nachrechnen "uberpr"uft man, dass das
 verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
-$x_1 \in \spn_\C\{e_1+e_2\}$ mit zugeh"origem Eigenwert $\lambda_1 = 2$, Vektoren
-$x_2 \in \spn_\C\{2e_1 - e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/2$, sowie
-Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 1$
+$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
+$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
+Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
 gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
-mit den vorgestellten Methoden die Eigenpaare auf $I = [-3/2,3/2]$ zu bestimmen.
+mit den Methoden, die in den vorangegangenen Abschnitten vorgestellt wurden, die Eigenpaare auf $I = [-1,1]$ zu bestimmen.
 Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
 \begin{equation}\label{kurve}
-\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto \frac{3}{2}e^{\iota \varphi}
+\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
 \end{equation}
 und integrieren die Green-Funktion
 \[
-G(\omega) = \begin{bmatrix}
-3\omega-3 & -3 & 0 \\
--3 & 6\omega-9 & 0 \\
-0 & 0 & \omega - 1
-\end{bmatrix}^{-1} = \begin{bmatrix}
-\frac{6\omega-9}{9(2\omega -1)(\omega - 2)} &
-\frac{3}{9(2\omega -1)(\omega - 2)} & 0 \\
-\frac{3}{9(2\omega -1)(\omega - 2)} &
-\frac{3\omega-3}{9(2\omega -1)(\omega - 2)} & 0 \\
-0 & 0 & \frac{1}{\omega - 1}
-\end{bmatrix}
+G(\omega) = \text{diag}(\omega-3, 5\omega-1, 9\omega-4)^{-1}
+=\text{diag}\left(\frac{1}{\omega-3}, \frac{1}{5\omega-1}, \frac{1}{9\omega-4}\right)
 \]
 dar"uber.
-Als Skalierung der komplexen Einheitssph"are, ist $\Gamma$ eine Jordan-Kurve.
+Nach Definition 2.4 ist $\Gamma$ eine Jordan-Kurve.
 Da nach Konstruktion keiner der Eigenwerte im Bild von
 $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
 %\begin{figure}[h!]
@@ -452,42 +442,60 @@ $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
 	%\end{tikzpicture}
 	%\caption{Skizze der Kurve \textcolor{red}{$\gamma$} in der komplexen Ebene.}
 %\end{figure}
-Folgen wir also dem Abschnitt \ref{sec:kontur}, erhalten wir
-
+Folgen wir also weiter dem Abschnitt \ref{sec:kontur}, so erhalten wir
 \[
 \frac{1}{2\pi\iota} \int_\Gamma G \text{ d}s =
 \frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
 \text{ d}\omega
-= \frac{1}{18} \begin{bmatrix}
-4 & -2 & 0 \\
--2 & -1 & 0 \\
-0 & 0 & 3
-\end{bmatrix}
+= \text{diag}\left( 0, \frac{1}{5}, \frac{1}{9} \right)
 \]
 
-Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $x_1 = 1/\sqrt6 \cdot e_2$
-und $x_2 = e_3$ wie gew"unscht in
+Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $u_1 = 1/\sqrt5 \cdot e_2$
+und $u_2 = 1/3\cdot e_3$ wie gew"unscht in
 \[
-\begin{bmatrix} 0 & 0 & 0 \\ 0 & 1/6 & 0 \\ 0 & 0 & 1 \end{bmatrix}
-= \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1  \end{bmatrix}
-\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1 \end{bmatrix} =: X_2 X_2^T
+\begin{bmatrix} 0 & 0 & 0 \\ 0 & 1/6 & 0 \\ 0 & 0 & 1/9 \end{bmatrix}
+= \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
+\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} =: U_2 U_2^H
 \]
-faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt
-bla diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
-Hilfe einer vollrangigen Matrix $Y\in\C^{3,2}$ auf ein Problem kleinerer Dimension.
+faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt \ref{sec:ritz} diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
+Hilfe einer vollrangigen Matrix $V\in\C^{3,2}$ auf ein Problem kleinerer Dimension.
 Zu diesem Zwecke w"ahlen wir
 \[
-Y:=\begin{bmatrix} 1 & 1 \\ 0 & 1 \\ 0 & 0\end{bmatrix}
+V:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
 \]
-und transformieren mit der Matrix $Q:=X_2 X_2^T Y$ das Ausgangsproblem vem"oge
-$\widetilde{A}:= Q^T A Q$ und $\widetilde{B}:=Q^T B Q$ auf das Problem
+und benutzen die Matrix $Q:=U_2 U_2^H V$ um das Ausgangsproblem vem"oge
+$\widetilde{A}:= Q^H A Q$ und $\widetilde{B}:=Q^H B Q$ auf das Problem
 \[
-\widetilde{A}y = \begin{bmatrix}0 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}0 & 0\\0 & 1/6 \end{bmatrix} y = \mu \widetilde{B}y
+\widetilde{A}y = \begin{bmatrix}1/36 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}5/36 & 0\\0 & 1/4 \end{bmatrix} y = \mu \widetilde{B}y
 \]
-der Dimension $(2\times 2)$. Die Eigenwerte $0$ und $2/3$ lassen sich leicht ablesen
-und stimmen wie erwartet mit den sich auf $[-1,1]$ befindlichen Eigenwerten des eingangs formulierten Problems "uberein.\\
+der Dimension $(2\times 2)$ zu transformieren. Die Eigenwerte $1/5$ und $4/9$ lassen sich leicht ablesen
+und stimmen wie erwartet mit den sich auf $[-1,1]$ befindlichen Eigenwerten des eingangs formulierten Problems "uberein. Passende Eigenvektoren sind
+Elemente aus $\spn_\C \{[1 \ 0]^T\}$ und $\spn_\C \{[0 \ 1]^T\}$.\\
 
-\textcolor{red}{Der Mist funktioniert nich... Die R"ucktransformation liefert keinen Eigenvektor zum Eigenwert 0. Q muss vollen Rang haben. Mistst"uck.}\\
+Es bleibt die R"ucktransformation der Eigenvektoren. Dazu w"ahlen wir aus kosmetischen Gr"unden die Eigenvektoren
+\[
+y_1 := \begin{bmatrix}
+\sqrt6 \\ 0
+\end{bmatrix}
+\text{ und }
+y_2 := \begin{bmatrix}
+0 \\ 3
+\end{bmatrix}
+\]
+und setzen $Y = [y_1 \ y_2]$. Wir erhalten dann
+\[
+QY = \begin{bmatrix} 0 & 0 \\ 1/6 & 0 \\ 0 & 1/9 \end{bmatrix}
+\begin{bmatrix}
+\sqrt6 & 0 \\ 0 & 3
+\end{bmatrix}
+=
+\begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
+= U_2.
+\]
+
+Eine Bemerkung zum Abschluss: Erinnern wir und an Satz \ref{thm:invariant}, so ist es nicht verwunderlich, dass diese Rechnung
+exakte Eigenpaare liefert. Schlie"slich hat $Q$
+vollen Rang und das Bild der von $Q$ induzierten linearen Abbildung ist invariant unter $B^{-1}A$.
 
 
 %dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
