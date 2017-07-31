@@ -1,91 +1,103 @@
-In diesem Kapitel soll demonstriert werden, dass Konturintegration und
-Rayleigh-Ritz-Verfahren in einem engen Zusammenhang stehen \textcolor{red}{wird sich noch zeigen}.
-Um dies zu Untermauern, orientieren sich die folgenden Abs"atze an den Ausf"uhrungen
+Nachdem das vorangegangene Kapitel einige theoretische Grundlagen zum Filtern von Eigenpaaren zur Verf"ugung gestellt hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
+Dabei orientieren sich die folgenden Abs"atze
+an den Ausf"uhrungen
 von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
-die Notation im Sinne der Konsistenz an einigen Stellen abweichen.
+die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.
 
 \section{Beschleunigtes Rayleigh-Ritz Verfahren}\label{chap3:beschrr}
 
-Betrachten wir also wie bisher das verallgemeinerte Eigenwertproblem mit zwei
+Zu Beginn des zweiten Kapitels haben wir eine Methode zur Bestimmung von Ritz-Paaren bez"uglich eines gewissen Suchraums kennengelernt.
+Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
+
+Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
 komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
-zu"satzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
-mit $p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen um gem"a"s dem
-oben zitierten Paper den Algorithmus () aus dem vorigen Kapitel wie folgt zu "andern.
+zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
+mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
+oben zitierten Paper wie folgt zu "andern.
 
 \begin{algorithm}\label{alg:beschlrr}
 \caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
 \begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $Q_{(0)} \gets [q_i]_{i=1:m} \in\C^{n,m}$.
+\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
 Setze $k \gets 1$.
 \State \textbf{repeat}
-\State \ \ \ \ Approximiere den Unterraumprojektor: $Y_{(k)} \gets p(B^{-1}A)Q_{(k-1)}$
-\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Y_{(k)}^H A Y_{(k)}$,
-$\widetilde{B}_{(k)} \gets Y_{(k)}^H B Y_{(k)}$.
+\State \ \ \ \ Approximiere den Unterraumprojektor: $Q_{(k)} \gets \p(B^{-1}A)V_{(k-1)}$
+\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$,
+$\widetilde{B}_{(k)} \gets Q_{(k)}^H B Q_{(k)}$.
 \State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
 = \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
 $\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
-\State \ \ \ \ Setze $Q_{(k)} \gets Y_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
 \State \ \ \ \ $k \gets k+1$.
 \State \textbf{until} Abbruchkriterium ist erf"ullt.
 \end{algorithmic}
 \end{algorithm}
 
-Das Polynom $p$ wird in diesem Kontext auch als \emph{Filter} oder \emph{Beschleuniger}
-bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
-werden. Es ist sogar m"oglich, gezielt solche Eigenpaare zu finden, wie sie im
-Abschnitt \ref{sec:kontur} gesucht waren.\\
+Die obigen Fragen sind also leicht beantwortet: In dieser Variante des Rayleigh-Ritz-Verfahrens wird solange "uber den Suchraum iteriert, bis die ermittelten Ritz-Paare gewisse Anforderungen erf"ullen.
+Es dr"angt sich jedoch eine weitere Frage auf. Welche Funktion erf"ullt das Polynom $\p$?\\
 
-Um dies einzusehen, greifen wir erneut die Notationen aus besagtem Kapitel auf:
-Es sei $[\lambda_1, \lambda_2]$ dasjenige Intervall, auf dem die Eigenwerte und
-korresponierenden Eigenvektoren gefunden werden sollen und $X_k$ sei diejenige
-Matrix dessen Spalten aus gerade diesen Eigenvektoren besteht. Es wurde bereits
-diskutiert, dass die durch Konturintegration ermittelten Eigenvektoren
-$B$-orthogonal sind. Damit l"asst sich also -- wie im Satz \ref{thm:projektor}
-bewiesen -- der Spektralprojektor $P = X_k X_k^H B$ konstruieren. Falls nun
-$p(B^{-1}A)$ mit diesem Projektor "ubereinstimmt, dann terminiert Algorithmus
-\ref{alg:beschlrr} im Falle der Vollrangigkeit von $Y_{(1)}$ nach einer Iteration.\footnote{
-Hierbei ist entscheidend, dass die Anzahl der Spalten von $Q$ mit der Anzahl der
-Eigenpaare "ubereinstimmt, die auf dem Intervall zu finden sind (Vgl. ~\cite[356]{ptep}).}
-Dies folgt unter Ausnutzung der Invarianz des Bildes von $PQ_{(0)}$ unter $B^{-1}A$
+Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter} oder \emph{Beschleuniger}
+bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
+werden: Sei $[\lambda_1,\lambda_2]$ ein reelles Intervall, auf dem $l\in\N$ Eigenwerte und die korrespondierenden Eigenvektoren gefunden werden k"onnen. Ist nun $\p(B^{-1}A)$ der Spektralprojektor,
+$m=l$ und hat die Matrix $Q_{(1)} = \p(B^{-1}A) V_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:beschlrr} in einer Iteration
+(Vgl. ~\cite[356]{ptep}).
+Dies folgt unter Ausnutzung der Invarianz des Bildes von $Q_{(1)}$ unter $B^{-1}A$
 aus dem Satz $\ref{thm:invariant}$.\\
 
 Da der Spektralprojektor in den meisten F"allen unbekannt sein d"urfte, liegt
-die Idee nahe, ihn zumindest zu approximieren. Da in ~\cite[356]{ptep} bemerkt wird,
-dass dies gut funktioniert, wenn $p$ eine durch \emph{Gau"s-Legendre-Quadratur}
-konstruierte rationale Funktion ist, wird sich das folgende Intermezzo mit eben dieser
-Klasse von Funktionen besch"aftigen, bevor wir mit der Konstruktion des Projektors
-fortfahren.
+die Idee nahe, ihn wenigstens zu approximieren. Tang und Polizzi ~\cite[356]{ptep} merken an, dass dies gut funktioniert, falls $\p$ eine durch \emph{Gau"s-Legendre-Quadratur} konstruierte rationale Funktion ist.
+Um den Gedankengang der Autoren nachvollziehen zu k"onnen, wird sich das folgende Intermezzo mit der Auffrischung des Konzeptes von Quadraturformeln und rationalen Funktionen besch"aftigen. Im Anschluss fahren wir mit der
+Konstruktion des Projektors fortfahren.
 
+\section{Quadraturformeln}
 
-\section{Rationale Funktionen}
+Um ein Integral numerisch zu approximieren, bedient man sich sogenannter \emph{Quadraturformeln}. Dazu betrachten wir eine stetige Funktion $f\colon\R\to\R$, welche wir auf einem gegebenen Intervall $I:=[a,b]\subset\R$ integrieren wollen.\footnote{Im Allgemeinen ist die Stetigkeit von $f$ nicht zwingend erforderlich. Wir werden uns hier der Einfachheit halber auf stetige Funktionen einschr"anken.}
+Zu gegebenen St"utzpunkten $(x_i, f(x_i))_{i=0:n}$ auf $I$ sei $p_n$ das zugeh"orige \emph{Interpolationspolynom} vom Grad $n$, also ein Polynom, welches $p(x_i) = f(x_i)$ f"ur alle $i$ mit $0\le i\le n$ erf"ullt.\\
 
-Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
+Dann bezeichnen wir die N"aherung
+\begin{equation}\label{eq:quadratur}
+Q_n(f) := \int_a^b p_n (x)\text{ d}x =
+(b-a)\sum_{i=0}^n \omega_i f(x_i)
+\end{equation}
+als \emph{interpolatorische Quadraturformel}. Dabei gilt
 \[
-p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
+\omega_k = \int_0^1 \prod_{j=0,j\neq k}^n
+\frac{t-t_j}{t_k - t_j} \text{ d}t, \ t_j
+= \frac{x_j-a}{b-a}.
 \]
-definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
+Die Qualit"at der Approximation, also die Abweichung zum exakten Integral, h"angt ma"sgeblich von der Wahl und Anzahl der St"utzpunkte ab. Wollten wir
+beispielsweise das Integral einer konstanten Funktion berechnen, so erschiene es wenig plausibel, anstelle der direkten Berechnung ein Polynom vom Grad 69 auf 70 St"utzstellen f"ur die Approximation zu bem"uhen.\\
+
+Bei der Anwendung von Gau"s-Legendre-Quadraturen ergibt sich die Wahl der St"utzpunkte durch die Berechnung von Nullstellen von Polynomen, die in einer Orthogonalit"atsbeziehung zueinander stehen.
+Wir werden gleich formal formulieren, wie dies zu verstehen ist.\\
+
+Ausgangspunkt f"ur die Integration ist nun eine stetige Funktion $f$, die eine Faktorisierung in zwei stetige Funktionen $g$ und $\omega$ der Art
 \[
-\rho(t) := \frac{p(t)}{q(t)}
+f = g\cdot \omega
 \]
-und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
-Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$. Eine rationale Funktion wird als \emph{echt gebrochen} bezeichnet,
-falls die Bedingung $\Grad(p) < \Grad(q)$ erf"ullt ist.
-
-
+besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll.\footnote{Im unstetigen Fall darf die Funktion $\omega$ in h"ochstens endlich vielen Punkten negativ sein.} Ziel ist daher die Berechnung von
+\begin{equation}\label{eq:gintegral}
+\int_a^b g(x)\omega(x) \text{ d}x.
+\end{equation}
+Verlangt man die "Ubereinstimmung von \eqref{eq:quadratur} mit \eqref{eq:gintegral} zumindest f"ur alle Polynome bis zum Grad $(2n-1)$,
+f"uhrt dies -- betrachtet auf der Basis $\{x^i\}_{i=1:(2n-1)}$ -- zum Gleichungssystem
+\[
+\sum_{}
+\]
+weiter b"arwolf seite 119
 
 \section{Approximation des Spektralprojektors}
 
-Nun da die f"ur den weiteren Verlauf der Arbeit wichtigen Eigenschaften rationaler
-Funktionen wiederholt wurden, widmen wir uns der Approximation des Spektralprojektors
+Nun da die f"ur den weiteren Verlauf der Arbeit wichtigen Eigenschaften der Gau"s-Legendre-Quadraturen wiederholt wurden, widmen wir uns der Approximation des Spektralprojektors
 $P = X_k X_k^H B$. Daf"ur setzen wir den in Abschnitt \ref{chap3:beschrr} bereits begonnen Gedankengang aus ~\cite{ptep}
 fort und "ubernehmen die zu letzt vereinbarten Voraussetzungen und Notationen.\\
 
 Wenden wir uns also wieder dem reellen Intervall $I := [\lambda_1, \lambda_2]$ zu. Das Ziel ist
-die Konstruktion einer rationalen Funktion $\rho\colon\C\to\C$ mit $\rho|_\R \subseteq \R$,
+die Konstruktion einer rationalen Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$,
 die auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht. Dazu
 bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
 wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
-rationale Funktion $\rho$ um.\\
+rationale Funktion $\r$ um.\\
 
 Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
 $r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
@@ -120,8 +132,8 @@ gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $
 \int_{1}^3\frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \right) \\
 &= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
 \int_{-1}^1\frac{\gamma'(2-t)}{\gamma(2-t)-z}\text{ d}t \right) \\
-&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
-\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\text{ d}t \right)
+&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} +
+\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\right)\text{d}t
 \end{align*}
 wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
 von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.\\
@@ -138,7 +150,7 @@ und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
 $\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
 Funktion
 \[
-\rho\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
+\r\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
 \frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
 \]
 zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
@@ -147,5 +159,18 @@ rationale Funktion bereits in Partialbruchzerlegung vorliegt.\\
 Wir wollen uns nun davon "uberzeugen, dass der Gebrauch der eben erarbeiteten
 Quadratur eine sinnvolle Wahl ist.
 
-Erinnerung an Konturkapitel: ... weiter auf Seite 358
+Erinnerung an Konturkapitel: ... weiter auf Seite 358\\
+
+Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
+\[
+p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
+\]
+definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
+\[
+\r(t) := \frac{p(t)}{q(t)}
+\]
+und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
+Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$.
 \section{Der FEAST-Algorithmus}
+
+f"urderhin
