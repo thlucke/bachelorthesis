@@ -5,9 +5,49 @@ Ax = \lambda Bx
 \]
 f"ur zwei symmetrische Matrizen $A,B\in\R^{n,n}$ und
 fordern au"serdem die positive Definitheit von $B$.
+Desweiteren setzen wir voraus, dass der Input des Users sinnvoll ist und den f"ur die Funktionsf"ahigkeit der Algorithmen notwendigen Voraussetzungen gen"ugt.\\
+
+Die Implementation erfolgt durchweg mit \emph{Octave}, ist aber ohne Weiteres in \emph{MATLAB}
+"ubersetzbar.
 
 \section{Rayleigh-Ritz}
-Zun"achst implementieren Alg bla aus bla. Eine einfache Implementierung in MATLAB k"onnte wie folgt aussehen:
+Beginnen wir mit dem Rayleigh-Ritz-Verfahren (Algorithmus \ref{alg:grp}). "Ahnlich dem Pseudocode, bezeichnen wir mit \mcode{U}
+den Suchraum und verzichten dabei im Code auf den Index $m$. Zur Orthogonalisierung des Suchraumes benutzen wir die bereits in Octave implementierte Funktion
+\[
+\mcode{orth(U)}
+\]
+und die \mcode{eig}-Funktion zum L"osen des reduzierten Eigenwertproblems. Eine Implementation k"onnte also wie folgt aussehen.
+
+\begin{lstlisting}[caption=Implementation des Rayleigh-Ritz Verfahrens zur Bestimmung eines Ritz-Paares., captionpos=b]
+%% Eingabe: Matrizen A, B des Eigenwertproblems,
+%%          Suchraum U
+%% Ausgabe: Matrix X mit Ritz-Vektoren,
+%%          Zeilenvektor L mit Ritz-Werten
+
+%% Funktionsaufruf: [X, L] = rayleighRitz[A, B, U]
+
+function[X,lambda] = rayleighRitz(A,B,U);
+
+% orthonormiere U
+U = orth(U);
+
+% transformiere Problem
+A = U'*A*U; B = U'*B*U;
+
+% loese reduziertes Problem
+[L,Y] = eig(A,B);
+
+% berechne Ritz-Paare
+X = U*Y;
+L = diag(L);
+
+\end{lstlisting}
+
+
+
+
+
+
 
 \section{Konturintegration}
 
