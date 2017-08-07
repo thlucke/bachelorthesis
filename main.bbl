@@ -114,6 +114,22 @@
   \field{year}{2009}
 \endentry
 
+\entry{saad}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Saad}{S.}%
+     {Y.}{Y.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{SY1}
+  \strng{fullhash}{SY1}
+  \field{labelalpha}{Saa11}
+  \field{sortinit}{S}
+  \field{title}{Numerical methods for large eigenvalue problems}
+  \field{year}{2011?}
+\endentry
+
 \entry{stewart}{book}{}
   \name{author}{1}{}{%
     {{}%
