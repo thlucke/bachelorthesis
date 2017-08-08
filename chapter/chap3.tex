@@ -1,19 +1,61 @@
-Nachdem das vorangegangene Kapitel einige theoretische Grundlagen zum Filtern von Eigenpaaren zur Verf"ugung gestellt hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
-Dabei orientieren sich die folgenden Abs"atze
-an den Ausf"uhrungen
-von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
-die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.
+Nachdem das vorangegangene Kapitel verschiedene Ideen zum Filtern von Eigenpaaren theoretisch beleuchtet hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
+Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
+Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
 
-\section{Beschleunigtes Rayleigh-Ritz Verfahren}\label{chap3:beschrr}
 
-Zu Beginn des zweiten Kapitels haben wir eine Methode zur Bestimmung von Ritz-Paaren bez"uglich eines gewissen Suchraums kennengelernt.
-Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
+\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap3:beschrr}
 
-Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
-komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
-zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
-mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
-oben zitierten Paper wie folgt zu "andern.
+Zu Beginn des zweiten Kapitels wurde mit dem Rayleigh-Ritz-Verfahren eine Methode vorgestellt, mit dessen Hilfe Ritz-Paare bez"uglich eines gewissen Suchraums bestimmt werden k"onnen.
+Es wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift zur Verringerung der Abweichungen von Ritz-Paaren zu tats"achlichen Eigenpaaren f"uhren kann.
+Dies soll im Folgenden genauer ausgef"uhrt werden.\\
+
+\newpage
+Ausgangspunkt f"ur unsere Betrachtungen ist nachwievor das hermitesche Eigenwertproblem
+\begin{equation}\label{eq:chap3ewp}
+Ax = \lambda Bx.
+\end{equation}
+In seinen Abhandlungen "uber Unterraumiterationen
+schl"agt Y. Saad in ~\cite[118 f.]{saad} folgende Methode vor.\footnote{Der Algorithmus wurde vom Autor frei in die deutsche Sprache "ubersetzt und die Notation im Sinne der Konsistenz dieser Arbeit angepasst.}
+
+\begin{algorithm}\label{alg:chap3rriter}
+\caption{Rayleigh-Ritz-Iteration}\label{euclid}
+\begin{algorithmic}[1]
+\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
+Setze $k \gets 1$ und w"ahle initialen Exponenten $p_{(1)} \in\N$.
+\State \textbf{repeat}
+\State \ \ \ \ Setze $\hat{Q}_{(k)} \gets A^{p_{(k)}} V_{(k-1)}$.
+\State \ \ \ \ Orthonormalisiere die Spalten von $\hat{Q}_{(k)}$ zu $Q_{(k)}$.
+\State \ \ \ \ Setze $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$.
+\State \ \ \ \ Berechne die Schurvektoren $\widetilde{X}_{(k)} \gets [x_i]_{i=1:m}$ von $\widetilde{A}$ mit Hilfe des QR-Algorithmus'.
+\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ $k \gets k+1$.
+\State \textbf{until} Verfahren konvergiert.
+\end{algorithmic}
+\end{algorithm}
+
+Hierbei ist $(p_{(k)})_{k\in\N}$ eine Folge von nat"urlichzahligen Exponenten auf die wir sp"ater eingehen werden. Zuvor
+begutachten wir die Zeilen vier bis sieben. Hier ist eine deutliche N"ahe zu dem Rayleigh-Ritz-Verfahren zu erkennen.
+Als Suchraum wird die lineare H"ulle der Spaltenvektoren von $\hat{Q}_{(k)}$ benutzt und die Berechnung von Ritz-Vektoren erfolgt in Schritt sechs -- schlie"slich stimmen unserer Voraussetzungen wegen die Schurvektoren gerade mit den Eigenvektoren von $\widetilde{A}_{(k)}$ "uberein.
+Wir verzichten an dieser Stelle auf Ausf"uhrungen "uber die Funktionsweise des \emph{QR-Algorithmus'}. Der interessierte Leser wende sich zum Beispiel an ~\cite[55 ff.]{stewart}.\\
+
+Nun zur Folge der Exponenten. Im Spezialfall, dass $p_{(k)} = k$ f"ur alle $k\in\N$ gilt, ist obiger Algorithmus stark mit der \emph{Potenzmethode} zur Bestimmung von Eigenpaaren verwandt, ja sogar eine Verallgemeinerung davon.\footnote{Vgl. ~\cite[115 ff.]{saad} und ~\cite[1 f.]{kpt}.}
+W"urden wir die Exponenten tats"achlich so w"ahlen, kann die Anzahl der Orthonormalisierungen im vierten Schritt sehr gro"s werden.
+Dies l"asst sich aber vermeiden.
+\textcolor{red}{man will nicht dauern orthogonalisieren, daher blabla s. 116 in saad}
+
+
+%Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
+
+%Die folgenden Abs"atze
+%an den Ausf"uhrungen
+%von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
+%die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.\\
+
+%Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
+%komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
+%zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
+%mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
+%oben zitierten Paper wie folgt zu "andern.
 
 \begin{algorithm}\label{alg:beschlrr}
 \caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
@@ -32,6 +74,8 @@ $\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
 \State \textbf{until} Abbruchkriterium ist erf"ullt.
 \end{algorithmic}
 \end{algorithm}
+
+
 
 Die obigen Fragen sind also leicht beantwortet: In dieser Variante des Rayleigh-Ritz-Verfahrens wird solange "uber den Suchraum iteriert, bis die ermittelten Ritz-Paare gewisse Anforderungen erf"ullen.
 Es dr"angt sich jedoch eine weitere Frage auf. Welche Funktion erf"ullt das Polynom $\p$?\\

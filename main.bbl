@@ -81,6 +81,22 @@
   \field{year}{Irgendein Jahr}
 \endentry
 
+\entry{kpt}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {J.~Kestyn}{J.~K.}%
+     {E.~Polizzi und P.~Tang}{E.~P. u. P.~T.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{JKEPuPT1}
+  \strng{fullhash}{JKEPuPT1}
+  \field{labelalpha}{JK15}
+  \field{sortinit}{J}
+  \field{title}{FEAST eigensolver for non-hermitian problems}
+  \field{year}{2015}
+\endentry
+
 \entry{liesen}{book}{}
   \name{author}{1}{}{%
     {{}%

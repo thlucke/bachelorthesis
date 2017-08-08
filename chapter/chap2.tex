@@ -3,7 +3,7 @@ des Problems
 \[
 Ax = \lambda Bx
 \]
-eine gew"unschte Teilmenge ausw"ahlen kann. Dazu werden im Rahmen dieser Arbeit aus dem Katalog der Verfahren
+eine gew"unschte Teilmenge ausw"ahlen kann (das hei"st filtern). Dazu werden im Rahmen dieser Arbeit aus dem Katalog der Verfahren
 die zwei Folgenden ausgew"ahlt und vorgestellt: Rayleigh-Ritz-Verfahren\footnote{Die im Folgenden pr"asentierte Vorgehensweise wird in der
 Literatur nicht einheitlich bezeichnet. Anstelle von Rayleigh-Ritz-Verfahren sind auch die Bezeichnungen Galerkin-Methoden oder ... "ublich (siehe da und da).
 In dieser Arbeit wird durchg"angig vom Rayleigh-Ritz-Verfahren oder der Rayleigh-Ritz-Methode
@@ -59,7 +59,7 @@ Die eben skizzierte Vorgehensweise zur Berechnung von Ritz-Paaren des gew"ohnlic
 l"asst sich algorithmisch wie folgt zusammenfassen.
 
 \begin{algorithm}\label{alg:rp}
-\caption{Berechnung von Ritz-Paaren}
+\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[98]{saad})}
 \begin{algorithmic}[1]
 \State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
 \State Setze $\widetilde{A}\gets U_m^H A U_m$ und
@@ -130,28 +130,9 @@ l"ose $\widetilde{A}Y = \widetilde{B}Y \Lambda$ in $Y$ und $\Lambda$.
 
 Nun mag der Fall eintreten, dass bei der Berechnung der Ritz-Paare gewisse Toleranzen ber"ucksichtigt werden m"ussen.
 Es k"onnten etwa maximale euklidische Abweichungen der Ritz-Werte zu den Eigenwerten vorgegeben sein.
-Auch Vorgaben bez"uglich des Winkels zwischen Eigenraum und dem Unterraum der Ritz-Vektoren sind denkbar. Dann ist es erforderlich die Wahl des Suchraums nicht dem Geschick alleine zu "uberlassen, sondern eine gegebenenfalls weniger geschickte Wahl algorithmisch kompensieren zu k"onnen.\\
-
-Dies gelingt zum Beispiel durch das Einf"uhren einer Iterationsvorschrift, die in jedem Iterationsschritt den Suchraum "andert (Vgl. ~\cite[118f]{saad}).
-
-\begin{algorithm}\label{alg:ritzerativ}
-\caption{Ritz-Iteration}
-\begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $V_{(0)}\gets[v_i]_{i=1:m} \in \C^{n,m}$. Setze $k\gets 1$.
-\State \textbf{repeat}
-\State \ \ \ \ Berechne $\widetilde{Q}_{(k)} \gets AV_{(k-1)}$.
-\State \ \ \ \ Orthonormalisiere $\widetilde{Q}_{(k)}$ in $Q_{(k)}$.
-\State \ \ \ \ Setze $\widetilde{A}_{(k)}\gets Q_{(k)}^H A Q_{(k)}$ und $\widetilde{B}_{(k)}\gets Q_{(k)}^H B Q_{(k)}$.
-\State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
-= \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
-$\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
-\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
-\State \ \ \ \ $k \gets k+1$.
-\State \textbf{until} Abbruchkriterium ist erf"ullt.
-\end{algorithmic}
-\end{algorithm}
-
-\textcolor{red}{warum funktioniert dieser alg noch? wo begruendung? original quelle nur gew. ewp.}
+Auch Vorgaben bez"uglich des Winkels zwischen Eigenraum und dem Unterraum der Ritz-Vektoren sind denkbar. Dann ist es erforderlich die Wahl des Suchraums nicht dem Geschick alleine zu "uberlassen, sondern eine gegebenenfalls weniger geschickte Wahl algorithmisch kompensieren zu k"onnen.
+Dies kann zum Beispiel durch das Einf"uhren einer Iterationsvorschrift gelingen, die in jedem Iterationsschritt den Suchraum "andert.
+Wir werden diese Idee zu einem sp"ateren Zeitpunkt in dieser Arbeit weiterverfolgen.\\
 
 Wir wollen uns nun vorerst von der Algorithmik verabschieden und einige Beobachtungen
 festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\U_m$ unter
