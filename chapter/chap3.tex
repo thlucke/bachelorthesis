@@ -9,11 +9,39 @@ Zu Beginn des zweiten Kapitels wurde mit dem Rayleigh-Ritz-Verfahren eine Method
 Es wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift zur Verringerung der Abweichungen von Ritz-Paaren zu tats"achlichen Eigenpaaren f"uhren kann.
 Dies soll im Folgenden genauer ausgef"uhrt werden.\\
 
-\newpage
-Ausgangspunkt f"ur unsere Betrachtungen ist nachwievor das hermitesche Eigenwertproblem
+\footnote{Um besser zu verstehen orienteiren wir uns bei der Einf"uhrung des Algs an der Dramaturgie von Saad blabla 115ff}
+
+Ausgangspunkt f"ur unsere Betrachtungen ist wie bisher das hermitesche Eigenwertproblem
 \begin{equation}\label{eq:chap3ewp}
 Ax = \lambda Bx.
 \end{equation}
+Betrachten wir zun"achst f"ur den Spezialfall $B=I$ eine sehr leicht umsetzbare Methode um Eigenpaare zu bestimmen -- die sogenannte \emph{Potenzmethode}.
+Ausgehend von einem Startvektor $y_{(0)}\in\Co$ wird in jeder Iteration der Vektor
+\[
+y_{(k+1)} = \frac{1}{\|A^{k+1} y_{(0)}\|} A^{k+1}y_{(0)}
+\]
+oder dazu "aquivalent
+\[
+y_{(k+1)} = \frac{1}{\|Ay_{(k)}\|} Ay_{(k)}
+\]
+berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Um einzusehen, dass die Folge der Iterierten gegen den zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
+zu finden ist.\\
+
+Seien $(\lambda_i, x_i)_{i=1:n}$ die Eigenpaare von $A$. Aufgrund der Hermitizit"at bilden dann die Eigenvektoren eine Basis des $\Cn$.
+Folglich existieren komplexwertige Skalare $\alpha_1,\ldots,\alpha_n$ mit
+\[
+y_{(0)} = \sum_{i=1}^n \alpha_i x_i.
+\]
+Wenden wir nun die $k$-te Potenz von $A$ auf $y_{(0)}$ an, ergibt sich daher wegen $A^k x_i = \lambda^k x_i$
+\begin{equation}\label{eq:chap3dominant}
+A^k y_{(0)} = \sum_{i=1}^n \alpha_i \lambda_i^k x_i.
+\end{equation}
+Wir wollen ohne Einschr"ankung annehmen, dass $|\lambda_1| \ge |\lambda_i|$ f"ur alle $i$ mit
+$1<i\le n$ gilt. Gegebenenfalls nummerieren wir die Eigenpaare und Skalare um. Dann wird f"ur gr"o"ser werdende $k$ die rechte Seite von \eqref{eq:chap3dominant} durch den Term $\alpha_1 \lambda_1^k x_1$ dominiert. In Kombination mit der Normierung f"uhrt dies letztlich
+zur behaupteten Approximierung.\footnote{Ein formaler Beweis ist im Anhang zu finden.}\\
+
+Da uns daran gelegen ist, nicht nur mit einzelnen Elementen des $\Cn$ zu arbeiten sondern mit Matrizen zu hantieren, m"ussen wir ein allgemeinere Form der Potenzmethode betrachten.
+
 In seinen Abhandlungen "uber Unterraumiterationen
 schl"agt Y. Saad in ~\cite[118 f.]{saad} folgende Methode vor.\footnote{Der Algorithmus wurde vom Autor frei in die deutsche Sprache "ubersetzt und die Notation im Sinne der Konsistenz dieser Arbeit angepasst.}
 
@@ -39,8 +67,11 @@ Als Suchraum wird die lineare H"ulle der Spaltenvektoren von $\hat{Q}_{(k)}$ ben
 Wir verzichten an dieser Stelle auf Ausf"uhrungen "uber die Funktionsweise des \emph{QR-Algorithmus'}. Der interessierte Leser wende sich zum Beispiel an ~\cite[55 ff.]{stewart}.\\
 
 Nun zur Folge der Exponenten. Im Spezialfall, dass $p_{(k)} = k$ f"ur alle $k\in\N$ gilt, ist obiger Algorithmus stark mit der \emph{Potenzmethode} zur Bestimmung von Eigenpaaren verwandt, ja sogar eine Verallgemeinerung davon.\footnote{Vgl. ~\cite[115 ff.]{saad} und ~\cite[1 f.]{kpt}.}
-W"urden wir die Exponenten tats"achlich so w"ahlen, kann die Anzahl der Orthonormalisierungen im vierten Schritt sehr gro"s werden.
-Dies l"asst sich aber vermeiden.
+W"urden die Exponenten so gew"ahlt werden, m"usste entsprechend oft der dritte Schritt des Algorithmus' durchgef"uhrt werden.
+Y. Saad ~\cite[116]{saad} merkt an, dass es aufgrund der hohen Kosten dieser Berechnung sinnvoll sein kann,
+die Wahl der Exponenten flexibler zu gestalten.
+
+
 \textcolor{red}{man will nicht dauern orthogonalisieren, daher blabla s. 116 in saad}
 
 
