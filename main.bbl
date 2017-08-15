@@ -113,6 +113,83 @@
   \field{year}{2013}
 \endentry
 
+\entry{page}{report}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Page}{P.}%
+     {Lawrence}{L.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Brin}{B.}%
+     {Sergey}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Motwani}{M.}%
+     {Rajeev}{R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Winograd}{W.}%
+     {Terry}{T.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Stanford InfoLab}%
+  }
+  \strng{namehash}{PL+1}
+  \strng{fullhash}{PLBSMRWT1}
+  \field{labelalpha}{Pag+99}
+  \field{sortinit}{P}
+  \field{abstract}{%
+  The importance of a Web page is an inherently subjective matter, which
+  depends on the readers interests, knowledge and attitudes. But there is still
+  much that can be said objectively about the relative importance of Web pages.
+  This paper describes PageRank, a mathod for rating Web pages objectively and
+  mechanically, effectively measuring the human interest and attention devoted
+  to them. We compare PageRank to an idealized random Web surfer. We show how
+  to efficiently compute PageRank for large numbers of pages. And, we show how
+  to apply PageRank to search and to user navigation.%
+  }
+  \field{note}{Previous number = SIDL-WP-1999-0120}
+  \field{number}{1999-66}
+  \field{title}{The PageRank Citation Ranking: Bringing Order to the Web.}
+  \verb{url}
+  \verb http://ilpubs.stanford.edu:8090/422/
+  \endverb
+  \list{institution}{1}{%
+    {Stanford InfoLab}%
+  }
+  \field{type}{Technical Report}
+  \field{year}{1999}
+  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{parlett}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Parlett}{P.}%
+     {Beresford~N.}{B.~N.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Prentice-Hall, Inc.}%
+  }
+  \strng{namehash}{PBN1}
+  \strng{fullhash}{PBN1}
+  \field{labelalpha}{Par98}
+  \field{sortinit}{P}
+  \field{isbn}{0-89871-402-8}
+  \field{title}{The Symmetric Eigenvalue Problem}
+  \list{location}{1}{%
+    {Upper Saddle River, NJ, USA}%
+  }
+  \field{year}{1998}
+\endentry
+
 \entry{polizzi}{article}{}
   \name{author}{1}{}{%
     {{}%

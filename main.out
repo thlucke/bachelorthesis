@@ -1,11 +1,11 @@
 \BOOKMARK [0][-]{chapter.1}{Pr\344ludium}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Grundlagen und Notation}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.1}{Mathematische Grundlagen}{chapter.1}% 2
 \BOOKMARK [0][-]{chapter.2}{Filtertechniken}{}% 3
 \BOOKMARK [1][-]{section.2.1}{Rayleigh-Ritz-Verfahren}{chapter.2}% 4
 \BOOKMARK [1][-]{section.2.2}{Konturintegration}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.3}{Illustration}{chapter.2}% 6
 \BOOKMARK [0][-]{chapter.3}{Rationales Filtern}{}% 7
-\BOOKMARK [1][-]{section.3.1}{Beschleunigtes Rayleigh-Ritz Verfahren}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.1}{Beschleunigte Rayleigh-Ritz Iteration}{chapter.3}% 8
 \BOOKMARK [1][-]{section.3.2}{Gau\337'sche Quadratur}{chapter.3}% 9
 \BOOKMARK [1][-]{section.3.3}{Approximation des Spektralprojektors}{chapter.3}% 10
 \BOOKMARK [0][-]{chapter.4}{Numerische Experimente}{}% 11
@@ -13,4 +13,5 @@
 \BOOKMARK [1][-]{section.4.2}{Konturintegration}{chapter.4}% 13
 \BOOKMARK [1][-]{section.4.3}{FEAST Algorithmus}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.4}{Tools f\374r MATLAB}{chapter.4}% 15
-\BOOKMARK [0][-]{appendix.A}{yolo}{}% 16
+\BOOKMARK [0][-]{appendix.A}{Notationen}{}% 16
+\BOOKMARK [0][-]{appendix.B}{S\344tze und Beweise}{}% 17
