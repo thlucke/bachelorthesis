@@ -1,0 +1,156 @@
+Im abschlie"ssenden Kapitel werden wir die Methoden, die in den Kapiteln zwei und drei vorgestellt wurden, naiv implementieren.
+Dabei werden wir uns auf reelle, symmetrische Eigenwertprobleme beschr"anken. Im Folgenden untersuchen wir also das Problem
+\[
+Ax = \lambda Bx
+\]
+f"ur zwei symmetrische Matrizen $A,B\in\R^{n,n}$ und
+fordern au"serdem die positive Definitheit von $B$.
+Desweiteren setzen wir voraus, dass der Input des Users sinnvoll ist und den f"ur die Funktionsf"ahigkeit der Algorithmen notwendigen Voraussetzungen gen"ugt.\\
+
+Die Implementation erfolgt durchweg mit \emph{Octave}, ist aber ohne Weiteres in \emph{MATLAB}
+"ubersetzbar.
+
+\section{Rayleigh-Ritz}
+Beginnen wir mit dem Rayleigh-Ritz-Verfahren (Algorithmus \ref{alg:grp}). "Ahnlich dem Pseudocode, bezeichnen wir mit \mcode{U}
+den Suchraum und verzichten dabei im Code auf den Index $m$. Zur Orthogonalisierung des Suchraumes benutzen wir die bereits in Octave implementierte Funktion
+\[
+\mcode{orth(U)}
+\]
+und die \mcode{eig}-Funktion zum L"osen des reduzierten Eigenwertproblems. Eine Implementation k"onnte also wie folgt aussehen.
+
+\begin{lstlisting}[caption=Implementation des Rayleigh-Ritz Verfahrens zur Bestimmung eines Ritz-Paares., captionpos=b]
+%% Eingabe: Matrizen A, B des Eigenwertproblems,
+%%          Suchraum U
+%% Ausgabe: Matrix X mit Ritz-Vektoren,
+%%          Zeilenvektor L mit Ritz-Werten
+
+%% Funktionsaufruf: [X, L] = rayleighRitz[A, B, U]
+
+function[X,lambda] = rayleighRitz(A,B,U);
+
+% orthonormiere U
+U = orth(U);
+
+% transformiere Problem
+A = U'*A*U; B = U'*B*U;
+
+% loese reduziertes Problem
+[L,Y] = eig(A,B);
+
+% berechne Ritz-Paare
+X = U*Y;
+L = diag(L);
+
+\end{lstlisting}
+
+
+
+
+
+
+
+\section{Konturintegration}
+
+Zun"achst w"ahlen wir also f"ur $k\in\N$ eine vollrangige Zufallsmatrix $Y_k$, um
+die Transformationsmatrix $Q$ zu ermitteln. Dazu f"uhren wir die \textsc{Green}-Funktion
+\[
+\mcode{funGreen = @(w) inv( w.*B-A )}
+\]
+ein und w"ahlen eine passende Integrationskontur
+$C$. Um es einfach zu halten, wird diese in der Implementation die Menge
+\[
+C = \left\{ z \in \C : \left\lVert z - \frac{\lambda_\text{max} -
+\lambda_\text{min}}{2} \right\rVert_1\ = 1\right\}
+\]
+sein, wobei $\lambda_\text{min}$ und $\lambda_\text{max}$ die vorgegebenen Intervallgrenzen
+bezeichnen. Die entsprechenden Quadraturpunkte werden im Quellcode durch die
+Variablen
+\[
+\mcode{n0, n1, n2, n3}
+\]
+repr"asentiert.\\
+
+Ist $Q$ bestimmt, benutzen wir die MATLAB interne Eigenwertfunktion
+\[
+\mcode{eig(Aq, Bq)}
+\]
+um die \textsc{Ritz}-Paare des transformierten Problems zu berechnen. Schlie"slich
+berechnen wir die Eigenwerte und Eigenvektoren des urspr"unglichen Problems.
+Die Matrix $\Phi_k$ wird im Quelltext mit  \mcode{Vq} bezeichnet.\\
+
+Wir wollen annehmen, dass der Input des Users die Voraussetzungen des
+Problems \eqref{eq:eigen} erf"ullt und die Anzahl $k\in\N$ der Eigenwerte
+im Intervall $[\lambda_\text{min}, \lambda_\text{max}]$ bekannt ist.
+Eine naive Implementation k"onnte daher wie folgt aussehen:
+
+\begin{lstlisting}[caption=Naive FEAST Implementation., captionpos=b]
+%% Eingabe: Matrizen A, B des Eigenwertproblems,
+%%          Intervallgrenzen lmin, lmax,
+%%	        Anzahl k der erwarteten Eigenwerte
+%% Ausgabe: Matrix V mit Eigenvektoren,
+%%          Matrix D mit Eigenwerten auf der Diagonalen
+
+%% Funktionsaufruf: [V, D] = feast[A, B, lmin, lmax, k]
+
+function[V, D] = feast(A, B, lmin, lmax, k);
+
+n = length(A);
+
+% erzeuge Zufallsmatrix
+Y = randn(n, k);
+
+% generiere Green-Funktion
+funGreen = @(w) inv( w.*B - A );
+
+% berechne die Integrationsknotenpunkte
+n0 = lmax;
+n1 = (lmin + lmax)/2 + (lmax - (lmin + lmax)/2)*i;
+n2 = lmin;
+n3 = (lmin + lmax)/2 - (lmax - (lmin + lmax)/2)*i;
+
+% Integrationskontur
+C = [n1 n2 n3];
+
+% berechne Transformationsmatrix Q
+Q = (-1/(2*pi*i))*integral(funGreen, n0, n0,...
+	'Waypoints', C, 'ArrayValued', true) * Y;
+
+% berechne Ritz-Paare des transformierten Problems
+Aq = Q'*A*Q; Bq = Q'*B*Q;
+[Vq, D] = eig(Aq, Bq);
+
+% berechne die gesuchten Eigenvektoren
+V = Q*Vq;
+\end{lstlisting}
+
+"Uberpr"ufen wir die Funktionalit"at mit den Matrizen $A$ und $B$ aus dem Abschnitt
+\ref{sec:bsp}, erhalten wir folgende Ausgabe:
+
+\begin{lstlisting}[numbers=none]
+>> [V, D] = feast(A, B, -3, 3, 2)
+
+V =
+
+  -1.4142 - 0.0000i   0.0000 + 0.0000i
+   0.0000 + 0.0000i   1.4142 - 0.0000i
+  -0.0000 + 0.0000i  -0.0000 + 0.0000i
+
+
+D =
+
+    0.0000         0
+         0    2.0000
+
+>>
+\end{lstlisting}
+
+\vspace{0.5cm}
+Die vorgestellte Umsetzung des FEAST-Algorithmus' l"asst sich ohne Weiteres auf
+dynamische Matrixdimensionen "ubertragen. Da sich mit zunehmender Dimension
+unter Umst"anden auch die Kardinalit"at des Spektrums und die Anzahl der Eigenr"aume "andert, sollten
+gegebenenfalls Optimierungsma"snahmen getroffen werden, wie etwa die Wahl der Knotenpunkte f"ur die
+Konturintegration.
+
+\section{FEAST Algorithmus}
+
+\section{Tools f"ur MATLAB}

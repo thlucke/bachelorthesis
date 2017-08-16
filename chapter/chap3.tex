@@ -1,283 +1,517 @@
-Nachdem das vorangegangene Kapitel verschiedene Ideen zum Filtern von Eigenpaaren theoretisch beleuchtet hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
-Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
-Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
+Dieses Kapitel widmet sich der Frage, ob und wie man aus der Menge aller Eigenpaare
+des Problems
+\[
+Ax = \lambda Bx
+\]
+eine gew"unschte Teilmenge ausw"ahlen kann. Die Vorgehensweise, die das Ausw"ahlen einer solchen Teilmenge beschreibt, werden wir fortan als \emph{Filtern} bezeichnen. 
+Dazu werden im Rahmen dieser Arbeit aus dem Katalog der Verfahren
+die zwei Folgenden ausgew"ahlt und vorgestellt: Rayleigh-Ritz-Verfahren\footnote{Die im Folgenden pr"asentierte Vorgehensweise wird in der
+Literatur nicht einheitlich bezeichnet. Anstelle von Rayleigh-Ritz-Verfahren sind auch die Bezeichnungen Galerkin-Methoden oder ... "ublich (siehe da und da).
+In dieser Arbeit wird durchg"angig vom Rayleigh-Ritz-Verfahren oder der Rayleigh-Ritz-Methode
+gesprochen.} und Konturintegration. An einem abschlie"senden Beispiel wird au"serdem die Kompatibilit"at beider Konzepte dargelegt.
 
+\section{Rayleigh-Ritz-Verfahren}\label{sec:ritz}
+%\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
+Die Idee dieser Klasse von Verfahren ist das Approximieren des von
+den gesuchten Eigenvektoren aufgespannten Unterraums. %Dazu sollen -- wie der Name vermuten l"asst --
+%Projektionen bem"uht werden.\\
+Bevor wir das allgemeine Eigenwertproblem untersuchen, wenden wir unsere Aufmerksamkeit
+dem gew"ohnlichen Eigenwertproblem
+\[
+Ax = \lambda x% \textcolor{red}{variablen wieder neu einf"uhren? oder in der einleitung: im folgenden sei stets...}
+\]
+zu und betrachten f"ur eine Zahl $m\in\N$ mit $m\le n$
+einen $m$-dimensionalen Unterraum $\U_m\subseteq\Cn$. Dieser zun"achst nicht
+n"aher bestimmte \emph{Suchraum} wird als Grundlage f"ur das Verfahren gew"ahlt.
+Gesucht sind nun Paare $(\widetilde{\lambda}, \widetilde{x})\in\C\times \U_m \setminus\{0\}$ --
+die wir als approximierte L"osungen des Eigenproblems verstehen wollen --
+welche die Eigenschaft
+\begin{equation}\label{eq:orthogonal}
+\langle u, A\widetilde{x} - \widetilde{\lambda}\widetilde{x} \rangle=0
+\end{equation}
+f"ur alle $u \in \U_m $ erf"ullen. Das Residuum $(A\widetilde{x} - \widetilde{\lambda}\widetilde{x})$
+soll also orthogonal auf dem Suchraum stehen. Paare, die diesem Anliegen nachkommen,
+werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\U_m$ genannt.\footnote{Ritz-Paare m"ussen nicht notwendigerweise eine Orthogonalit"atsbedingung erf"ullen... oder doch?}\\
 
-\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap3:beschrr}
+Wir wollen nun annehmen, dass mit der Menge von Vektoren $\{u_i\}_{i=1:m}\subseteq \Cn$ eine Orthonormalbasis
+des Unterraums $\U_m$ gegeben ist. Definieren wir dann die Matrix $U_m :=[u_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\U_m$
+ein Vektor $y\in\C^m$ existieren, mit $U_m y = \widetilde{x}$. Die Forderung \eqref{eq:orthogonal}
+ist dann zu der Gleichung
+\[
+U_m^H(AU_m y - \widetilde{\lambda} U_m y) = 0
+\]
+"aquivalent. Als direkte Konsequenz dieser Umformulierung erhalten wir unter Ausnutzung
+der Orthogonalit"at der Spalten von $U_m$ mit
+\begin{equation}\label{eq:transform}
+(U_m^H A U_m) y = \widetilde{\lambda}y
+\end{equation}
+ein neues Eigenwertproblem. Jedes Eigenpaar $(\widetilde{\lambda},y)$ von \eqref{eq:transform}
+liefert dann nach Konstruktion mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar des gew"ohnlichen
+Eigenwertproblems bez"uglich des Suchraums $\U_m$. In Abh"angigkeit von der Wahl
+des Suchraumes variiert nat"urlich G"ute der Approximation. Ist etwa $\U_m$
+durch Eigenvektoren aufgespannt, so ist jedes Ritz-Paar schon ein Eigenpaar.
+Wir werden sp"ater aus den Untersuchungen des allgemeinen Eigenwertproblems folgern,
+dass bereits im Falle der Invarianz von $\U_m$ unter $A$ jedes Ritz-Paar von $A$ bez"uglich $\U_m$ bereits ein Eigenpaar von $A$ ist.
+An dieser Stelle begn"ugen wir uns vorerst mit dieser erfreulichen Botschaft.\\
 
-Zu Beginn des zweiten Kapitels wurde mit dem Rayleigh-Ritz-Verfahren eine Methode vorgestellt, mit dessen Hilfe Ritz-Paare bez"uglich eines gewissen Suchraums bestimmt werden k"onnen.
-Es wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift zur Verringerung der Abweichungen von Ritz-Paaren zu tats"achlichen Eigenpaaren f"uhren kann.
-Dies soll im Folgenden genauer ausgef"uhrt werden.\\
+%Fassen wir die eben geschilderte Vorgehensweise algorithmisch zusammen, so ist
+%der folgende Pseudocode denkbar:
+Die eben skizzierte Vorgehensweise zur Berechnung von Ritz-Paaren des gew"ohnlichen Eigenwertproblems
+l"asst sich algorithmisch wie folgt zusammenfassen.
 
-\footnote{Um besser zu verstehen orienteiren wir uns bei der Einf"uhrung des Algs an der Dramaturgie von Saad blabla 115ff}
+\begin{algorithm}\label{alg:rp}
+\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[98]{saad})}
+\begin{algorithmic}[1]
+\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets U_m^H A U_m$ und
+l"ose $\widetilde{A}Y = Y \Lambda$ in $Y$ und
+$\Lambda$.
+\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\end{algorithmic}
+\end{algorithm}
 
-Ausgangspunkt f"ur unsere Betrachtungen ist wie bisher das hermitesche Eigenwertproblem
-\begin{equation}\label{eq:chap3ewp}
+Hierbei entsprechen die Spalten von $Y\in\C^{n,m}$ gewissen Eigenvektoren von \eqref{eq:transform}, w"ahrend auf der Diagonalen von $\Lambda\in\C^{m,m}$
+die zugeh"origen Eigenwerte zu finden sind.\\
+
+Die Idee dieser Methode ist also simpel: Transformiere das Eigenwertproblem mit
+einer gewissen Matrix in ein anderes Eigenwertproblem und benutze dessen L"osungen,
+um Ritz-Paare des urspr"unglichen Problems zu erhalten.
+Doch wozu die M"uhe, das urspr"ungliche Eigenwertproblem in ein anderes
+Eigenwertproblem zu "uberf"uhren? Zwar gelingt es, aus dem transformierten Problem
+\eqref{eq:transform} Ritz-Paare zu extrahieren, aber w"are nicht auch denkbar,
+s"amtliche Eigenpaare von $A$ zu approximieren und die zum Unterraum $\U_m$
+korrespondierende Teilmenge direkt auszuw"ahlen?\\
+
+Dies mag in Einzelf"allen in der Tat sinnvoller sein. Sprechen wir allerdings
+von Matrixdimensionen jenseits der Vorstellungskraft, ist eine vollst"andige
+Berechnung aller Eigenpaare mitunter ein sehr zeitintensives Vergn"ugen. Bei
+genauerer Betrachtung der Gleichung \eqref{eq:transform} f"allt auf, dass die
+Matrix $(U_m^H A U_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
+Format hat, als die Matrix $A$ im urspr"unglichen Problem. Man darf hier also erwarten,
+dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \ref{alg:rp}
+geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Dies
+wird im vierten Kapitel anhand ausgew"ahlter Beispiele vorgef"uhrt.\\
+
+Nun, da wir der Existenz und Funktionsweise der Rayleigh-Ritz-Methode gewahr wurden, erweitern wie die obige Theorie auf das
+verallgemeinerte Eigenwertproblem
+\begin{equation}\label{chap2:gevp}
 Ax = \lambda Bx.
 \end{equation}
-Betrachten wir zun"achst f"ur den Spezialfall $B=I$ eine sehr leicht umsetzbare Methode um Eigenpaare zu bestimmen -- die sogenannte \emph{Potenzmethode}.
-Ausgehend von einem Startvektor $y_{(0)}\in\Co$ wird in jeder Iteration der Vektor
-\[
-y_{(k+1)} = \frac{1}{\|A^{k+1} y_{(0)}\|} A^{k+1}y_{(0)}
-\]
-oder dazu "aquivalent
-\[
-y_{(k+1)} = \frac{1}{\|Ay_{(k)}\|} Ay_{(k)}
-\]
-berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Um einzusehen, dass die Folge der Iterierten gegen den zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
-zu finden ist.\\
-
-Seien $(\lambda_i, x_i)_{i=1:n}$ die Eigenpaare von $A$. Aufgrund der Hermitizit"at bilden dann die Eigenvektoren eine Basis des $\Cn$.
-Folglich existieren komplexwertige Skalare $\alpha_1,\ldots,\alpha_n$ mit
-\[
-y_{(0)} = \sum_{i=1}^n \alpha_i x_i.
-\]
-Wenden wir nun die $k$-te Potenz von $A$ auf $y_{(0)}$ an, ergibt sich daher wegen $A^k x_i = \lambda^k x_i$
-\begin{equation}\label{eq:chap3dominant}
-A^k y_{(0)} = \sum_{i=1}^n \alpha_i \lambda_i^k x_i.
+Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor und betrachten wieder
+einen $m$-dimensionaler Suchraum $\U_m\subseteq \Cn$.
+Gefunden werden sollen dieses Mal Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
+\times \U_m \setminus\{ 0\}$ die der Orthogonalit"atsbedingung
+\begin{equation}\label{eq:borthogonal}
+A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \U_m
 \end{equation}
-Wir wollen ohne Einschr"ankung annehmen, dass $|\lambda_1| \ge |\lambda_i|$ f"ur alle $i$ mit
-$1<i\le n$ gilt. Gegebenenfalls nummerieren wir die Eigenpaare und Skalare um. Dann wird f"ur gr"o"ser werdende $k$ die rechte Seite von \eqref{eq:chap3dominant} durch den Term $\alpha_1 \lambda_1^k x_1$ dominiert. In Kombination mit der Normierung f"uhrt dies letztlich
-zur behaupteten Approximierung.\footnote{Ein formaler Beweis ist im Anhang zu finden.}\\
+gen"ugen. Durch die Wahl eines geeigneten Vektors $y\in\C^m$ kann die N"aherungsl"osung $\widetilde{x}$ wie zuvor durch das Produkt $U_m y$ ersetzt werden, wobei die Spalten von $U_m$ erneut eine ONB des Suchraums $\U_m$ bilden. Folglich l"asst sich die zu \eqref{eq:borthogonal} "aquivalente Forderung
+\[
+U_m^H(AU_m y - \widetilde{\lambda} BU_m y) = 0.
+\]
+aufstellen. Wie bereits beim gew"ohnlichen Eigenwertproblem, l"asst sich nun aus jeder L"osung
+$(\widetilde{\lambda}, y)$ von
+\begin{equation}\label{eq:transformedevp}
+(U_m^H AU_m) y = \widetilde{\lambda} (U_m^H B U_m) y.
+\end{equation}
+mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar f"ur das verallgemeinerte Eigenwertproblem
+gewinnen.\\
 
-Da uns daran gelegen ist, nicht nur mit einzelnen Elementen des $\Cn$ zu arbeiten sondern mit Matrizen zu hantieren, m"ussen wir ein allgemeinere Form der Potenzmethode betrachten.
+Da mit der Matrix $B$ ein weiterer Darsteller auf der Eigenproblemb"uhne ber"ucksichtigt werden muss, zieht dies als Konsequenz eine Anpassung des Algorithmus' \ref{alg:rp} nach sich. Wir k"onnen diesen in der folgenden Manier abwandeln.
 
-In seinen Abhandlungen "uber Unterraumiterationen
-schl"agt Y. Saad in ~\cite[118 f.]{saad} folgende Methode vor.\footnote{Der Algorithmus wurde vom Autor frei in die deutsche Sprache "ubersetzt und die Notation im Sinne der Konsistenz dieser Arbeit angepasst.}
-
-\begin{algorithm}\label{alg:chap3rriter}
-\caption{Rayleigh-Ritz-Iteration}\label{euclid}
+\begin{algorithm}\label{alg:grp}
+\caption{Berechnung von Ritz-Paaren}
 \begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
-Setze $k \gets 1$ und w"ahle initialen Exponenten $p_{(1)} \in\N$.
-\State \textbf{repeat}
-\State \ \ \ \ Setze $\hat{Q}_{(k)} \gets A^{p_{(k)}} V_{(k-1)}$.
-\State \ \ \ \ Orthonormalisiere die Spalten von $\hat{Q}_{(k)}$ zu $Q_{(k)}$.
-\State \ \ \ \ Setze $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$.
-\State \ \ \ \ Berechne die Schurvektoren $\widetilde{X}_{(k)} \gets [x_i]_{i=1:m}$ von $\widetilde{A}$ mit Hilfe des QR-Algorithmus'.
-\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
-\State \ \ \ \ $k \gets k+1$.
-\State \textbf{until} Verfahren konvergiert.
+\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets U_m^H A U_m$,
+$\widetilde{B} \gets U_m^H BU_m$ und
+l"ose $\widetilde{A}Y = \widetilde{B}Y \Lambda$ in $Y$ und $\Lambda$.
+\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
 \end{algorithmic}
 \end{algorithm}
 
-Hierbei ist $(p_{(k)})_{k\in\N}$ eine Folge von nat"urlichzahligen Exponenten auf die wir sp"ater eingehen werden. Zuvor
-begutachten wir die Zeilen vier bis sieben. Hier ist eine deutliche N"ahe zu dem Rayleigh-Ritz-Verfahren zu erkennen.
-Als Suchraum wird die lineare H"ulle der Spaltenvektoren von $\hat{Q}_{(k)}$ benutzt und die Berechnung von Ritz-Vektoren erfolgt in Schritt sechs -- schlie"slich stimmen unserer Voraussetzungen wegen die Schurvektoren gerade mit den Eigenvektoren von $\widetilde{A}_{(k)}$ "uberein.
-Wir verzichten an dieser Stelle auf Ausf"uhrungen "uber die Funktionsweise des \emph{QR-Algorithmus'}. Der interessierte Leser wende sich zum Beispiel an ~\cite[55 ff.]{stewart}.\\
+Nun mag der Fall eintreten, dass bei der Berechnung der Ritz-Paare gewisse Toleranzen ber"ucksichtigt werden m"ussen.
+Es k"onnten etwa maximale euklidische Abweichungen der Ritz-Werte zu den Eigenwerten vorgegeben sein.
+Auch Vorgaben bez"uglich des Winkels zwischen Eigenraum und dem Unterraum der Ritz-Vektoren sind denkbar. Dann ist es erforderlich die Wahl des Suchraums nicht dem Geschick alleine zu "uberlassen, sondern eine gegebenenfalls weniger geschickte Wahl algorithmisch kompensieren zu k"onnen.
+Dies kann zum Beispiel durch das Einf"uhren einer Iterationsvorschrift gelingen, die in jedem Iterationsschritt den Suchraum "andert.
+Wir werden diese Idee zu einem sp"ateren Zeitpunkt in dieser Arbeit weiterverfolgen.\\
 
-Nun zur Folge der Exponenten. Im Spezialfall, dass $p_{(k)} = k$ f"ur alle $k\in\N$ gilt, ist obiger Algorithmus stark mit der \emph{Potenzmethode} zur Bestimmung von Eigenpaaren verwandt, ja sogar eine Verallgemeinerung davon.\footnote{Vgl. ~\cite[115 ff.]{saad} und ~\cite[1 f.]{kpt}.}
-W"urden die Exponenten so gew"ahlt werden, m"usste entsprechend oft der dritte Schritt des Algorithmus' durchgef"uhrt werden.
-Y. Saad ~\cite[116]{saad} merkt an, dass es aufgrund der hohen Kosten dieser Berechnung sinnvoll sein kann,
-die Wahl der Exponenten flexibler zu gestalten.
+Wir wollen uns nun vorerst von der Algorithmik verabschieden und einige Beobachtungen
+festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\U_m$ unter
+$A$ dazu f"uhrt, dass jedes Ritz-Paar bez"uglich $\U_m$ ein Eigenpaar von $A$ ist.
+Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 
+\begin{thm}\label{thm:invariant}
+Neben zwei Matrizen $A,B\in\Cnn$ -- wobei $B$ eine HPD-Matrix ist -- sei f"ur
+$m\in\N$ mit $m\le n$ ein $m$-dimensionaler Unterraum $\U_m \subseteq \C_n$ gegeben.
+Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritzpaar von $B^{-1}A$
+bez"uglich $\U_m$ auch ein Eigenpaar von $(A,B)$.
+\end{thm}
 
-\textcolor{red}{man will nicht dauern orthogonalisieren, daher blabla s. 116 in saad}
-
-
-%Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
-
-%Die folgenden Abs"atze
-%an den Ausf"uhrungen
-%von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
-%die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.\\
-
-%Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
-%komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
-%zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
-%mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
-%oben zitierten Paper wie folgt zu "andern.
-
-\begin{algorithm}\label{alg:beschlrr}
-\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
-\begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
-Setze $k \gets 1$.
-\State \textbf{repeat}
-\State \ \ \ \ Approximiere den Unterraumprojektor: $Q_{(k)} \gets \p(B^{-1}A)V_{(k-1)}$
-\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$,
-$\widetilde{B}_{(k)} \gets Q_{(k)}^H B Q_{(k)}$.
-\State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
-= \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
-$\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
-\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
-\State \ \ \ \ $k \gets k+1$.
-\State \textbf{until} Abbruchkriterium ist erf"ullt.
-\end{algorithmic}
-\end{algorithm}
-
-
-
-Die obigen Fragen sind also leicht beantwortet: In dieser Variante des Rayleigh-Ritz-Verfahrens wird solange "uber den Suchraum iteriert, bis die ermittelten Ritz-Paare gewisse Anforderungen erf"ullen.
-Es dr"angt sich jedoch eine weitere Frage auf. Welche Funktion erf"ullt das Polynom $\p$?\\
-
-Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter} oder \emph{Beschleuniger}
-bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
-werden: Sei $[\lambda_1,\lambda_2]$ ein reelles Intervall, auf dem $l\in\N$ Eigenwerte und die korrespondierenden Eigenvektoren gefunden werden k"onnen. Ist nun $\p(B^{-1}A)$ der Spektralprojektor,
-$m=l$ und hat die Matrix $Q_{(1)} = \p(B^{-1}A) V_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:beschlrr} in einer Iteration
-(Vgl. ~\cite[356]{ptep}).
-Dies folgt unter Ausnutzung der Invarianz des Bildes von $Q_{(1)}$ unter $B^{-1}A$
-aus dem Satz $\ref{thm:invariant}$.\\
-
-Da der Spektralprojektor in den meisten F"allen unbekannt sein d"urfte, liegt
-die Idee nahe, ihn wenigstens zu approximieren. Tang und Polizzi ~\cite[356]{ptep} merken an, dass dies gut funktioniert, falls $\p$ eine durch \emph{Gau"s-Legendre-Quadratur} konstruierte rationale Funktion ist.
-Um den Gedankengang der Autoren nachvollziehen zu k"onnen, wird sich das folgende Intermezzo mit der Auffrischung des Konzeptes von Quadraturformeln und rationalen Funktionen besch"aftigen. Im Anschluss fahren wir mit der
-Konstruktion des Projektors fortfahren.
-
-\section{Gau"s'sche Quadratur}
-
-Um ein Integral numerisch zu approximieren, bedient man sich sogenannter \emph{Quadraturformeln}. Dazu betrachten wir eine stetige Funktion $f\colon\R\to\R$, welche wir auf einem gegebenen Intervall $I:=[a,b]\subset\R$ integrieren wollen.\footnote{Im Allgemeinen ist die Stetigkeit von $f$ nicht zwingend erforderlich. Wir werden uns hier der Einfachheit halber auf stetige Funktionen einschr"anken.}
-Zu gegebenen St"utzpunkten $(x_i, f(x_i))_{i=0:n}$ auf $I\times\R$ sei $p_n$ das zugeh"orige \emph{Interpolationspolynom} vom Grad $n$, also ein Polynom, welches $p(x_i) = f(x_i)$ f"ur alle $i$ mit $0\le i\le n$ erf"ullt.\\
-
-Dann bezeichnen wir die N"aherung
-\begin{equation}\label{eq:quadratur}
-Q_n(f) := \int_a^b p_n (x)\text{ d}x =
-(b-a)\sum_{i=0}^n \omega_i f(x_i)
+\begin{proof}
+Beginnen wir mit einer ONB $\{u_i\}_{i=1:m}\subseteq\U_m$ des Unterraums $\U_m$
+und setzen wie bisher $U_m := [u_i]_{i=1:m}\in\C^{n,m}$. Aufgrund der Invarianz
+von $\U_m$ unter $B^{-1}A$ muss eine Matrix $V_m \in \C^{m,m}$ existieren, welche
+die Gleichung
+\begin{equation}\label{eq:thminvariant}
+B^{-1}A U_m = U_m V_m
 \end{equation}
-als \emph{interpolatorische Quadraturformel}. Dabei gilt
+erf"ullt. Insbesondere folgt unter Ausnutzung der Orthogonalit"at der Spalten
+von $U_m$ die Identit"at $U_m^H B^{-1}A U_m = V_m$.
+Sind nun $\lambda\in\C$ und $y\in\C^m\setminus\{0\}$ so gew"ahlt, dass $(\lambda, U_m y)$
+ein Ritz-Paar von $B^{-1}A$ ist, so folgt aus
 \[
-\omega_k = \int_0^1 \prod_{j=0,j\neq k}^n
-\frac{t-t_j}{t_k - t_j} \text{ d}t, \ t_j
-= \frac{x_j-a}{b-a}.
+U_m^H B^{-1}A U_m y = V_m y
 \]
-Die Qualit"at der Approximation, also die Abweichung vom exakten Integral, h"angt ma"sgeblich von der Wahl und Anzahl der St"utzpunkte ab. Wollten wir
-beispielsweise das Integral einer konstanten Funktion berechnen, so erschiene es wenig plausibel, anstelle der direkten Berechnung ein Polynom vom Grad 69 auf 70 St"utzstellen f"ur die Approximation zu bem"uhen.\\
+mit \eqref{eq:thminvariant} die Gleichung
+\[
+B^{-1}AU_m y = U_m V_m y = \lambda U_m y
+\]
+und schlie"slich auch die Behauptung durch Umstellen.
+\end{proof}
 
-Bei der Anwendung von Gau"s-Legendre-Quadraturen ergibt sich die Wahl der St"utzpunkte durch die Berechnung von Nullstellen von Polynomen, die in einer Orthogonalit"atsbeziehung zueinander stehen.
-Wir werden gleich formal formulieren, wie dies zu verstehen ist.\\
+Da das gew"ohnliche Eigenwertproblem ein Spezialfall des allgemeinen Eigenwertproblems
+ist, k"onnen wir aus dem eben bewiesenen Resultat unmittelbar das folgende Korollar
+ableiten.
 
-Ausgangspunkt f"ur die Integration ist nun eine stetige Funktion $f$, die eine Faktorisierung in zwei stetige Funktionen $g$ und $\omega$ der Art
-\[
-f = g\cdot \omega
-\]
-besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll.\footnote{Im unstetigen Fall darf die Funktion $\omega$ in h"ochstens endlich vielen Punkten negativ sein.} Ziel ist daher die Berechnung von
-\begin{equation}\label{eq:gintegral}
-\int_a^b g(x)\omega(x) \text{ d}x.
-\end{equation}
-Wir fordern nun, dass \eqref{eq:quadratur} mit \eqref{eq:gintegral} f"ur alle Polynome bis zum Grad $(2n-1)$ "ubereinstimmt.
-Dazu betrachten wir die Standardbasis $\{x^i\}_{i=1:(2n-1)}$ auf dem Raum der Polynome vom
-Grad $2n-1$. Dann landen wir unweigerlich bei dem
-Gleichungssystem
-\[
-\sum_{j=1}^n \omega_j x_j^k = \int_a^b x^k \omega(x) \text{ d}x \text{ mit } k = 0,\ldots,2n-1.
-\]
-Man kann zeigen, dass die L"osung dieses Systems durch Nullstellen eines Polynoms gegeben ist, welches durch
-ein Gram-Schmidt-Orthogonalisierungsverfahren bez"uglich des Skalarproduktes
-\[
-\langle p,q\rangle_\omega := \int_a^b p(t) q(t)\omega(t) \text{ d}t
-\]
-konstruiert wurde. Das hei"st konkret: Ausgehend vom Polynom $p_0 \equiv 1$ ist
-\[
-p_n(x) := x^n - \sum_{j=0}^{n-1} \frac{\langle x^n, p_j \rangle_\omega}{\langle p_j, p_j\rangle_\omega} p_j (x)
-\]
-gerade dasjenige Polynom, durch dessen Nullstellen das obige Gleichungssystem gel"ost wird. Sind nun
-$x_1,\ldots,x_n$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so he"ist die numerische
-Integrationsformel
-\[
-Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
-\omega_j = \langle L_j, 1 \rangle_\omega
-= \int_a^b L_j(x)\p(x\text{ d}x
-\]
-\emph{Gau"s'sche Quadraturformel der $n$-ten Ordnung}.
-Dabei ist
-\[
-L_j(x) = \prod_{k\neq j=1}^n \frac{x-x_j}{x_k - x_j}.
-\]
+\begin{kor}
+Ist $A\in\Cnn$ und $\U_m\subseteq \Cn$ ein $m$-dimensionaler $A$-invarianter Unterraum, so ist
+jedes Ritz-Paar von $A$ bez"uglich $\U_m$ ein Eigenpaar von $A$.
+\end{kor}
 
-\section{Approximation des Spektralprojektors}
-
-Nachdem wir diese Kurzzusammenfassung des Gau"s-Quadratur-Verfahrens diskutiert haben,
-widmen wir uns wieder der Approximation des Spektralprojektors
-$P = X_k X_k^H B$. Dabei "ubernehmen wir die am Anfang dieses Kapitels eingef"uhrte Notation, sowie die an die Matrizen $A$ und $B$ gestellten Voraussetzungen.\\
-
-Wenden wir uns daher wieder dem reellen Intervall $I := [\lambda_1, \lambda_2]$ zu. Das Ziel ist
-die Konstruktion einer rationalen Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$,
-die auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht. Dazu
-bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
-wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
-rationale Funktion $\r$ um.\\
-
-Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
-$r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
+\begin{proof}
+Betrachte f"ur $B:=I_n$ das verallgemeinerte Eigenwertproblem
 \[
-\mathcal{C} := \{z\in\C : |z-c| = r\}
+Ax = \lambda Bx = \lambda x.
 \]
-gerade einer Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
-l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
-\[
-\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
-= \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
-\]
-gilt. Dieses Integral gilt es nun zu approximieren.\textcolor{red}{wie genau?}(Vgl. ~\cite[20]{jaenich}).\\
+Die Aussage folgt dann aus dem vorigen Satz.
+\end{proof}
 
-Wir werden das eben diskutierte Integral mit einer Gau"s-Legendre Quadraturformel ann"ahern.
-Dazu ist es n"otig die Kontur $\mathcal{C}$ so zu parametrisieren, dass eine Transformation
-der Integrationsgrenzen auf das Intervall $[-1,1]$ m"oglichst einfach m"oglich ist. Zu diesem Zweck sei
+Es wird sich zu einem sp"ateren Zeitpunkt herausstellen, dass diese Erkenntnis aus algorithmischer Sicht h"ochst n"utzlich ist.
+Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden.\\
+
+Wenden wir uns einer weiteren Kuriosit"at zu. Zwischen obigem Verfahren und dem Konzept der Projektion besteht ein enger Zusammenhang.
+Um zu dieser Einsicht zu gelangen, bedarf es ein wenig
+Vorbereitung.
+%Das Rayleigh-Ritz-Verfahren steht in einem engen Zusammenhang zu Projektionsverfahren.
+%Mit einer geeigneten Projektionsmatrix $P\in\Cnn$ ist ein Paar $(\lambda, x)\in\C\times\Co$
+%\textcolor{red}{(oder $\in\C\times\U_m\setminus\{0\}$?)} genau dann eine L"osung
+%der Gleichung \eqref{chap2:gevp}, wenn es eine L"osung von
+%\[
+%P^H APx = \lambda P^H BPx
+%\]
+%ist. Richtig definiert, besitzt $P$ noch weitere n"utzliche Eigenschaften, die
+%der folgende Satz vorstellt.
+\begin{thm}\label{thm:projektor}
+Es sei $B\in\Cnn$ eine HPD-Matrix und f"ur $m\in\N$ mit $m\le n$ sei
+ein $m$-dimensionaler Unterraum $\U_m \subseteq \Cn$ gegeben. Sei weiter $\{u_i\}_{i=1:m}\subseteq\U_m$ eine
+Basis $B$-orthonormaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
+\in\C^{n,m}$ erf"ulle die Gleichung $U_m^H B U_m = I_m$. Dann ist die von der Matrix
+ $P := U_m U_m^H B \in \Cnn$ induzierte lineare Abbildung
+\[
+p \colon \Cn \to \Cn, x\mapsto U_m U_m^H Bx
+\]
+eine $B$-orthogonale Projektion auf den Unterraum $\U_m$. Au"serdem gilt
+f"ur alle $x\in\Cn$ die Identit"at
+\[
+\|x-p(x)\|_B = \min_{y\in\U_m} \|x - y\|_B.
+\]
+\end{thm}
+
+\begin{proof}
+Aus der $B$-Orthogonalit"at von $U_m$ folgt f"ur alle $x\in\Cn$
+\[
+p^2 (x) = U_m U_m^H B U_m U_m^H B x= U_m U_m^H Bx = p(x).
+\]
+%und damit gilt die Mengengleichheit $p(\Cn) = \U$ nach Konstruktion. %($\Rang{P_B} = \dim(\U)$).
+Ist nun $y\in\U_m$ und $x\in\Cn$, dann folgt wegen $p(y) = y$ und $B=B^H$ auch
 \begin{align*}
-\gamma\colon[-1,3]&\to\C \\
-t&\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
+\langle y, x-p(x)\rangle_B &= y^H (Bx - B U_m U_m^H Bx) \\
+&= y^H (Bx - B^H U_m U_m^H Bx) \\
+&= y^H Bx - p(y)^H Bx = 0.
 \end{align*}
-als Parametrisierung der Sph"are gew"ahlt. Die
-Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
-\[
-\gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
-\]
-gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $z\notin\mathcal{C}$
+Es gilt demnach $x-p(x) \ \bot_B \ \U_m$. Die Optimierungsaufgabe wird schlie"slich wegen
 \begin{align*}
-\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
-&= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \\
-&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
-\int_{1}^3\frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \right) \\
-&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
-\int_{-1}^1\frac{\gamma'(2-t)}{\gamma(2-t)-z}\text{ d}t \right) \\
-&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} +
-\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\right)\text{d}t
+\|x-y\|_B^2 &= \|x-p(x) + p(x)-y\|_B^2 \\
+&= \|x-p(x)\|_B^2 + \|p(x)-y\|_B^2\\
+&\ge \|x-p(x)\|_B^2
 \end{align*}
-wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
-von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.\\
-
-F"ur $q\in\N$ mit \textcolor{red}{wie gro"s ist $q$ genau?} seien $(w_j, t_j)_{j=1:q}$
-die f"ur die Gau"s-Legendre-Quadratur ben"otigten Gewichte und Diskretisierungspunkte.
-Dann setzen wir
+gel"ost. Dabei ist bei der zweiten Gleichheit zu ber"ucksichtigen, dass $x-p(x) \in \U_m^{\bot_B}$
+und $p(x)-y \in \U_m$ gilt.
+%denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,wenn $p(x)=x$ erf"ullt ist.
+\end{proof}
+Mit Hilfe der im Satz eingef"uhrten Projektionsmatrix $P$, l"asst sich die Gleichung
+\eqref{eq:transformedevp} -- zu finden auf Seite \pageref{eq:transformedevp} -- umformulieren. Durch Linksmultiplikation
+mit $B^H U_m$ und dem Einschub der Identit"at $U_m^H B U_m$ gilt n"amlich
 \[
-\rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^q \left(
-\frac{w_j \cdot \gamma'(t_j)}{\gamma(t_j)-z} - \frac{w_j \cdot \overline{\gamma'(t_j)}}{\overline{\gamma(t_j)}-z}
-\right)
+B^H U_m (U_m^H A U_m)(U_m^H B U_m)y = \widetilde{\lambda} B^H U_m (U_m^H B U_m)(U_m^H B U_m)y
 \]
-und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
-$\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
-Funktion
-\[
-\r\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
-\frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
-\]
-zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
-rationale Funktion bereits in Partialbruchzerlegung vorliegt. Setzen wir schlie"slich $B^{-1}A$ in die
-rationale Funktion ein, so erhalten wir
-\begin{align*}
-\r(B^{-1}A) &= \sum_{k=1}^q \sigma_k (\gamma_k I - B^{-1}A)^{-1} +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} I - B^{-1}A)^{-1}\\
-&= \sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} B +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} B
-\end{align*}
 und folglich
 \[
-\r(B^{-1}A)V =
-\sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BV +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BV
+P^H A P U_m y = \widetilde{\lambda} P^H B P U_m y.
 \]
-f"ur eine Matrix $V\in\C^{n,q}$.
+Wenn wir uns an dieser Stelle erinnern, dass $\widetilde{x}$ durch $U_m y$ ersetzt wurde, so
+erhalten wir
+\[
+P^H A P \widetilde{x} = \widetilde{\lambda} P^H B P \widetilde{x}.
+\]
+Im Fall der gew"ohnlichen Eigenwertgleichung erhalten wir speziell
+\[
+P A P \widetilde{x} = \widetilde{\lambda} \widetilde{x}.
+\]
+Wenden wir uns nun nochmal dem Rayleigh-Ritz-Verfahren zu und betrachten das
+verallgemeinerte Eigenwertproblem f"ur eine hermitsche Matrix $A\in\Cnn$ sowie eine
+HPD-Matrix $B\in\Cnn$. Angenommen, uns st"unde mit dem Suchraum $\U_m$ bereits ein von Eigenvektoren
+aufgespannter Unterraum zur Verf"ugung. Dann existiert eine Matrix $U_m := [u_i]_{i=1:m}\in\C^{n,m}$ mit
+$B$-orthonormalen Spalten aus Eigenvektoren von $(A,B)$ und $\Bild(U_m)=\U_m$, sowie eine reelle Diagonalmatrix
+$\Lambda_m := \text{diag}(\lambda_i)_{i=1:m}\in\C^{m,m}$ mit
+\[
+AU_m = BU_m\Lambda_m.
+\]
+Dabei ensprechenden die Diagonaleintr"age von $\Lambda_m$ gerade den zu den Spalten
+von $U_m$ korrespondierenden Eigenwerten von $(A,B)$. Folglich w"are das Bild
+des Spektralprojektors $P=U_m U_m^H B$ nach Konstruktion wegen
+\[
+B^{-1}AP = B^{-1}(AU_m)U_m^H B = B^{-1}(BU_m \Lambda)U_m^H B
+= U_m\Lambda U_m^H B = \left(\sum_{i=1}^m \lambda_i u_i u_i^H\right)\cdot B
+\]
+ein $(B^{-1}A)$-invarianter Unterraum. Daher erscheint es
+wegen Satz \ref{thm:invariant} sinnvoll, den Spektralprojektor $P$ in das
+Rayleigh-Ritz-Verfahren zu integrieren.
+Da jedoch der Unterraum $\U_m$ im Allgemeinen nicht bekannt ist, stellt sich die Frage, ob es
+"uberhaupt sinnvoll ist nach dem Projektor zu suchen.
+Wir werden jedoch alsbald feststellen, dass %zumindest
+die Matrix $U_m U_m^H$ analytisch berechnbar ist.
 
-%Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
-%\[
-%p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
-%\]
-%definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
-%\[
-%\r(t) := \frac{p(t)}{q(t)}
-%\]
-%und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
-%Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$.
-%\section{Der FEAST-Algorithmus}
 
-%f"urderhin
+% nochmal ein wort verlieren, warum hier jetzt von filterung die rede sein kann
+%folgender teil vielleicht eher was f"ur den anfang des kaptitels
+
+%Im Allgemeinen ist es nicht ohne Weiteres m"oglich einen bestimmten Eigenraum gezielt
+%zu approximieren, wenn keine weiteren Informationen bekannt sind. G"angige
+%Wahl f"ur Suchr"aume sind Krylow-R"aume. Deren Struktur f"uhrt dazu, dass
+%Unterr"aume approximiert werden, die von den Eigenvektoren mit den betragsm"a"sig
+%gr"o"sten Eigenwerten aufgespannt werden. Es obliegt daher dem pers"onlichen
+%Geschick einen passenden Suchraum aufzustellen.\\
+
+
+
+%\textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
+%werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
+%ist man fertig, aber Projektor ist i.A.nicht bekannt, daher approximieren. siehe
+%kapitel 3}
+
+\section{Konturintegration}\label{sec:kontur}
+
+Die folgenden Zeilen pr"asentieren eine Vorgehensweise, die es gestattet, den im vorigen
+Abschnitt eingef"uhrten Spektralprojektor analytisch zu konstruieren. Wir werden
+zu einem sp"ateren Zeitpunkt untersuchen, in wie weit die Numerik in der Lage ist, dieses
+Verfahren algorithmisch umzusetzen.\\
+
+Zun"achst ist es erforderlich einige Begriffe und Notationen einzuf"uhren. F"ur zwei Zahlen $z_1, z_2 \in\C$ sei mit der Menge
+\[
+[z_1, z_2] := \{(1-t)z_1 + tz_2 \in\C \mid t\in[0,1]\}
+\]
+die direkte Verbindungsstrecke zwischen $z_1$ und $z_2$ bezeichnet. Im Spezialfall $z_1,z_2 \in\R$
+stellen wir uns daher unter $[z_1,z_2]$ ein reellwertiges Intervall eingebettet in die komplexe Zahlenebene vor.
+Des Weiteren ben"otigen wir sogenannte \emph{Jordan-Kurven}. Diese definieren wir im Kontext
+dieser Arbeit wie folgt.
+
+\begin{defn} \label{def:jordankurve}
+  Es sei $S:=\{z\in\C : |z| = 1\}$. Eine Menge
+  $\Gamma\subset\C$ hei"st \emph{Jordan-Kurve}, falls
+  ein Hom"oomorphismus $\gamma\colon S\to \C$ existiert mit $\Gamma = \Bild(\gamma)$. Dabei ist
+  ein \emph{Hom"oomorphismus} eine stetige Bijektion mit stetiger Umkehrabbildung.
+\end{defn}
+
+Insbesondere sind Jordan-Kurven also geschlossene und "uberschneidungsfreie Kurven.
+Ausgestattet mit diesen neuen Vokabeln kann die nun Pr"asentation des angek"undigten Verfahrens beginnen. Im weiteren Verlauf seien $A, B \in\Cnn$ hermitesche Matrizen und $B$ zus"atzlich
+positiv definit.\\
+
+Wir wollen annehmen, dass zwei Zahlen $\lambda_1, \lambda_2 \in \R$ mit $\lambda_1 < \lambda_2$
+vorgegeben sind, die das abgeschlossene Intervall $I:=[\lambda_1, \lambda_2]$ definieren.
+Wie bisher sollen Paare der Gestalt $(\lambda, x) \in I \times \Co$ ermittelt werden,
+welche der verallgemeinerten Eigenwertgleichung
+  \begin{equation}\label{eq:eigen} %eventuell einfaches ewp
+  Ax = \lambda Bx
+  \end{equation}
+
+gen"ugen. Der Ausgangspunkt zur Bestimmung der gesuchten Eigenpaare %\footnote{Um der besseren Lesbarkeit Willen werden
+%im Folgenden die verallgemeinerten Eigenvektoren und deren verallgemeinerte
+%Eigenwerte kurz als Eigenvektor und Eigenwert bezeichnet.}
+ist die durch%wird das Problem mit Hilfe einer
+%gewissen Matrix $Q\in\Cnn$ in das "aquivalente Problem
+%  \begin{equation}\label{eq:Qeigen}
+%  A_Q \phi = \mu B_Q \phi
+%  \end{equation}
+%"uberf"uhrt. Hierbei sind $A_Q = Q^TAQ$, $B_Q = Q^TBQ$ und $(\mu, \phi)
+%\in I\times\C^n$.
+%Wird die Matrix $Q$ richtig gew"ahlt, so ist dann jeder zul"assige Eigenwert von
+%\eqref{eq:Qeigen} auch ein zul"assiger Eigenwert von \eqref{eq:eigen} und
+%umgekehrt.\footnote{Daher ist die Angabe $\mu\in I$ gerechtfertigt.}
+%F"ur die Ermittlung der gesuchten Eigenvektoren bedarf es hingegen zus"atzlicher Arbeit.\\
+%Zur Bestimmung der Transformationsmatrix $Q$ wird eine Konturintegration bem"uht.
+%Ausgangspunkt dieser Integration ist die durch
+  \begin{align*}
+  G\colon\Omega &\to\Cnn\\
+  \omega &\mapsto (\omega B - A)^{-1}
+  \end{align*}
+
+definierte \emph{Green-Funktion}, wobei $\Omega \subseteq \C$ eine vom Spektrum
+von $B^{-1}A$ disjunkte Teilmenge der komplexen Zahlen ist.\footnote{W"are $\Omega$ nicht disjunkt vom Spektrum von $B^{-1}A$, so g"abe es ein $\omega\in\Omega$, welches zur Singularit"at von $(\omega B-A)$ f"uhrte.}
+Diese Funktion $G$ wird nun "uber eine Jordan-Kurve $\Gamma$,
+die um das vorgegebene Intervall $I$ \glqq heruml"auft\grqq, %Pr"aziser!%
+in der Gestalt
+\begin{equation}\label{eq:intgreen}
+\frac{1}{2\pi\iota}\int_\Gamma G(\omega)\text{ d}\omega
+\end{equation}
+integriert.\footnote{Mit $\iota$ ist im Folgenden stets die imagin"are Einheit bezeichnet,
+also $\iota = \sqrt{-1}$.} Das Integral ist hierbei eintragsweise zu verstehen.\\
+
+Wir wollen nun annehmen, dass es genau $m\in\N$ Eigenwerte gibt,
+die im Inneren von $I$ liegen. %\footnote{Diese Forderung ist wohldefiniert, da
+%der Eigenschaften von $A$ und $B$ wegen alle %Eigenwerte von $B^{-1}A$ reell sind.}
+%F"ur zu diesen Eigenwerten passende Eigenvektoren $\{x_i\}_{i=1:k} \subseteq \Cn$ sei au"serdem die Matrix
+%$X_k := [x_i]_{i=1:k}$ gegeben.
+Dann kann man nachweisen, dass sich \eqref{eq:intgreen} durch eine Matrix
+$U_m = [u_i]_{i=1:k}\in\C^{n,m}$ mit $B$-orthonormalen Spalten in
+\[
+\frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega = U_m U_m^H
+\]
+faktorisieren l"asst, wobei $u_i$ f"ur jedes $i=1:m$ ein zu einem in $I$ liegenden
+Eigenwert korrespondierender Eigenvektor ist.\footnote{F"ur einen Beweis des Spezialfalls $B=I$ sei auf \cite[64f]{gohberg} und \cite[222-226]{liesen} verwiesen.}
+Als direkte Konsequenz erhalten wir folglich mit dem Produkt
+\[
+\left( \frac{1}{2\pi\iota}\int_\gamma G(\omega)\text{ d}\omega \right) \cdot B
+\]
+den Spektralprojektor $U_m U_m^H B$. %Mit diesem Projektor
+%k"onnen wir nun vorgehen wie im vorigen Kapitel und alle Eigenpaare des Problems
+%finden.% Bedauerlicherweise bleibt die Dimension des Problems unver"andert. Daher
+%begn"ugt man sich anstelle der Matrix $B$ mit einer vollrangigen Matrix $\widetilde{B}\in\C^{n,k}$
+%um das Ausgangsproblem auf die Dimension $(k\times k)$ zu reduzieren.\\
+
+%MEHR KOMPANA!
+%B-Orthogonalit"at der x-vektoren
+\newpage
+\section{Illustration}\label{sec:bsp}
+
+Bevor wir uns vom zweiten Kapitel verabschieden, sollen die Erkenntnisse der vorangegangenen
+Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von einem
+verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
+mit der Ritz-Methode kombinieren.\\
+
+Daf"ur wenden wir uns den beiden Matrizen
+%Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
+%mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
+%kleines Problem)
+$A,B \in \C^{3,3}$ zu, welche durch
+\[
+A:= \text{diag}(3,1,4)\text{ und }
+B:= \text{diag}(1,5,9)
+\]
+gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
+Durch einfaches Nachrechnen "uberpr"uft man, dass das
+verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
+$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
+$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
+Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
+gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
+
+Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
+mit den Methoden, die in den vorangegangenen Abschnitten vorgestellt wurden, die Eigenpaare auf $I = [-1,1]$ zu bestimmen.
+Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
+\begin{equation}\label{kurve}
+\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
+\end{equation}
+und integrieren die Green-Funktion
+\[
+G(\omega) = \text{diag}(\omega-3, 5\omega-1, 9\omega-4)^{-1}
+=\text{diag}\left(\frac{1}{\omega-3}, \frac{1}{5\omega-1}, \frac{1}{9\omega-4}\right)
+\]
+dar"uber.
+Nach Definition 2.4 ist $\Gamma$ eine Jordan-Kurve.
+Da nach Konstruktion keiner der Eigenwerte im Bild von
+$\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
+%\begin{figure}[h!]
+%	\center
+%	\begin{tikzpicture}
+%	\draw[->] (-3.5cm,0cm) -- (3.5cm,0cm) node[right,fill=white] {Re};
+%    \draw[->] (0cm,-2.5cm) -- (0cm,2.5cm) node[above,fill=white] {Im};
+%    \draw[->] (0cm, 0cm) -- (.7, .7);
+%	\draw[red](0cm,0cm)circle(1cm);
+%	\foreach \x in {0,0.66,2.33} {
+%	\filldraw[black] (\x cm,0) circle(2pt);
+%	}
+%	\draw (0,-0.3) node{$\lambda_1$};
+%	\draw (0.66,-0.3) node{$\lambda_2$};
+%	\draw (2.33,-0.3) node{$\lambda_3$};
+	%\node[rotate=45] at (0.5, 1) {$r=1$};
+	%\node at (2.3,-2.3) {$\C$};
+	%\end{tikzpicture}
+	%\caption{Skizze der Kurve \textcolor{red}{$\gamma$} in der komplexen Ebene.}
+%\end{figure}
+Folgen wir also weiter dem Abschnitt \ref{sec:kontur}, so erhalten wir
+\[
+\frac{1}{2\pi\iota} \int_\Gamma G \text{ d}s =
+\frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
+\text{ d}\omega
+= \text{diag}\left( 0, \frac{1}{5}, \frac{1}{9} \right)
+\]
+
+Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $u_1 = 1/\sqrt5 \cdot e_2$
+und $u_2 = 1/3\cdot e_3$ wie gew"unscht in
+\[
+\begin{bmatrix} 0 & 0 & 0 \\ 0 & 1/6 & 0 \\ 0 & 0 & 1/9 \end{bmatrix}
+= \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
+\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} =: U_2 U_2^H
+\]
+faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt \ref{sec:ritz} diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
+Hilfe einer vollrangigen Matrix $V\in\C^{3,2}$ auf ein Problem kleinerer Dimension.
+Zu diesem Zwecke w"ahlen wir
+\[
+V:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
+\]
+und benutzen die Matrix $Q:=U_2 U_2^H V$ um das Ausgangsproblem vem"oge
+$\widetilde{A}:= Q^H A Q$ und $\widetilde{B}:=Q^H B Q$ auf das Problem
+\[
+\widetilde{A}y = \begin{bmatrix}1/36 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}5/36 & 0\\0 & 1/4 \end{bmatrix} y = \mu \widetilde{B}y
+\]
+der Dimension $(2\times 2)$ zu transformieren. Die Eigenwerte $1/5$ und $4/9$ lassen sich leicht ablesen
+und stimmen wie erwartet mit den sich auf $[-1,1]$ befindlichen Eigenwerten des eingangs formulierten Problems "uberein. Passende Eigenvektoren sind
+Elemente aus $\spn_\C \{[1 \ 0]^T\}$ und $\spn_\C \{[0 \ 1]^T\}$.\\
+
+Es bleibt die R"ucktransformation der Eigenvektoren. Dazu w"ahlen wir aus kosmetischen Gr"unden die Eigenvektoren
+\[
+y_1 := \begin{bmatrix}
+\sqrt6 \\ 0
+\end{bmatrix}
+\text{ und }
+y_2 := \begin{bmatrix}
+0 \\ 3
+\end{bmatrix}
+\]
+und setzen $Y = [y_1 \ y_2]$. Wir erhalten dann
+\[
+QY = \begin{bmatrix} 0 & 0 \\ 1/6 & 0 \\ 0 & 1/9 \end{bmatrix}
+\begin{bmatrix}
+\sqrt6 & 0 \\ 0 & 3
+\end{bmatrix}
+=
+\begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
+= U_2.
+\]
+
+Eine Bemerkung zum Abschluss: Erinnern wir und an Satz \ref{thm:invariant}, so ist es nicht verwunderlich, dass diese Rechnung
+exakte Eigenpaare liefert. Schlie"slich hat $Q$
+vollen Rang und das Bild der von $Q$ induzierten linearen Abbildung ist invariant unter $B^{-1}A$.
+
+
+%dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
+%Zu l"osen ist daher das Eigenwertproblem
+%\[
+%P^T A P x = \text{diag}(0,4,0)x = \lambda \cdot \text{diag}(0,6,1)x = \lambda P^T B P x.
+%\]
+
+
+%Da wir bereits wissen, dass wir zwei Eigenpaare finden wollen, w"ahlen wir eine
+%beliebige Matrix $\widetilde{B}\in\C^{3,2}$ vollen Ranges -- die wir in diesem
+%Beispiel mit $\widetilde{B} = \begin{bmatrix}[5]$

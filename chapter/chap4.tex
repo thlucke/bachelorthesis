@@ -1,156 +1,283 @@
-Im abschlie"ssenden Kapitel werden wir die Methoden, die in den Kapiteln zwei und drei vorgestellt wurden, naiv implementieren.
-Dabei werden wir uns auf reelle, symmetrische Eigenwertprobleme beschr"anken. Im Folgenden untersuchen wir also das Problem
+Nachdem das vorangegangene Kapitel verschiedene Ideen zum Filtern von Eigenpaaren theoretisch beleuchtet hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
+Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
+Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
+
+
+\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap3:beschrr}
+
+Zu Beginn des zweiten Kapitels wurde mit dem Rayleigh-Ritz-Verfahren eine Methode vorgestellt, mit dessen Hilfe Ritz-Paare bez"uglich eines gewissen Suchraums bestimmt werden k"onnen.
+Es wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift zur Verringerung der Abweichungen von Ritz-Paaren zu tats"achlichen Eigenpaaren f"uhren kann.
+Dies soll im Folgenden genauer ausgef"uhrt werden.\\
+
+\footnote{Um besser zu verstehen orienteiren wir uns bei der Einf"uhrung des Algs an der Dramaturgie von Saad blabla 115ff}
+
+Ausgangspunkt f"ur unsere Betrachtungen ist wie bisher das hermitesche Eigenwertproblem
+\begin{equation}\label{eq:chap3ewp}
+Ax = \lambda Bx.
+\end{equation}
+Betrachten wir zun"achst f"ur den Spezialfall $B=I$ eine sehr leicht umsetzbare Methode um Eigenpaare zu bestimmen -- die sogenannte \emph{Potenzmethode}.
+Ausgehend von einem Startvektor $y_{(0)}\in\Co$ wird in jeder Iteration der Vektor
 \[
-Ax = \lambda Bx
+y_{(k+1)} = \frac{1}{\|A^{k+1} y_{(0)}\|} A^{k+1}y_{(0)}
 \]
-f"ur zwei symmetrische Matrizen $A,B\in\R^{n,n}$ und
-fordern au"serdem die positive Definitheit von $B$.
-Desweiteren setzen wir voraus, dass der Input des Users sinnvoll ist und den f"ur die Funktionsf"ahigkeit der Algorithmen notwendigen Voraussetzungen gen"ugt.\\
-
-Die Implementation erfolgt durchweg mit \emph{Octave}, ist aber ohne Weiteres in \emph{MATLAB}
-"ubersetzbar.
-
-\section{Rayleigh-Ritz}
-Beginnen wir mit dem Rayleigh-Ritz-Verfahren (Algorithmus \ref{alg:grp}). "Ahnlich dem Pseudocode, bezeichnen wir mit \mcode{U}
-den Suchraum und verzichten dabei im Code auf den Index $m$. Zur Orthogonalisierung des Suchraumes benutzen wir die bereits in Octave implementierte Funktion
+oder dazu "aquivalent
 \[
-\mcode{orth(U)}
+y_{(k+1)} = \frac{1}{\|Ay_{(k)}\|} Ay_{(k)}
 \]
-und die \mcode{eig}-Funktion zum L"osen des reduzierten Eigenwertproblems. Eine Implementation k"onnte also wie folgt aussehen.
+berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Um einzusehen, dass die Folge der Iterierten gegen den zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
+zu finden ist.\\
 
-\begin{lstlisting}[caption=Implementation des Rayleigh-Ritz Verfahrens zur Bestimmung eines Ritz-Paares., captionpos=b]
-%% Eingabe: Matrizen A, B des Eigenwertproblems,
-%%          Suchraum U
-%% Ausgabe: Matrix X mit Ritz-Vektoren,
-%%          Zeilenvektor L mit Ritz-Werten
-
-%% Funktionsaufruf: [X, L] = rayleighRitz[A, B, U]
-
-function[X,lambda] = rayleighRitz(A,B,U);
-
-% orthonormiere U
-U = orth(U);
-
-% transformiere Problem
-A = U'*A*U; B = U'*B*U;
-
-% loese reduziertes Problem
-[L,Y] = eig(A,B);
-
-% berechne Ritz-Paare
-X = U*Y;
-L = diag(L);
-
-\end{lstlisting}
-
-
-
-
-
-
-
-\section{Konturintegration}
-
-Zun"achst w"ahlen wir also f"ur $k\in\N$ eine vollrangige Zufallsmatrix $Y_k$, um
-die Transformationsmatrix $Q$ zu ermitteln. Dazu f"uhren wir die \textsc{Green}-Funktion
+Seien $(\lambda_i, x_i)_{i=1:n}$ die Eigenpaare von $A$. Aufgrund der Hermitizit"at bilden dann die Eigenvektoren eine Basis des $\Cn$.
+Folglich existieren komplexwertige Skalare $\alpha_1,\ldots,\alpha_n$ mit
 \[
-\mcode{funGreen = @(w) inv( w.*B-A )}
+y_{(0)} = \sum_{i=1}^n \alpha_i x_i.
 \]
-ein und w"ahlen eine passende Integrationskontur
-$C$. Um es einfach zu halten, wird diese in der Implementation die Menge
+Wenden wir nun die $k$-te Potenz von $A$ auf $y_{(0)}$ an, ergibt sich daher wegen $A^k x_i = \lambda^k x_i$
+\begin{equation}\label{eq:chap3dominant}
+A^k y_{(0)} = \sum_{i=1}^n \alpha_i \lambda_i^k x_i.
+\end{equation}
+Wir wollen ohne Einschr"ankung annehmen, dass $|\lambda_1| \ge |\lambda_i|$ f"ur alle $i$ mit
+$1<i\le n$ gilt. Gegebenenfalls nummerieren wir die Eigenpaare und Skalare um. Dann wird f"ur gr"o"ser werdende $k$ die rechte Seite von \eqref{eq:chap3dominant} durch den Term $\alpha_1 \lambda_1^k x_1$ dominiert. In Kombination mit der Normierung f"uhrt dies letztlich
+zur behaupteten Approximierung.\footnote{Ein formaler Beweis ist im Anhang zu finden.}\\
+
+Da uns daran gelegen ist, nicht nur mit einzelnen Elementen des $\Cn$ zu arbeiten sondern mit Matrizen zu hantieren, m"ussen wir ein allgemeinere Form der Potenzmethode betrachten.
+
+In seinen Abhandlungen "uber Unterraumiterationen
+schl"agt Y. Saad in ~\cite[118 f.]{saad} folgende Methode vor.\footnote{Der Algorithmus wurde vom Autor frei in die deutsche Sprache "ubersetzt und die Notation im Sinne der Konsistenz dieser Arbeit angepasst.}
+
+\begin{algorithm}\label{alg:chap3rriter}
+\caption{Rayleigh-Ritz-Iteration}\label{euclid}
+\begin{algorithmic}[1]
+\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
+Setze $k \gets 1$ und w"ahle initialen Exponenten $p_{(1)} \in\N$.
+\State \textbf{repeat}
+\State \ \ \ \ Setze $\hat{Q}_{(k)} \gets A^{p_{(k)}} V_{(k-1)}$.
+\State \ \ \ \ Orthonormalisiere die Spalten von $\hat{Q}_{(k)}$ zu $Q_{(k)}$.
+\State \ \ \ \ Setze $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$.
+\State \ \ \ \ Berechne die Schurvektoren $\widetilde{X}_{(k)} \gets [x_i]_{i=1:m}$ von $\widetilde{A}$ mit Hilfe des QR-Algorithmus'.
+\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ $k \gets k+1$.
+\State \textbf{until} Verfahren konvergiert.
+\end{algorithmic}
+\end{algorithm}
+
+Hierbei ist $(p_{(k)})_{k\in\N}$ eine Folge von nat"urlichzahligen Exponenten auf die wir sp"ater eingehen werden. Zuvor
+begutachten wir die Zeilen vier bis sieben. Hier ist eine deutliche N"ahe zu dem Rayleigh-Ritz-Verfahren zu erkennen.
+Als Suchraum wird die lineare H"ulle der Spaltenvektoren von $\hat{Q}_{(k)}$ benutzt und die Berechnung von Ritz-Vektoren erfolgt in Schritt sechs -- schlie"slich stimmen unserer Voraussetzungen wegen die Schurvektoren gerade mit den Eigenvektoren von $\widetilde{A}_{(k)}$ "uberein.
+Wir verzichten an dieser Stelle auf Ausf"uhrungen "uber die Funktionsweise des \emph{QR-Algorithmus'}. Der interessierte Leser wende sich zum Beispiel an ~\cite[55 ff.]{stewart}.\\
+
+Nun zur Folge der Exponenten. Im Spezialfall, dass $p_{(k)} = k$ f"ur alle $k\in\N$ gilt, ist obiger Algorithmus stark mit der \emph{Potenzmethode} zur Bestimmung von Eigenpaaren verwandt, ja sogar eine Verallgemeinerung davon.\footnote{Vgl. ~\cite[115 ff.]{saad} und ~\cite[1 f.]{kpt}.}
+W"urden die Exponenten so gew"ahlt werden, m"usste entsprechend oft der dritte Schritt des Algorithmus' durchgef"uhrt werden.
+Y. Saad ~\cite[116]{saad} merkt an, dass es aufgrund der hohen Kosten dieser Berechnung sinnvoll sein kann,
+die Wahl der Exponenten flexibler zu gestalten.
+
+
+\textcolor{red}{man will nicht dauern orthogonalisieren, daher blabla s. 116 in saad}
+
+
+%Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
+
+%Die folgenden Abs"atze
+%an den Ausf"uhrungen
+%von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
+%die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.\\
+
+%Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
+%komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
+%zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
+%mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
+%oben zitierten Paper wie folgt zu "andern.
+
+\begin{algorithm}\label{alg:beschlrr}
+\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
+\begin{algorithmic}[1]
+\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
+Setze $k \gets 1$.
+\State \textbf{repeat}
+\State \ \ \ \ Approximiere den Unterraumprojektor: $Q_{(k)} \gets \p(B^{-1}A)V_{(k-1)}$
+\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$,
+$\widetilde{B}_{(k)} \gets Q_{(k)}^H B Q_{(k)}$.
+\State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
+= \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
+$\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
+\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ $k \gets k+1$.
+\State \textbf{until} Abbruchkriterium ist erf"ullt.
+\end{algorithmic}
+\end{algorithm}
+
+
+
+Die obigen Fragen sind also leicht beantwortet: In dieser Variante des Rayleigh-Ritz-Verfahrens wird solange "uber den Suchraum iteriert, bis die ermittelten Ritz-Paare gewisse Anforderungen erf"ullen.
+Es dr"angt sich jedoch eine weitere Frage auf. Welche Funktion erf"ullt das Polynom $\p$?\\
+
+Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter} oder \emph{Beschleuniger}
+bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
+werden: Sei $[\lambda_1,\lambda_2]$ ein reelles Intervall, auf dem $l\in\N$ Eigenwerte und die korrespondierenden Eigenvektoren gefunden werden k"onnen. Ist nun $\p(B^{-1}A)$ der Spektralprojektor,
+$m=l$ und hat die Matrix $Q_{(1)} = \p(B^{-1}A) V_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:beschlrr} in einer Iteration
+(Vgl. ~\cite[356]{ptep}).
+Dies folgt unter Ausnutzung der Invarianz des Bildes von $Q_{(1)}$ unter $B^{-1}A$
+aus dem Satz $\ref{thm:invariant}$.\\
+
+Da der Spektralprojektor in den meisten F"allen unbekannt sein d"urfte, liegt
+die Idee nahe, ihn wenigstens zu approximieren. Tang und Polizzi ~\cite[356]{ptep} merken an, dass dies gut funktioniert, falls $\p$ eine durch \emph{Gau"s-Legendre-Quadratur} konstruierte rationale Funktion ist.
+Um den Gedankengang der Autoren nachvollziehen zu k"onnen, wird sich das folgende Intermezzo mit der Auffrischung des Konzeptes von Quadraturformeln und rationalen Funktionen besch"aftigen. Im Anschluss fahren wir mit der
+Konstruktion des Projektors fortfahren.
+
+\section{Gau"s'sche Quadratur}
+
+Um ein Integral numerisch zu approximieren, bedient man sich sogenannter \emph{Quadraturformeln}. Dazu betrachten wir eine stetige Funktion $f\colon\R\to\R$, welche wir auf einem gegebenen Intervall $I:=[a,b]\subset\R$ integrieren wollen.\footnote{Im Allgemeinen ist die Stetigkeit von $f$ nicht zwingend erforderlich. Wir werden uns hier der Einfachheit halber auf stetige Funktionen einschr"anken.}
+Zu gegebenen St"utzpunkten $(x_i, f(x_i))_{i=0:n}$ auf $I\times\R$ sei $p_n$ das zugeh"orige \emph{Interpolationspolynom} vom Grad $n$, also ein Polynom, welches $p(x_i) = f(x_i)$ f"ur alle $i$ mit $0\le i\le n$ erf"ullt.\\
+
+Dann bezeichnen wir die N"aherung
+\begin{equation}\label{eq:quadratur}
+Q_n(f) := \int_a^b p_n (x)\text{ d}x =
+(b-a)\sum_{i=0}^n \omega_i f(x_i)
+\end{equation}
+als \emph{interpolatorische Quadraturformel}. Dabei gilt
 \[
-C = \left\{ z \in \C : \left\lVert z - \frac{\lambda_\text{max} -
-\lambda_\text{min}}{2} \right\rVert_1\ = 1\right\}
+\omega_k = \int_0^1 \prod_{j=0,j\neq k}^n
+\frac{t-t_j}{t_k - t_j} \text{ d}t, \ t_j
+= \frac{x_j-a}{b-a}.
 \]
-sein, wobei $\lambda_\text{min}$ und $\lambda_\text{max}$ die vorgegebenen Intervallgrenzen
-bezeichnen. Die entsprechenden Quadraturpunkte werden im Quellcode durch die
-Variablen
+Die Qualit"at der Approximation, also die Abweichung vom exakten Integral, h"angt ma"sgeblich von der Wahl und Anzahl der St"utzpunkte ab. Wollten wir
+beispielsweise das Integral einer konstanten Funktion berechnen, so erschiene es wenig plausibel, anstelle der direkten Berechnung ein Polynom vom Grad 69 auf 70 St"utzstellen f"ur die Approximation zu bem"uhen.\\
+
+Bei der Anwendung von Gau"s-Legendre-Quadraturen ergibt sich die Wahl der St"utzpunkte durch die Berechnung von Nullstellen von Polynomen, die in einer Orthogonalit"atsbeziehung zueinander stehen.
+Wir werden gleich formal formulieren, wie dies zu verstehen ist.\\
+
+Ausgangspunkt f"ur die Integration ist nun eine stetige Funktion $f$, die eine Faktorisierung in zwei stetige Funktionen $g$ und $\omega$ der Art
 \[
-\mcode{n0, n1, n2, n3}
+f = g\cdot \omega
 \]
-repr"asentiert.\\
-
-Ist $Q$ bestimmt, benutzen wir die MATLAB interne Eigenwertfunktion
+besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll.\footnote{Im unstetigen Fall darf die Funktion $\omega$ in h"ochstens endlich vielen Punkten negativ sein.} Ziel ist daher die Berechnung von
+\begin{equation}\label{eq:gintegral}
+\int_a^b g(x)\omega(x) \text{ d}x.
+\end{equation}
+Wir fordern nun, dass \eqref{eq:quadratur} mit \eqref{eq:gintegral} f"ur alle Polynome bis zum Grad $(2n-1)$ "ubereinstimmt.
+Dazu betrachten wir die Standardbasis $\{x^i\}_{i=1:(2n-1)}$ auf dem Raum der Polynome vom
+Grad $2n-1$. Dann landen wir unweigerlich bei dem
+Gleichungssystem
 \[
-\mcode{eig(Aq, Bq)}
+\sum_{j=1}^n \omega_j x_j^k = \int_a^b x^k \omega(x) \text{ d}x \text{ mit } k = 0,\ldots,2n-1.
 \]
-um die \textsc{Ritz}-Paare des transformierten Problems zu berechnen. Schlie"slich
-berechnen wir die Eigenwerte und Eigenvektoren des urspr"unglichen Problems.
-Die Matrix $\Phi_k$ wird im Quelltext mit  \mcode{Vq} bezeichnet.\\
+Man kann zeigen, dass die L"osung dieses Systems durch Nullstellen eines Polynoms gegeben ist, welches durch
+ein Gram-Schmidt-Orthogonalisierungsverfahren bez"uglich des Skalarproduktes
+\[
+\langle p,q\rangle_\omega := \int_a^b p(t) q(t)\omega(t) \text{ d}t
+\]
+konstruiert wurde. Das hei"st konkret: Ausgehend vom Polynom $p_0 \equiv 1$ ist
+\[
+p_n(x) := x^n - \sum_{j=0}^{n-1} \frac{\langle x^n, p_j \rangle_\omega}{\langle p_j, p_j\rangle_\omega} p_j (x)
+\]
+gerade dasjenige Polynom, durch dessen Nullstellen das obige Gleichungssystem gel"ost wird. Sind nun
+$x_1,\ldots,x_n$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so he"ist die numerische
+Integrationsformel
+\[
+Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
+\omega_j = \langle L_j, 1 \rangle_\omega
+= \int_a^b L_j(x)\p(x\text{ d}x
+\]
+\emph{Gau"s'sche Quadraturformel der $n$-ten Ordnung}.
+Dabei ist
+\[
+L_j(x) = \prod_{k\neq j=1}^n \frac{x-x_j}{x_k - x_j}.
+\]
 
-Wir wollen annehmen, dass der Input des Users die Voraussetzungen des
-Problems \eqref{eq:eigen} erf"ullt und die Anzahl $k\in\N$ der Eigenwerte
-im Intervall $[\lambda_\text{min}, \lambda_\text{max}]$ bekannt ist.
-Eine naive Implementation k"onnte daher wie folgt aussehen:
+\section{Approximation des Spektralprojektors}
 
-\begin{lstlisting}[caption=Naive FEAST Implementation., captionpos=b]
-%% Eingabe: Matrizen A, B des Eigenwertproblems,
-%%          Intervallgrenzen lmin, lmax,
-%%	        Anzahl k der erwarteten Eigenwerte
-%% Ausgabe: Matrix V mit Eigenvektoren,
-%%          Matrix D mit Eigenwerten auf der Diagonalen
+Nachdem wir diese Kurzzusammenfassung des Gau"s-Quadratur-Verfahrens diskutiert haben,
+widmen wir uns wieder der Approximation des Spektralprojektors
+$P = X_k X_k^H B$. Dabei "ubernehmen wir die am Anfang dieses Kapitels eingef"uhrte Notation, sowie die an die Matrizen $A$ und $B$ gestellten Voraussetzungen.\\
 
-%% Funktionsaufruf: [V, D] = feast[A, B, lmin, lmax, k]
+Wenden wir uns daher wieder dem reellen Intervall $I := [\lambda_1, \lambda_2]$ zu. Das Ziel ist
+die Konstruktion einer rationalen Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$,
+die auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht. Dazu
+bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
+wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
+rationale Funktion $\r$ um.\\
 
-function[V, D] = feast(A, B, lmin, lmax, k);
+Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
+$r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
+\[
+\mathcal{C} := \{z\in\C : |z-c| = r\}
+\]
+gerade einer Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
+l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
+\[
+\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+= \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
+\]
+gilt. Dieses Integral gilt es nun zu approximieren.\textcolor{red}{wie genau?}(Vgl. ~\cite[20]{jaenich}).\\
 
-n = length(A);
+Wir werden das eben diskutierte Integral mit einer Gau"s-Legendre Quadraturformel ann"ahern.
+Dazu ist es n"otig die Kontur $\mathcal{C}$ so zu parametrisieren, dass eine Transformation
+der Integrationsgrenzen auf das Intervall $[-1,1]$ m"oglichst einfach m"oglich ist. Zu diesem Zweck sei
+\begin{align*}
+\gamma\colon[-1,3]&\to\C \\
+t&\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
+\end{align*}
+als Parametrisierung der Sph"are gew"ahlt. Die
+Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
+\[
+\gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
+\]
+gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $z\notin\mathcal{C}$
+\begin{align*}
+\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+&= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
+\int_{1}^3\frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \right) \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
+\int_{-1}^1\frac{\gamma'(2-t)}{\gamma(2-t)-z}\text{ d}t \right) \\
+&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} +
+\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\right)\text{d}t
+\end{align*}
+wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
+von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.\\
 
-% erzeuge Zufallsmatrix
-Y = randn(n, k);
+F"ur $q\in\N$ mit \textcolor{red}{wie gro"s ist $q$ genau?} seien $(w_j, t_j)_{j=1:q}$
+die f"ur die Gau"s-Legendre-Quadratur ben"otigten Gewichte und Diskretisierungspunkte.
+Dann setzen wir
+\[
+\rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^q \left(
+\frac{w_j \cdot \gamma'(t_j)}{\gamma(t_j)-z} - \frac{w_j \cdot \overline{\gamma'(t_j)}}{\overline{\gamma(t_j)}-z}
+\right)
+\]
+und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
+$\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
+Funktion
+\[
+\r\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
+\frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
+\]
+zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
+rationale Funktion bereits in Partialbruchzerlegung vorliegt. Setzen wir schlie"slich $B^{-1}A$ in die
+rationale Funktion ein, so erhalten wir
+\begin{align*}
+\r(B^{-1}A) &= \sum_{k=1}^q \sigma_k (\gamma_k I - B^{-1}A)^{-1} +
+\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} I - B^{-1}A)^{-1}\\
+&= \sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} B +
+\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} B
+\end{align*}
+und folglich
+\[
+\r(B^{-1}A)V =
+\sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BV +
+\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BV
+\]
+f"ur eine Matrix $V\in\C^{n,q}$.
 
-% generiere Green-Funktion
-funGreen = @(w) inv( w.*B - A );
+%Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
+%\[
+%p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
+%\]
+%definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
+%\[
+%\r(t) := \frac{p(t)}{q(t)}
+%\]
+%und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
+%Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$.
+%\section{Der FEAST-Algorithmus}
 
-% berechne die Integrationsknotenpunkte
-n0 = lmax;
-n1 = (lmin + lmax)/2 + (lmax - (lmin + lmax)/2)*i;
-n2 = lmin;
-n3 = (lmin + lmax)/2 - (lmax - (lmin + lmax)/2)*i;
-
-% Integrationskontur
-C = [n1 n2 n3];
-
-% berechne Transformationsmatrix Q
-Q = (-1/(2*pi*i))*integral(funGreen, n0, n0,...
-	'Waypoints', C, 'ArrayValued', true) * Y;
-
-% berechne Ritz-Paare des transformierten Problems
-Aq = Q'*A*Q; Bq = Q'*B*Q;
-[Vq, D] = eig(Aq, Bq);
-
-% berechne die gesuchten Eigenvektoren
-V = Q*Vq;
-\end{lstlisting}
-
-"Uberpr"ufen wir die Funktionalit"at mit den Matrizen $A$ und $B$ aus dem Abschnitt
-\ref{sec:bsp}, erhalten wir folgende Ausgabe:
-
-\begin{lstlisting}[numbers=none]
->> [V, D] = feast(A, B, -3, 3, 2)
-
-V =
-
-  -1.4142 - 0.0000i   0.0000 + 0.0000i
-   0.0000 + 0.0000i   1.4142 - 0.0000i
-  -0.0000 + 0.0000i  -0.0000 + 0.0000i
-
-
-D =
-
-    0.0000         0
-         0    2.0000
-
->>
-\end{lstlisting}
-
-\vspace{0.5cm}
-Die vorgestellte Umsetzung des FEAST-Algorithmus' l"asst sich ohne Weiteres auf
-dynamische Matrixdimensionen "ubertragen. Da sich mit zunehmender Dimension
-unter Umst"anden auch die Kardinalit"at des Spektrums und die Anzahl der Eigenr"aume "andert, sollten
-gegebenenfalls Optimierungsma"snahmen getroffen werden, wie etwa die Wahl der Knotenpunkte f"ur die
-Konturintegration.
-
-\section{FEAST Algorithmus}
-
-\section{Tools f"ur MATLAB}
+%f"urderhin
