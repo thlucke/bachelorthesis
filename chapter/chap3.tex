@@ -1,76 +1,92 @@
-Dieses Kapitel widmet sich der Frage, ob und wie man aus der Menge aller Eigenpaare
-des Problems
+In der Einleitung dieser Arbeit wurde bereits h"aufiger vom \emph{Filtern} gesprochen.
+Bevor wir uns mit Techniken des Filtern besch"aftigen k"onnen, wollen wir die Intuition hinter diesem Begriff der Form halber sauber definieren.
+
+\begin{defn}[Filter]
+Es sei $M$ eine nicht leere Menge. Eine Abbildung der Gestalt
+\[
+\mathfrak{F}\colon M \to \{0,1\},\ % \text{ mit }
+m\mapsto\mathfrak{F}(m)
+\]
+hei"st \emph{Filterfunktion} oder \emph{Filter auf der Menge $M$}. Die Zuordnung $m\mapsto\mathfrak{F}(m)$ hei"st \emph{Filtern von $m$ aus $M$}.
+\end{defn}
+
+Damit k"onnen wir uns nun in diesem Kapitel der Frage widmen, ob und wie man aus der Menge aller Eigenpaare eines Eigenwertproblems mit der zugeh"origen Eigenwertgleichung
 \[
 Ax = \lambda Bx
 \]
-eine gew"unschte Teilmenge ausw"ahlen kann. Die Vorgehensweise, die das Ausw"ahlen einer solchen Teilmenge beschreibt, werden wir fortan als \emph{Filtern} bezeichnen. 
-Dazu werden im Rahmen dieser Arbeit aus dem Katalog der Verfahren
-die zwei Folgenden ausgew"ahlt und vorgestellt: Rayleigh-Ritz-Verfahren\footnote{Die im Folgenden pr"asentierte Vorgehensweise wird in der
-Literatur nicht einheitlich bezeichnet. Anstelle von Rayleigh-Ritz-Verfahren sind auch die Bezeichnungen Galerkin-Methoden oder ... "ublich (siehe da und da).
-In dieser Arbeit wird durchg"angig vom Rayleigh-Ritz-Verfahren oder der Rayleigh-Ritz-Methode
-gesprochen.} und Konturintegration. An einem abschlie"senden Beispiel wird au"serdem die Kompatibilit"at beider Konzepte dargelegt.
+eine gew"unschte Teilmenge ausw"ahlen kann.
+Dabei wollen wir an die Matrizen $A$ und $B$ zun"achst keine weiteren Anforderungen stellen.\\
 
-\section{Rayleigh-Ritz-Verfahren}\label{sec:ritz}
+Ist $M$ entweder die Potenzmenge des Spektrums oder die Menge aller Eigenpaare von $(A,B)$ und $\mathfrak{F}$ eine Filterfunktion auf $M$, so wollen wir vereinbaren, dass wir stets auf der Suche nach der Urbildmenge $\mathfrak{F}^{-1}(\{ 1\})$ sind.
+Wollen wir etwa die Menge $G$ aller ganzzahligen Eigenwerte eines gewissen Eigenwertproblems finden, so gelte $\mathfrak{F}^{-1}(\{1\}) = G$.\\
+
+Die Methoden zur Bestimmung von Teilmengen von Eigenpaaren oder Eigenwerten sind ebenso vielf"altig, wie die M"oglichkeiten das gesamte Spektrum und entsprechende Eigenvektoren zu bestimmen.
+Wir wollen aber im Rahmen dieser Arbeit aus dem Katalog der Verfahren lediglich zwei ausw"ahlen und besprechen: \emph{Rayleigh-Ritz Verfahren} und \emph{Kontur-integration}.
+
+\newpage
+
+\section{Rayleigh-Ritz Verfahren}\label{sec:ritz}
 %\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
 Die Idee dieser Klasse von Verfahren ist das Approximieren des von
-den gesuchten Eigenvektoren aufgespannten Unterraums. %Dazu sollen -- wie der Name vermuten l"asst --
-%Projektionen bem"uht werden.\\
-Bevor wir das allgemeine Eigenwertproblem untersuchen, wenden wir unsere Aufmerksamkeit
-dem gew"ohnlichen Eigenwertproblem
+den gesuchten Eigenvektoren aufgespannten Unterraums.
+Bevor wir uns mit beliebigen Eigenwertproblemen $(A,B)$ auseinandersetzen, betrachten wir den Spezialfall $B=I_n$ und wenden uns der entsprechenden Eigenwertgleichung
 \[
-Ax = \lambda x% \textcolor{red}{variablen wieder neu einf"uhren? oder in der einleitung: im folgenden sei stets...}
+Ax = \lambda x
 \]
-zu und betrachten f"ur eine Zahl $m\in\N$ mit $m\le n$
-einen $m$-dimensionalen Unterraum $\U_m\subseteq\Cn$. Dieser zun"achst nicht
+zu. Sei im Folgenden $\S_m\subseteq\Cn$ ein $m$-dimensionaler Unterraum. Dieser zun"achst nicht
 n"aher bestimmte \emph{Suchraum} wird als Grundlage f"ur das Verfahren gew"ahlt.
-Gesucht sind nun Paare $(\widetilde{\lambda}, \widetilde{x})\in\C\times \U_m \setminus\{0\}$ --
-die wir als approximierte L"osungen des Eigenproblems verstehen wollen --
-welche die Eigenschaft
-\begin{equation}\label{eq:orthogonal}
-\langle u, A\widetilde{x} - \widetilde{\lambda}\widetilde{x} \rangle=0
+Gesucht sind nun Paare $(\widetilde{\lambda}, \widetilde{x})\in\C\times \S_m \setminus\{0\}$,
+welche wir als approximierte L"osungen des Eigenproblems verstehen wollen, die
+die Eigenschaft
+\begin{equation}\label{eq:chap3:orthogonal}
+s^H(A\widetilde{x} - \widetilde{\lambda}\widetilde{x})=0
 \end{equation}
-f"ur alle $u \in \U_m $ erf"ullen. Das Residuum $(A\widetilde{x} - \widetilde{\lambda}\widetilde{x})$
+f"ur alle $s \in \S_m $ erf"ullen. Das \emph{Residuum} $(A\widetilde{x} - \widetilde{\lambda}\widetilde{x})$
 soll also orthogonal auf dem Suchraum stehen. Paare, die diesem Anliegen nachkommen,
-werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\U_m$ genannt.\footnote{Ritz-Paare m"ussen nicht notwendigerweise eine Orthogonalit"atsbedingung erf"ullen... oder doch?}\\
+werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\S_m$ genannt.\\
 
-Wir wollen nun annehmen, dass mit der Menge von Vektoren $\{u_i\}_{i=1:m}\subseteq \Cn$ eine Orthonormalbasis
-des Unterraums $\U_m$ gegeben ist. Definieren wir dann die Matrix $U_m :=[u_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\U_m$
-ein Vektor $y\in\C^m$ existieren, mit $U_m y = \widetilde{x}$. Die Forderung \eqref{eq:orthogonal}
+Wir wollen nun annehmen, dass mit der Menge $\{s_i\}_{i=1:m}\subseteq \Cn$ eine Basis orthonormaler Vektoren des Unterraums $\S_m$ gegeben ist. Setzen wir dann $S_m :=[s_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\S_m$
+ein Vektor $y\in\C^m$ existieren, mit $S_m y = \widetilde{x}$. Die Forderung \eqref{eq:chap3:orthogonal}
 ist dann zu der Gleichung
 \[
-U_m^H(AU_m y - \widetilde{\lambda} U_m y) = 0
+S_m^H(AS_m y - \widetilde{\lambda} S_m y) = 0
 \]
 "aquivalent. Als direkte Konsequenz dieser Umformulierung erhalten wir unter Ausnutzung
-der Orthogonalit"at der Spalten von $U_m$ mit
-\begin{equation}\label{eq:transform}
-(U_m^H A U_m) y = \widetilde{\lambda}y
+der Orthogonalit"at der Spalten von $S_m$ mit
+\begin{equation}\label{eq:chap3:transform}
+(S_m^H A S_m) y = \widetilde{\lambda}y
 \end{equation}
-ein neues Eigenwertproblem. Jedes Eigenpaar $(\widetilde{\lambda},y)$ von \eqref{eq:transform}
-liefert dann nach Konstruktion mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar des gew"ohnlichen
-Eigenwertproblems bez"uglich des Suchraums $\U_m$. In Abh"angigkeit von der Wahl
-des Suchraumes variiert nat"urlich G"ute der Approximation. Ist etwa $\U_m$
-durch Eigenvektoren aufgespannt, so ist jedes Ritz-Paar schon ein Eigenpaar.
-Wir werden sp"ater aus den Untersuchungen des allgemeinen Eigenwertproblems folgern,
-dass bereits im Falle der Invarianz von $\U_m$ unter $A$ jedes Ritz-Paar von $A$ bez"uglich $\U_m$ bereits ein Eigenpaar von $A$ ist.
-An dieser Stelle begn"ugen wir uns vorerst mit dieser erfreulichen Botschaft.\\
+die Eigenwertgleichung zum Eigenwertproblem $(S_m^H A S_m, I_m)$. Jede L"osung $(\widetilde{\lambda},y)$ von \eqref{eq:chap3:transform}
+liefert dann nach Konstruktion mit $(\widetilde{\lambda}, S_m y)$ ein Ritz-Paar des gew"ohnlichen
+Eigenwertproblems bez"uglich des Suchraums $\S_m$.\\
 
-%Fassen wir die eben geschilderte Vorgehensweise algorithmisch zusammen, so ist
-%der folgende Pseudocode denkbar:
+In Abh"angigkeit von der Wahl
+des Suchraumes variiert nat"urlich G"ute der Approximation. Ist etwa $\S_m$
+durch Eigenvektoren aufgespannt, so ist jedes Ritz-Paar schon ein Eigenpaar.
+Wir werden sp"ater aus den Untersuchungen des Eigenwertproblems f"ur beliebiges $B$ folgern,
+dass bereits im Falle der Invarianz von $\S_m$ unter $A$ jedes Ritz-Paar von $A$ bez"uglich $\S_m$ bereits ein Eigenpaar von $A$ ist.
+An dieser Stelle begn"ugen wir uns vorerst mit dieser erfreulichen Botschaft.
+
+%Es l"asst sich aber hier bereits erahnen, dass bei diesem Verfahren zun"achst nicht von einer Eigenpaarfilterung geprochen werden kann.
+%Schlie"slich erhalten wir unter Umst"anden kein exaktes Eigenpaar sondern eben nur einen Ersatz.
+%Durch die Einf"uhrung einer geeigneten Iterationsvorschrift, l"asst sich jedoch zumindest eine E\\
+\newpage
+
 Die eben skizzierte Vorgehensweise zur Berechnung von Ritz-Paaren des gew"ohnlichen Eigenwertproblems
 l"asst sich algorithmisch wie folgt zusammenfassen.
 
-\begin{algorithm}\label{alg:rp}
-\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[98]{saad})}
+\begin{algorithm}
+\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[98]{saad})}\label{alg:chap3:rp}
 \begin{algorithmic}[1]
-\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
-\State Setze $\widetilde{A}\gets U_m^H A U_m$ und
+\State Berechne eine Orthonormalbasis $\{s_i\}_{i=1:m}$ von $\S_m$ und setze $S_m\gets[s_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets S_m^H A S_m$ und
 l"ose $\widetilde{A}Y = Y \Lambda$ in $Y$ und
 $\Lambda$.
-\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\State Setze $\widetilde{X} \gets S_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
 \end{algorithmic}
 \end{algorithm}
 
-Hierbei entsprechen die Spalten von $Y\in\C^{n,m}$ gewissen Eigenvektoren von \eqref{eq:transform}, w"ahrend auf der Diagonalen von $\Lambda\in\C^{m,m}$
+An dieser Stelle sei an die in Kapitel \ref{chap2}  mit Gleichung \eqref{eq:chap2:evpMatrix2} eingef"uhrte Notation erinnert. Es entsprechen also die Spalten von $Y\in\C^{n,m}$ gewissen Eigenvektoren von $(\widetilde{A}, I_m)$, w"ahrend auf der Diagonalen von $\Lambda\in\C^{m,m}$
 die zugeh"origen Eigenwerte zu finden sind.\\
 
 Die Idee dieser Methode ist also simpel: Transformiere das Eigenwertproblem mit
@@ -78,17 +94,17 @@ einer gewissen Matrix in ein anderes Eigenwertproblem und benutze dessen L"osung
 um Ritz-Paare des urspr"unglichen Problems zu erhalten.
 Doch wozu die M"uhe, das urspr"ungliche Eigenwertproblem in ein anderes
 Eigenwertproblem zu "uberf"uhren? Zwar gelingt es, aus dem transformierten Problem
-\eqref{eq:transform} Ritz-Paare zu extrahieren, aber w"are nicht auch denkbar,
-s"amtliche Eigenpaare von $A$ zu approximieren und die zum Unterraum $\U_m$
+\eqref{eq:chap3:transform} Ritz-Paare zu extrahieren, aber w"are nicht auch denkbar,
+s"amtliche Eigenpaare von $A$ zu approximieren und die zum Unterraum $\S_m$
 korrespondierende Teilmenge direkt auszuw"ahlen?\\
 
 Dies mag in Einzelf"allen in der Tat sinnvoller sein. Sprechen wir allerdings
-von Matrixdimensionen jenseits der Vorstellungskraft, ist eine vollst"andige
+von Matrixdimensionen hinreichender Gr"o"se, ist eine vollst"andige
 Berechnung aller Eigenpaare mitunter ein sehr zeitintensives Vergn"ugen. Bei
-genauerer Betrachtung der Gleichung \eqref{eq:transform} f"allt auf, dass die
-Matrix $(U_m^H A U_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
+genauerer Betrachtung der Gleichung \eqref{eq:chap3:transform} f"allt auf, dass die
+Matrix $(S_m^H A S_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
 Format hat, als die Matrix $A$ im urspr"unglichen Problem. Man darf hier also erwarten,
-dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \ref{alg:rp}
+dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \ref{alg:chap3:rp}
 geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Dies
 wird im vierten Kapitel anhand ausgew"ahlter Beispiele vorgef"uhrt.\\
 

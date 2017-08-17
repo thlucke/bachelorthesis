@@ -39,26 +39,26 @@ erf"ullt.\footnote{Wir werden Matrizen in ihrer komponentenweisen Darstellung ko
 
 Sei im Folgenden $A$ wieder eine beliebige komplexwertige Matrix. Neben dieser betrachten wir nun noch eine weitere Matrix $B\in\Cnn$.
 Unter einem \emph{$n$-dimensionalen Eigenwertproblem} wollen wir die Aufgabe verstehen, Paare $(\lambda,x)\in\C\times\Co$ zu finden, die der Gleichung
-\begin{equation}\label{eq:chap1:evp}
+\begin{equation}\label{eq:chap2:evp}
 Ax = \lambda Bx
 \end{equation}
 gen"ugen. Wenn klar ist, dass von solch einem Problem die Rede ist, werden wir anstelle des Wortes \glqq Eigenwertproblem\grqq\ die Notation $(A,B)$ als Bezeichnung verwenden und aus"serdem auf die Angabe der Dimension verzichten. Im Spezialfall $B=I_n$
 hei"st $(A,B)$ \emph{gew"ohnliches Eigenwertproblem der Dimension $n$}.\\
 
-Ist ein passendes Paar $(\lambda,x)$ gefunden, welches die \emph{Eigenwertgleichung} \eqref{eq:chap1:evp} l"ost, so nennen wir dieses \emph{Eigenpaar von} $(A,B)$ oder kurz: \emph{Eigenpaar}, falls bekannt ist, von welchem Eigenwertproblem die Rede ist.
+Ist ein passendes Paar $(\lambda,x)$ gefunden, welches die \emph{Eigenwertgleichung} \eqref{eq:chap2:evp} l"ost, so nennen wir dieses \emph{Eigenpaar von} $(A,B)$ oder kurz: \emph{Eigenpaar}, falls bekannt ist, von welchem Eigenwertproblem die Rede ist.
 Dabei hei"st $\lambda$ \emph{Eigenwert von} $(A,B)$ und $x$ \emph{Eigenvektor zum Eigenwert} $\lambda$ \emph{von} $(A,B)$. Auch hier werden wir auf die Angabe des Eigenwertproblems verzichten, wenn der Kontext dies gestattet.
-Beim gew"ohnlichen Eigenwertproblem sehen wir von der Paar-Schreibweise ab und sprechen direkt von Eigenpaaren, Eigenwerten und Eigenvektoren von $A$.\\
+Beim gew"ohnlichen Eigenwertproblem sehen wir von der Paar-Schreibweise ab und sprechen direkt von Eigenpaaren, Eigenwerten und Eigenvektoren von $A$.
+Die Menge aller Eigenwerte, das sogenannte \emph{Spektrum}, bezeichnen wir mit $\Lambda(A,B)$ im allgemeinen und mit $\Lambda(A)$ im gew"ohnlichen Fall.\\
 
 Wie auf der Titelseite angek"undigt, wird sich diese Arbeit "uberwiegend mit der Behandlung \emph{hermitesch positiv definiter Eigenwertprobleme} (HPD-Eigenwertprobleme) befassen.
-Damit seien f"urderhin Eigenwertprobleme $(A,B)$ bezeichnet, bei denen wir uns mit einer hermiteschen Matrix $A$ sowie einer HPD-Matrix $B$ konfrontiert sehen.\\
-
+Damit seien f"urderhin Eigenwertprobleme $(A,B)$ bezeichnet, bei denen wir uns mit einer hermiteschen Matrix $A$ sowie einer HPD-Matrix $B$ konfrontiert sehen.
 Eigenwertprobleme dieser Art besitzen eine Reihe n"utzlicher Eigenschaften, an denen wir uns zu einem sp"ateren Zeitpunkt in der Arbeit bedienen werden.
 Von besonderer Bedeutung wird dabei das folgende Resultat sein.
 
-\begin{thm}\label{thm:chap1:realEigenvalues}
+\begin{thm}\label{thm:chap2:realEigenvalues}
 Ist $(A,B)$ ein HPD-Eigenwertproblem der Dimension $n$, so sind alle zugeh"origen Eigenwerte reell.
 Au"serdem existiert eine $B$-orthogonale Matrix $X\in\Cnn$ sowie eine Diagonalmatrix $\Lambda\in\R^{n,n}$ mit
-\begin{equation}\label{eq:chap1:evpMatrix}
+\begin{equation}\label{eq:chap2:evpMatrix}
 A = BX\Lambda X^{-1}.
 \end{equation}
 \end{thm}
@@ -71,13 +71,13 @@ Sei $(\lambda,x)$ ein Eigenpaar von $(A,B)$. Der positiven Definitheit von $B$ w
 \]
 folgt dann die Gleichheit $\lambda = \overline{\lambda}$ und somit $\lambda\in\R$.\\
 
- Um die Existenz der im Satz angegebenen Faktorisierung \eqref{eq:chap1:evpMatrix}
+ Um die Existenz der im Satz angegebenen Faktorisierung \eqref{eq:chap2:evpMatrix}
 zu zeigen, ziehen wir unterst"utzend den Beweis aus ~\cite[Theorem 15.3.2, 344 f.]{parlett} zurate und erg"anzen diesen zur Vervollst"andigung durch weitere Argumente.\\
 
 
 Zun"achst nutzen wir die Hermitizit"at und die positive Definitheit von $B$ aus. Mit diesen beiden Eigenschaften garantieren uns der Spektralsatz f"ur hermitesche Matrizen\footnote{Eine Formulierung mit Beweis ist im Anhang zu finden. Siehe Satz \ref{thm:appTheorems:Spektralsatz}.}
 und der Satz von der Existenz der Cholesky-Zerlegung\footnote{Siehe Satz \ref{thm:appTheorems:Cholesky} im Anhang.} eine Faktorisierung der Art
-\begin{equation}\label{eq:chap1:factorization}
+\begin{equation}\label{eq:chap2:factorization}
 B = X_B \Lambda_B^2 X_B^H.
 \end{equation}
 Dabei ist $\Lambda_B\in\R^{n,n}$ eine diagonale Matrix und $X_B \in \C^{n,n}$ orthogonal.
@@ -99,20 +99,20 @@ M = X_M \Lambda_M X_M
 von $M$. Setzen wir nun $X:=X_M \Lambda_M X_M^H$, erhalten wir die Identit"aten
 \begin{align*}
 X^H A X &= X_M^H \Lambda_B^{-1} X_B^H A X_B \Lambda_B^{-1} X_M = X_M^H M X_M = \Lambda_M\\
-X^H B X &= X_M^H \Lambda_B^{-1} X_B^H B X_B \Lambda_B^{-1} X_M \overset{\eqref{eq:chap1:factorization}}{=} X_M^H X_M = I_n.
+X^H B X &= X_M^H \Lambda_B^{-1} X_B^H B X_B \Lambda_B^{-1} X_M \overset{\eqref{eq:chap2:factorization}}{=} X_M^H X_M = I_n.
 \end{align*}
-Also ist $X$ schon $B$-orthogonal. Schlie"slich folgt Gleichung \eqref{eq:chap1:evpMatrix} aus
+Also ist $X$ schon $B$-orthogonal. Schlie"slich folgt Gleichung \eqref{eq:chap2:evpMatrix} aus
 \[
 X^{-1}B^{-1}AX = X^{-1}B^{-1} (X^H)^{-1} X^H AX = \Lambda_M.
 \]
 durch Umstellen.
 \end{proof}
 
-Die Existenz der Faktorisierung \eqref{eq:chap1:factorization}
-werden wir sp"ater nutzen, um bei hermitesch positiv definiten Eigenwertproblem $(A,B)$ anstelle von \eqref{eq:chap1:evp} das L"osen von
-\[
+Die Existenz der Faktorisierung \eqref{eq:chap2:factorization}
+werden wir sp"ater nutzen, um bei hermitesch positiv definiten Eigenwertproblem $(A,B)$ anstelle von \eqref{eq:chap2:evp} das L"osen von
+\begin{equation}\label{eq:chap2:evpMatrix2}
 AX = BX\Lambda
-\]
+\end{equation}
 verlangen zu k"onnen. Diese Notation wird h"aufig bei der Ausformulierung von Algorithmen in Erscheinung treten.\\
 
 Fahren wir fort mit einer beliebig gew"ahlten Matrix $A\in\C^{m,n}$. Diese induziert bekannterweise eine lineare Abbildung $\mathcal{A}\colon\Cn\to\C^{m}$ verm"oge $\mathcal{A}(x) := Ax$.
