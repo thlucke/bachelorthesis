@@ -155,7 +155,7 @@ Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 
 \newpage
 
-\begin{thm}\label{thm:invariant}
+\begin{thm}\label{thm:chap3:invariant}
 Neben zwei Matrizen $A,B\in\Cnn$ -- wobei wir Hermitizit"at und positive Definitheit von $B$ fordern -- sei ein $m$-dimensionaler Unterraum $\S_m \subseteq \C_n$ gegeben.
 Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritzpaar von $B^{-1}A$
 bez"uglich $\S_m$ auch ein Eigenpaar von $(A,B)$.
@@ -166,7 +166,7 @@ Beginnen wir mit einer ONB $\{s_i\}_{i=1:m}\subseteq\S_m$ des Unterraums $\S_m$
 und setzen wie bisher $S_m := [s_i]_{i=1:m}\in\C^{n,m}$. Aufgrund der Invarianz
 von $\S_m$ unter $B^{-1}A$ muss eine Matrix $V_m \in \C^{m,m}$ existieren, welche
 die Gleichung
-\begin{equation}\label{eq:thminvariant}
+\begin{equation}\label{eq:chap3:thminvariant}
 B^{-1}A S_m = S_m V_m
 \end{equation}
 erf"ullt. Insbesondere folgt unter Ausnutzung der Orthogonalit"at der Spalten
@@ -176,7 +176,7 @@ ein Ritz-Paar von $B^{-1}A$ ist, so folgt aus
 \[
 S_m^H B^{-1}A S_m y = V_m y
 \]
-mit \eqref{eq:thminvariant} die Gleichung
+mit \eqref{eq:chap3:thminvariant} die Gleichung
 \[
 B^{-1}AS_m y = S_m V_m y = \lambda S_m y
 \]
@@ -200,10 +200,7 @@ Ax = \lambda Bx = \lambda x.
 Die Aussage folgt dann aus dem vorigen Satz.
 \end{proof}
 
-Es wird sich zu einem sp"ateren Zeitpunkt herausstellen, dass diese Erkenntnis aus algorithmischer Sicht h"ochst n"utzlich ist.
-Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden. \textcolor{red}{Krylow Raum...}\\
-
-Wenden wir uns einer weiteren Kuriosit"at zu. Zwischen obigem Verfahren und dem Konzept der Projektion besteht ein enger Zusammenhang.
+Wenden wir uns einer weiteren Kuriosit"at zu. Zwischen dem Rayleigh-Ritz Verfahren und dem Konzept der Projektion besteht ein enger Zusammenhang.
 Um zu dieser Einsicht zu gelangen, bedarf es ein wenig
 Vorbereitung.
 %Das Rayleigh-Ritz-Verfahren steht in einem engen Zusammenhang zu Projektionsverfahren.
@@ -215,26 +212,25 @@ Vorbereitung.
 %\]
 %ist. Richtig definiert, besitzt $P$ noch weitere n"utzliche Eigenschaften, die
 %der folgende Satz vorstellt.
-\begin{thm}\label{thm:projektor}
-Es sei $B\in\Cnn$ eine HPD-Matrix und f"ur $m\in\N$ mit $m\le n$ sei
-ein $m$-dimensionaler Unterraum $\U_m \subseteq \Cn$ gegeben. Sei weiter $\{u_i\}_{i=1:m}\subseteq\U_m$ eine
-Basis $B$-orthonormaler Vektoren, das hei"st, die Matrix $U_m := [u_i]_{i=1:m}
-\in\C^{n,m}$ erf"ulle die Gleichung $U_m^H B U_m = I_m$. Dann ist die von der Matrix
- $P := U_m U_m^H B \in \Cnn$ induzierte lineare Abbildung
+\begin{thm}\label{thm:chap3:projektor}
+Es sei $B\in\Cnn$ eine HPD-Matrix und $\S_m \subseteq \Cn$ ein $m$-dimensionaler Unterraum. Sei weiter $\{s_i\}_{i=1:m}\subseteq\S_m$ eine
+Basis $B$-orthonormaler Vektoren, das hei"st, die Matrix $S_m := [s_i]_{i=1:m}
+\in\C^{n,m}$ erf"ulle die Gleichung $S_m^H B S_m = I_m$. Dann ist die von der Matrix
+ $P := S_m S_m^H B \in \Cnn$ induzierte lineare Abbildung
 \[
-p \colon \Cn \to \Cn, x\mapsto U_m U_m^H Bx
+p \colon \Cn \to \Cn, x\mapsto S_m S_m^H Bx
 \]
-eine $B$-orthogonale Projektion auf den Unterraum $\U_m$. Au"serdem gilt
+eine $B$-orthogonale Projektion auf den Unterraum $\S_m$. Au"serdem gilt
 f"ur alle $x\in\Cn$ die Identit"at
 \[
-\|x-p(x)\|_B = \min_{y\in\U_m} \|x - y\|_B.
+\|x-p(x)\|_B = \min_{y\in\S_m} \|x - y\|_B.
 \]
 \end{thm}
 
 \begin{proof}
-Aus der $B$-Orthogonalit"at von $U_m$ folgt f"ur alle $x\in\Cn$
+Nach Konstruktion gilt $p(\Cn)\subset \S_m$. Aus der $B$-Orthogonalit"at von $S_m$ folgt f"ur alle $x\in\Cn$
 \[
-p^2 (x) = U_m U_m^H B U_m U_m^H B x= U_m U_m^H Bx = p(x).
+p^2 (x) = S_m S_m^H B S_m S_m^H B x= S_m S_m^H Bx = p(x).
 \]
 %und damit gilt die Mengengleichheit $p(\Cn) = \U$ nach Konstruktion. %($\Rang{P_B} = \dim(\U)$).
 Ist nun $y\in\U_m$ und $x\in\Cn$, dann folgt wegen $p(y) = y$ und $B=B^H$ auch
@@ -243,18 +239,18 @@ Ist nun $y\in\U_m$ und $x\in\Cn$, dann folgt wegen $p(y) = y$ und $B=B^H$ auch
 &= y^H (Bx - B^H U_m U_m^H Bx) \\
 &= y^H Bx - p(y)^H Bx = 0.
 \end{align*}
-Es gilt demnach $x-p(x) \ \bot_B \ \U_m$. Die Optimierungsaufgabe wird schlie"slich wegen
+Es gilt demnach $x-p(x) \ \bot_B \ \U_m$. Damit ist gezeigt, dass $p$ eine $B$-orthogonale Projektion auf $\S_m$ ist. Die Optimierungsaufgabe wird schlie"slich wegen
 \begin{align*}
 \|x-y\|_B^2 &= \|x-p(x) + p(x)-y\|_B^2 \\
 &= \|x-p(x)\|_B^2 + \|p(x)-y\|_B^2\\
 &\ge \|x-p(x)\|_B^2
 \end{align*}
 gel"ost. Dabei ist bei der zweiten Gleichheit zu ber"ucksichtigen, dass $x-p(x) \in \U_m^{\bot_B}$
-und $p(x)-y \in \U_m$ gilt.
-%denn aufgrund der positiven Definitheit von Normen, gilt Gleichheit genau dann,wenn $p(x)=x$ erf"ullt ist.
+und $p(x)-y \in \U_m$ gilt.\footnote{F"ur eine genauere Ausf"uhrung sei der Leser auf Rechnung \ref{comp:app:projector} im Anhang verwiesen.}
 \end{proof}
+
 Mit Hilfe der im Satz eingef"uhrten Projektionsmatrix $P$, l"asst sich die Gleichung
-\eqref{eq:transformedevp} -- zu finden auf Seite \pageref{eq:transformedevp} -- umformulieren. Durch Linksmultiplikation
+\eqref{eq:chap3:transformedevp} umformulieren. Durch Linksmultiplikation
 mit $B^H U_m$ und dem Einschub der Identit"at $U_m^H B U_m$ gilt n"amlich
 \[
 B^H U_m (U_m^H A U_m)(U_m^H B U_m)y = \widetilde{\lambda} B^H U_m (U_m^H B U_m)(U_m^H B U_m)y
@@ -272,47 +268,33 @@ Im Fall der gew"ohnlichen Eigenwertgleichung erhalten wir speziell
 \[
 P A P \widetilde{x} = \widetilde{\lambda} \widetilde{x}.
 \]
-Wenden wir uns nun nochmal dem Rayleigh-Ritz-Verfahren zu und betrachten das
-verallgemeinerte Eigenwertproblem f"ur eine hermitsche Matrix $A\in\Cnn$ sowie eine
-HPD-Matrix $B\in\Cnn$. Angenommen, uns st"unde mit dem Suchraum $\U_m$ bereits ein von Eigenvektoren
-aufgespannter Unterraum zur Verf"ugung. Dann existiert eine Matrix $U_m := [u_i]_{i=1:m}\in\C^{n,m}$ mit
-$B$-orthonormalen Spalten aus Eigenvektoren von $(A,B)$ und $\Bild(U_m)=\U_m$, sowie eine reelle Diagonalmatrix
-$\Lambda_m := \text{diag}(\lambda_i)_{i=1:m}\in\C^{m,m}$ mit
+
+Die Behauptung, es w"urde ein Zusammenhang zu Projektionen bestehen, wurde also in der Tat zu Recht aufgestellt.\\
+
+Nach diesen theoretischen Ausf"uhrungen fragt sich der anwendungsorientierte Leser zu Recht, welcher Nutzen aus den obigen Einsichten gezogen werden kann.
+Daf"ur wenden wir uns erneut dem Rayleigh-Ritz Verfahren zu und betrachten nun den Spezialfall eines hermitesch positiv definiten Eigenwertproblems $(A,B)$.
+
+Angenommen, uns st"unde mit dem Suchraum $\S_m$ bereits ein von Eigenvektoren
+aufgespannter Unterraum zur Verf"ugung. Dann sichert uns Satz \ref{thm:chap2:realEigenvalues} die Existenz einer Matrix $S_m := [s_i]_{i=1:m}\in\C^{n,m}$ mit
+$B$-orthonormalen Spalten aus Eigenvektoren von $(A,B)$ und $\Bild(S_m)=\S_m$, sowie die Existenz eine reelle Diagonalmatrix
+$\Lambda_m := \text{diag}(\lambda_i)_{i=1:m}\in\R^{m,m}$ mit
 \[
-AU_m = BU_m\Lambda_m.
+AS_m = BS_m\Lambda_m.
 \]
-Dabei ensprechenden die Diagonaleintr"age von $\Lambda_m$ gerade den zu den Spalten
-von $U_m$ korrespondierenden Eigenwerten von $(A,B)$. Folglich w"are das Bild
-des Spektralprojektors $P=U_m U_m^H B$ nach Konstruktion wegen
+Dabei entsprechen die Diagonaleintr"age von $\Lambda_m$ gerade den zu den Spalten
+von $S_m$ korrespondierenden Eigenwerten von $(A,B)$. Folglich w"are das Bild
+des Spektralprojektors $P=S_m S_m^H B$ nach Konstruktion wegen
 \[
-B^{-1}AP = B^{-1}(AU_m)U_m^H B = B^{-1}(BU_m \Lambda)U_m^H B
-= U_m\Lambda U_m^H B = \left(\sum_{i=1}^m \lambda_i u_i u_i^H\right)\cdot B
+B^{-1}AP = B^{-1}(AS_m)S_m^H B = B^{-1}(BS_m \Lambda)S_m^H B
+= S_m\Lambda S_m^H B = \left(\sum_{i=1}^m \lambda_i s_i s_i^H\right)\cdot B
 \]
 ein $(B^{-1}A)$-invarianter Unterraum. Daher erscheint es
-wegen Satz \ref{thm:invariant} sinnvoll, den Spektralprojektor $P$ in das
+wegen Satz \ref{thm:chap3:invariant} sinnvoll, den Spektralprojektor $P$ in das
 Rayleigh-Ritz-Verfahren zu integrieren.
 Da jedoch der Unterraum $\U_m$ im Allgemeinen nicht bekannt ist, stellt sich die Frage, ob es
 "uberhaupt sinnvoll ist nach dem Projektor zu suchen.
 Wir werden jedoch alsbald feststellen, dass %zumindest
-die Matrix $U_m U_m^H$ analytisch berechnbar ist.
-
-
-% nochmal ein wort verlieren, warum hier jetzt von filterung die rede sein kann
-%folgender teil vielleicht eher was f"ur den anfang des kaptitels
-
-%Im Allgemeinen ist es nicht ohne Weiteres m"oglich einen bestimmten Eigenraum gezielt
-%zu approximieren, wenn keine weiteren Informationen bekannt sind. G"angige
-%Wahl f"ur Suchr"aume sind Krylow-R"aume. Deren Struktur f"uhrt dazu, dass
-%Unterr"aume approximiert werden, die von den Eigenvektoren mit den betragsm"a"sig
-%gr"o"sten Eigenwerten aufgespannt werden. Es obliegt daher dem pers"onlichen
-%Geschick einen passenden Suchraum aufzustellen.\\
-
-
-
-%\textcolor{red}{anstelle einer basis von U kann auch beliebige matrix Q gew"ahlt
-%werden und dann diese auf Um projeziert werden mit $U:=U_m^H U_m B Q$ Dann
-%ist man fertig, aber Projektor ist i.A.nicht bekannt, daher approximieren. siehe
-%kapitel 3}
+die Matrix $U_m U_m^H$ mit Methoden der Funktionentheorie berechnbar ist.
 
 \section{Konturintegration}\label{sec:kontur}
 
