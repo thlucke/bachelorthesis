@@ -1,7 +1,7 @@
 In der Einleitung dieser Arbeit wurde bereits h"aufiger vom \emph{Filtern} gesprochen.
 Bevor wir uns mit Techniken des Filtern besch"aftigen k"onnen, wollen wir die Intuition hinter diesem Begriff der Form halber sauber definieren.
 
-\begin{defn}[Filter]
+\begin{defn}[Filter]\label{defn:chap3:filter}
 Es sei $M$ eine nicht leere Menge. Eine Abbildung der Gestalt
 \[
 \mathfrak{F}\colon M \to \{0,1\},\ % \text{ mit }
@@ -45,7 +45,7 @@ f"ur alle $s \in \S_m $ erf"ullen. Das \emph{Residuum} $(A\widetilde{x} - \widet
 soll also orthogonal auf dem Suchraum stehen. Paare, die diesem Anliegen nachkommen,
 werden auch \emph{Ritz-Paare} bez"uglich des Suchraums $\S_m$ genannt.\\
 
-Wir wollen nun annehmen, dass mit der Menge $\{s_i\}_{i=1:m}\subseteq \Cn$ eine Basis orthonormaler Vektoren des Unterraums $\S_m$ gegeben ist. Setzen wir dann $S_m :=[s_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\S_m$
+Wir wollen nun annehmen, dass mit der Menge $\{s_i\}_{i=1:m}\subseteq \Cn$ eine Basis orthonormaler Vektoren (ONB) des Unterraums $\S_m$ gegeben ist. Setzen wir dann $S_m :=[s_i]_{i=1:m}\in\C^{n,m}$, so muss wegen $\widetilde{x}\in\S_m$
 ein Vektor $y\in\C^m$ existieren, mit $S_m y = \widetilde{x}$. Die Forderung \eqref{eq:chap3:orthogonal}
 ist dann zu der Gleichung
 \[
@@ -67,27 +67,20 @@ Wir werden sp"ater aus den Untersuchungen des Eigenwertproblems f"ur beliebiges 
 dass bereits im Falle der Invarianz von $\S_m$ unter $A$ jedes Ritz-Paar von $A$ bez"uglich $\S_m$ bereits ein Eigenpaar von $A$ ist.
 An dieser Stelle begn"ugen wir uns vorerst mit dieser erfreulichen Botschaft.
 
-%Es l"asst sich aber hier bereits erahnen, dass bei diesem Verfahren zun"achst nicht von einer Eigenpaarfilterung geprochen werden kann.
-%Schlie"slich erhalten wir unter Umst"anden kein exaktes Eigenpaar sondern eben nur einen Ersatz.
-%Durch die Einf"uhrung einer geeigneten Iterationsvorschrift, l"asst sich jedoch zumindest eine E\\
 \newpage
 
 Die eben skizzierte Vorgehensweise zur Berechnung von Ritz-Paaren des gew"ohnlichen Eigenwertproblems
 l"asst sich algorithmisch wie folgt zusammenfassen.
 
 \begin{algorithm}
-\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[98]{saad})}\label{alg:chap3:rp}
+\caption{Berechnung von Ritz-Paaren (Vgl. ~\cite[Algorithmus 4.5, 98]{saad})}\label{alg:chap3:rp}
 \begin{algorithmic}[1]
-\State Berechne eine Orthonormalbasis $\{s_i\}_{i=1:m}$ von $\S_m$ und setze $S_m\gets[s_i]_{i=1:m}$.
-\State Setze $\widetilde{A}\gets S_m^H A S_m$ und
-l"ose $\widetilde{A}Y = Y \Lambda$ in $Y$ und
-$\Lambda$.
-\State Setze $\widetilde{X} \gets S_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\State Berechne eine ONB $\{s_i\}_{i=1:m}$ von $\S_m$ und setze $S_m\gets[s_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets S_m^H A S_m$.
+\State Finde Eigenpaare von $\widetilde{A}$ und w"ahle die gew"unschten $k$ Paare $(\widetilde{\lambda}_i, y_i)_{i=1:k}$, $k\le m$ aus.
+\State Gib Ritz-Paare $(\widetilde{\lambda}_i, S_m y_i)_{i=1:k}$ aus.
 \end{algorithmic}
 \end{algorithm}
-
-An dieser Stelle sei an die in Kapitel \ref{chap2}  mit Gleichung \eqref{eq:chap2:evpMatrix2} eingef"uhrte Notation erinnert. Es entsprechen also die Spalten von $Y\in\C^{n,m}$ gewissen Eigenvektoren von $(\widetilde{A}, I_m)$, w"ahrend auf der Diagonalen von $\Lambda\in\C^{m,m}$
-die zugeh"origen Eigenwerte zu finden sind.\\
 
 Die Idee dieser Methode ist also simpel: Transformiere das Eigenwertproblem mit
 einer gewissen Matrix in ein anderes Eigenwertproblem und benutze dessen L"osungen,
@@ -100,102 +93,107 @@ korrespondierende Teilmenge direkt auszuw"ahlen?\\
 
 Dies mag in Einzelf"allen in der Tat sinnvoller sein. Sprechen wir allerdings
 von Matrixdimensionen hinreichender Gr"o"se, ist eine vollst"andige
-Berechnung aller Eigenpaare mitunter ein sehr zeitintensives Vergn"ugen. Bei
+Berechnung aller Eigenpaare mitunter ein sehr zeitintensives Vergn"ugen, wie wir im vierten Kapitel sehen werden.\\
+
+Bei
 genauerer Betrachtung der Gleichung \eqref{eq:chap3:transform} f"allt auf, dass die
 Matrix $(S_m^H A S_m) \in \C^{m,m}$ im Falle $n \gg m$ ein mitunter deutlich kleineres
 Format hat, als die Matrix $A$ im urspr"unglichen Problem. Man darf hier also erwarten,
 dass die ben"otigte Laufzeit zur Bestimmung der Ritz-Paare mit dem Algorithmus \ref{alg:chap3:rp}
-geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Dies
+geringer ist, als beim Approximieren s"amtlicher Eigenpaare von $A$. Auch das
 wird im vierten Kapitel anhand ausgew"ahlter Beispiele vorgef"uhrt.\\
 
-Nun, da wir der Existenz und Funktionsweise der Rayleigh-Ritz-Methode gewahr wurden, erweitern wie die obige Theorie auf das
-verallgemeinerte Eigenwertproblem
-\begin{equation}\label{chap2:gevp}
+Nun, da wir uns mit der Idee der Rayleigh-Ritz Methode vertraut gemacht haben, erweitern wie die obige Theorie auf Probleme der Art $(A,B)$ f"ur beliebiges $B$ und betrachten entsprechend die Eigenwertgleichung
+\begin{equation}\label{eq:chap3:gevp}
 Ax = \lambda Bx.
 \end{equation}
 Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor und betrachten wieder
-einen $m$-dimensionaler Suchraum $\U_m\subseteq \Cn$.
+einen $m$-dimensionaler Suchraum $\S_m\subseteq \Cn$.
 Gefunden werden sollen dieses Mal Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
-\times \U_m \setminus\{ 0\}$ die der Orthogonalit"atsbedingung
-\begin{equation}\label{eq:borthogonal}
-A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \U_m
+\times \S_m \setminus\{ 0\}$ die der Orthogonalit"atsbedingung
+\begin{equation}\label{eq:chap3:borthogonal}
+A\widetilde{x} - \widetilde{\lambda}B\widetilde{x} \ \bot \ \S_m
 \end{equation}
-gen"ugen. Durch die Wahl eines geeigneten Vektors $y\in\C^m$ kann die N"aherungsl"osung $\widetilde{x}$ wie zuvor durch das Produkt $U_m y$ ersetzt werden, wobei die Spalten von $U_m$ erneut eine ONB des Suchraums $\U_m$ bilden. Folglich l"asst sich die zu \eqref{eq:borthogonal} "aquivalente Forderung
+gen"ugen. Durch die Wahl eines geeigneten Vektors $y\in\C^m$ kann die N"aherungsl"osung $\widetilde{x}$ wie zuvor durch das Produkt $S_m y$ ersetzt werden, wobei die Spalten von $S_m$ erneut eine ONB des Suchraums $\S_m$ bilden.\\
+
+Damit l"asst sich die zu \eqref{eq:chap3:borthogonal} "aquivalente Forderung
 \[
-U_m^H(AU_m y - \widetilde{\lambda} BU_m y) = 0.
+S_m^H(AS_m y - \widetilde{\lambda} BS_m y) = 0.
 \]
 aufstellen. Wie bereits beim gew"ohnlichen Eigenwertproblem, l"asst sich nun aus jeder L"osung
 $(\widetilde{\lambda}, y)$ von
-\begin{equation}\label{eq:transformedevp}
-(U_m^H AU_m) y = \widetilde{\lambda} (U_m^H B U_m) y.
+\begin{equation}\label{eq:chap3:transformedevp}
+(S_m^H AS_m) y = \widetilde{\lambda} (S_m^H B S_m) y.
 \end{equation}
-mit $(\widetilde{\lambda}, U_m y)$ ein Ritz-Paar f"ur das verallgemeinerte Eigenwertproblem
-gewinnen.\\
+mit $(\widetilde{\lambda}, S_m y)$ ein Ritz-Paar f"ur das Eigenwertproblem $(A,B)$ gewinnen.\\
 
-Da mit der Matrix $B$ ein weiterer Darsteller auf der Eigenproblemb"uhne ber"ucksichtigt werden muss, zieht dies als Konsequenz eine Anpassung des Algorithmus' \ref{alg:rp} nach sich. Wir k"onnen diesen in der folgenden Manier abwandeln.
+Da mit der Matrix $B$ ein weiterer Darsteller ber"ucksichtigt werden muss, zieht dies als Konsequenz eine Anpassung des Algorithmus' \ref{alg:chap3:rp} nach sich. Wir k"onnen diesen in der folgenden Manier abwandeln.
 
-\begin{algorithm}\label{alg:grp}
-\caption{Berechnung von Ritz-Paaren}
+\begin{algorithm}
+\caption{Berechnung von Ritz-Paaren}\label{alg:chap3:grp}
 \begin{algorithmic}[1]
-\State Berechne ONB $\{u_i\}_{i=1:m}$ von $\mathcal{U}_m$ und setze $U_m\gets[u_i]_{i=1:m}$.
-\State Setze $\widetilde{A}\gets U_m^H A U_m$,
-$\widetilde{B} \gets U_m^H BU_m$ und
-l"ose $\widetilde{A}Y = \widetilde{B}Y \Lambda$ in $Y$ und $\Lambda$.
-\State Setze $\widetilde{X} \gets U_m Y$ und gib Ritz-Paare $(\lambda_i, \widetilde{x}_i)_{i=1:m}$ aus.
+\State Berechne ONB $\{s_i\}_{i=1:m}$ von $\mathcal{S}_m$ und setze $S_m\gets[s_i]_{i=1:m}$.
+\State Setze $\widetilde{A}\gets S_m^H A S_m$,
+$\widetilde{B} \gets S_m^H BS_m$.
+\State Finde Eigenpaare von $(\widetilde{A},\widetilde{B})$ und w"ahle die gew"unschten $k$ Paare $(\widetilde{\lambda}_i,y_i)_{i=1:k}$ f"ur $k\le m$ aus.
+\State Gib Ritz-Paare $(\widetilde{\lambda}_i, S_m y_i)_{i=1:k}$ aus.
 \end{algorithmic}
 \end{algorithm}
 
-Nun mag der Fall eintreten, dass bei der Berechnung der Ritz-Paare gewisse Toleranzen ber"ucksichtigt werden m"ussen.
-Es k"onnten etwa maximale euklidische Abweichungen der Ritz-Werte zu den Eigenwerten vorgegeben sein.
-Auch Vorgaben bez"uglich des Winkels zwischen Eigenraum und dem Unterraum der Ritz-Vektoren sind denkbar. Dann ist es erforderlich die Wahl des Suchraums nicht dem Geschick alleine zu "uberlassen, sondern eine gegebenenfalls weniger geschickte Wahl algorithmisch kompensieren zu k"onnen.
+Bei den beiden vorgestellten Algorithmen ist anzumerken, dass zun"achst nicht von einer Eigenpaarfilterung im Sinne der Definition \ref{defn:chap3:filter} geprochen werden kann.
+Schlie"slich erhalten wir unter Umst"anden kein exaktes Eigenpaar sondern eben nur einen Ersatz.
+Um eine zufriedenstellende Qualit"at dieses Ersatzes gew"ahrleisten zu k"onnen, ist es erforderlich die Wahl des Suchraums nicht dem Geschick alleine zu "uberlassen, sondern eine gegebenenfalls weniger geschickte Wahl algorithmisch kompensieren zu k"onnen.\\
+
 Dies kann zum Beispiel durch das Einf"uhren einer Iterationsvorschrift gelingen, die in jedem Iterationsschritt den Suchraum "andert.
+Damit lassen sich zu ber"ucksichtigende Toleranzen, beispielsweise eine maximale euklidische Abweichung der Ritz-Werte zu den Eigenwerten oder Vorgaben bez"uglich des Winkels zwischen Eigenraum und dem Unterraum der Ritz-Vektoren, einhalten.
 Wir werden diese Idee zu einem sp"ateren Zeitpunkt in dieser Arbeit weiterverfolgen.\\
 
 Wir wollen uns nun vorerst von der Algorithmik verabschieden und einige Beobachtungen
-festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\U_m$ unter
-$A$ dazu f"uhrt, dass jedes Ritz-Paar bez"uglich $\U_m$ ein Eigenpaar von $A$ ist.
+festhalten. Eingangs wurde behauptet, dass die Invarianz des Suchraumes $\S_m$ unter
+$A$ dazu f"uhrt, dass jedes Ritz-Paar bez"uglich $\S_m$ ein Eigenpaar von $A$ ist.
 Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 
+\newpage
+
 \begin{thm}\label{thm:invariant}
-Neben zwei Matrizen $A,B\in\Cnn$ -- wobei $B$ eine HPD-Matrix ist -- sei f"ur
-$m\in\N$ mit $m\le n$ ein $m$-dimensionaler Unterraum $\U_m \subseteq \C_n$ gegeben.
+Neben zwei Matrizen $A,B\in\Cnn$ -- wobei wir Hermitizit"at und positive Definitheit von $B$ fordern -- sei ein $m$-dimensionaler Unterraum $\S_m \subseteq \C_n$ gegeben.
 Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritzpaar von $B^{-1}A$
-bez"uglich $\U_m$ auch ein Eigenpaar von $(A,B)$.
+bez"uglich $\S_m$ auch ein Eigenpaar von $(A,B)$.
 \end{thm}
 
 \begin{proof}
-Beginnen wir mit einer ONB $\{u_i\}_{i=1:m}\subseteq\U_m$ des Unterraums $\U_m$
-und setzen wie bisher $U_m := [u_i]_{i=1:m}\in\C^{n,m}$. Aufgrund der Invarianz
-von $\U_m$ unter $B^{-1}A$ muss eine Matrix $V_m \in \C^{m,m}$ existieren, welche
+Beginnen wir mit einer ONB $\{s_i\}_{i=1:m}\subseteq\S_m$ des Unterraums $\S_m$
+und setzen wie bisher $S_m := [s_i]_{i=1:m}\in\C^{n,m}$. Aufgrund der Invarianz
+von $\S_m$ unter $B^{-1}A$ muss eine Matrix $V_m \in \C^{m,m}$ existieren, welche
 die Gleichung
 \begin{equation}\label{eq:thminvariant}
-B^{-1}A U_m = U_m V_m
+B^{-1}A S_m = S_m V_m
 \end{equation}
 erf"ullt. Insbesondere folgt unter Ausnutzung der Orthogonalit"at der Spalten
-von $U_m$ die Identit"at $U_m^H B^{-1}A U_m = V_m$.
-Sind nun $\lambda\in\C$ und $y\in\C^m\setminus\{0\}$ so gew"ahlt, dass $(\lambda, U_m y)$
+von $S_m$ die Identit"at $S_m^H B^{-1}A S_m = V_m$.
+Sind nun $\lambda\in\C$ und $y\in\C^m\setminus\{0\}$ so gew"ahlt, dass $(\lambda, S_m y)$
 ein Ritz-Paar von $B^{-1}A$ ist, so folgt aus
 \[
-U_m^H B^{-1}A U_m y = V_m y
+S_m^H B^{-1}A S_m y = V_m y
 \]
 mit \eqref{eq:thminvariant} die Gleichung
 \[
-B^{-1}AU_m y = U_m V_m y = \lambda U_m y
+B^{-1}AS_m y = S_m V_m y = \lambda S_m y
 \]
 und schlie"slich auch die Behauptung durch Umstellen.
 \end{proof}
 
-Da das gew"ohnliche Eigenwertproblem ein Spezialfall des allgemeinen Eigenwertproblems
-ist, k"onnen wir aus dem eben bewiesenen Resultat unmittelbar das folgende Korollar
+Aus dem eben bewiesenen Resultat k"onnen wir nun f"ur das gew"ohnliche Eigenwertproblem unmittelbar das folgende Korollar
 ableiten.
 
 \begin{kor}
-Ist $A\in\Cnn$ und $\U_m\subseteq \Cn$ ein $m$-dimensionaler $A$-invarianter Unterraum, so ist
+Ist $A\in\Cnn$ und $\S_m\subseteq \Cn$ ein $m$-dimensionaler $A$-invarianter Unterraum, so ist
 jedes Ritz-Paar von $A$ bez"uglich $\U_m$ ein Eigenpaar von $A$.
 \end{kor}
 
 \begin{proof}
-Betrachte f"ur $B:=I_n$ das verallgemeinerte Eigenwertproblem
+Betrachte f"ur $B:=I_n$ das Eigenwertproblem $(A,B)$
+mit der zugeh"origen Eigenwertgleichung
 \[
 Ax = \lambda Bx = \lambda x.
 \]
@@ -203,7 +201,7 @@ Die Aussage folgt dann aus dem vorigen Satz.
 \end{proof}
 
 Es wird sich zu einem sp"ateren Zeitpunkt herausstellen, dass diese Erkenntnis aus algorithmischer Sicht h"ochst n"utzlich ist.
-Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden.\\
+Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden. \textcolor{red}{Krylow Raum...}\\
 
 Wenden wir uns einer weiteren Kuriosit"at zu. Zwischen obigem Verfahren und dem Konzept der Projektion besteht ein enger Zusammenhang.
 Um zu dieser Einsicht zu gelangen, bedarf es ein wenig
