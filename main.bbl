@@ -113,6 +113,22 @@
   \field{year}{2013}
 \endentry
 
+\entry{loan}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {loan}{l.}%
+     {golub}{g.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{lg1}
+  \strng{fullhash}{lg1}
+  \field{labelalpha}{loa00}
+  \field{sortinit}{L}
+  \field{title}{Matrix Computations}
+  \field{year}{1500}
+\endentry
+
 \entry{page}{report}{}
   \name{author}{4}{}{%
     {{}%
