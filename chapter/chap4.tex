@@ -1,7 +1,6 @@
-Nachdem das vorangegangene Kapitel verschiedene Ideen zum Filtern von Eigenpaaren theoretisch beleuchtet hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
+Nachdem das vorangegangene Kapitel Ideen zum Filtern von Eigenpaaren theoretisch beleuchtet hat, werden wir uns nun mit der Frage der praktischen Umsetzbarkeit besch"aftigen.
 Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
 Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
-
 
 \section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap3:beschrr}
 
@@ -10,18 +9,13 @@ Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmit
 %Es wird sich zu einem sp"ateren Zeitpunkt herausstellen, dass diese Erkenntnis aus algorithmischer Sicht h"ochst n"utzlich ist.
 %Die Rayleigh-Ritz-Methode l"asst sich nämlich in ein iteratives Verfahren umwandeln, welches in jedem Schritt den Suchraum "andert. Ist die Suchraumiterierte irgendwann einmal $A$-invariant, so kann der Algorithmus abgebrochen werden. \textcolor{red}{Krylow Raum...}\\
 
-Zu Beginn des zweiten Kapitels wurde mit dem Rayleigh-Ritz-Verfahren eine Methode vorgestellt, mit dessen Hilfe Ritz-Paare bez"uglich eines gewissen Suchraums bestimmt werden k"onnen.
-Es wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift zur Verringerung der Abweichungen von Ritz-Paaren zu tats"achlichen Eigenpaaren f"uhren kann.
-Dies soll im Folgenden genauer ausgef"uhrt werden.\\
+Bei der Behandlung des Rayleigh-Ritz Verfahrens wurde angedeutet, dass das Einbinden einer geeigneten Iterationsvorschrift dabei helfen kann, die G"ute von errechneten Ritz-Paaren zu verbessern.
+Hierbei ist \glqq G"ute\grqq\ nat"urlich in Abh"angigkeit vom Kontext zu bewerten. Im Folgenden wollen wir uns genauer mit dieser omin"osen Interationsvorschrift auseinander setzen und beginnen die Herleitung bei einem sehr einfach umsetzbaren Verfahren zur Bestimmung von Eigenpaaren.\\
 
-\footnote{Um besser zu verstehen orienteiren wir uns bei der Einf"uhrung des Algs an der Dramaturgie von Saad blabla 115ff}
+%\footnote{Um besser zu verstehen orienteiren wir uns bei der Einf"uhrung des Algs an der Dramaturgie von Saad blabla 115ff}
 
-Ausgangspunkt f"ur unsere Betrachtungen ist wie bisher das hermitesche Eigenwertproblem
-\begin{equation}\label{eq:chap3ewp}
-Ax = \lambda Bx.
-\end{equation}
-Betrachten wir zun"achst f"ur den Spezialfall $B=I$ eine sehr leicht umsetzbare Methode um Eigenpaare zu bestimmen -- die sogenannte \emph{Potenzmethode}.
-Ausgehend von einem Startvektor $y_{(0)}\in\Co$ wird in jeder Iteration der Vektor
+Ausgangspunkt f"ur unsere Betrachtungen ist ein gew"ohnliches Eigenwertproblem mit einer von Null verschiedenen hermiteschen Matrix $A\in\Cnn$. Bei der sogenannten \emph{Potenzmethode} wird
+ausgehend von einem Startvektor $y_{(0)}\in\Co$ in jeder Iteration der Vektor
 \[
 y_{(k+1)} = \frac{1}{\|A^{k+1} y_{(0)}\|} A^{k+1}y_{(0)}
 \]
@@ -29,26 +23,46 @@ oder dazu "aquivalent
 \[
 y_{(k+1)} = \frac{1}{\|Ay_{(k)}\|} Ay_{(k)}
 \]
-berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Um einzusehen, dass die Folge der Iterierten gegen den zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
-zu finden ist.\\
+berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Man kann zeigen, dass die Folge der Iterierten gegen einen zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert.\footnote{Ein Beweis hierzu ist im Anhang zu finden. Siehe Satz \ref{thm:appTheorems:Potenzmethode}.}
+%, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
+%zu finden ist.\\
 
-Seien $(\lambda_i, x_i)_{i=1:n}$ die Eigenpaare von $A$. Aufgrund der Hermitizit"at bilden dann die Eigenvektoren eine Basis des $\Cn$.
-Folglich existieren komplexwertige Skalare $\alpha_1,\ldots,\alpha_n$ mit
+%Seien $(\lambda_i, x_i)_{i=1:n}$ die Eigenpaare von $A$. Aufgrund der Hermitizit"at bilden dann die Eigenvektoren eine Basis des $\Cn$.
+%Folglich existieren komplexwertige Skalare $\alpha_1,\ldots,\alpha_n$ mit
+%\[
+%y_{(0)} = \sum_{i=1}^n \alpha_i x_i.
+%\]
+%Wenden wir nun die $k$-te Potenz von $A$ auf $y_{(0)}$ an, ergibt sich daher wegen $A^k x_i = \lambda^k x_i$
+%\begin{equation}\label{eq:chap3dominant}
+%A^k y_{(0)} = \sum_{i=1}^n \alpha_i \lambda_i^k x_i.
+%\end{equation}
+%Wir wollen ohne Einschr"ankung annehmen, dass $|\lambda_1| \ge |\lambda_i|$ f"ur alle $i$ mit
+%$1<i\le n$ gilt. Gegebenenfalls nummerieren wir die Eigenpaare und Skalare um. Dann wird f"ur gr"o"ser werdende $k$ die rechte Seite von \eqref{eq:chap3dominant} durch den Term $\alpha_1 \lambda_1^k x_1$ dominiert. In Kombination mit der Normierung f"uhrt dies letztlich
+%zur behaupteten Approximierung.\footnote{Ein formaler Beweis ist im Anhang zu finden.}\\
+
+\newpage
+Da uns daran gelegen ist, nicht nur mit einzelnen Elementen des $\Cn$ zu arbeiten sondern mit Matrizen zu hantieren, m"ussen wir ein allgemeinere Form der Potenzmethode betrachten. Dazu w"ahlen diesmal eine Startmatrix $Y_{0}\in\C^{n,m}$ vollen Ranges und berechnen die $k$-te Iterierte mit
 \[
-y_{(0)} = \sum_{i=1}^n \alpha_i x_i.
+Y_{(k)} = A^k Y_{(0)}.
 \]
-Wenden wir nun die $k$-te Potenz von $A$ auf $y_{(0)}$ an, ergibt sich daher wegen $A^k x_i = \lambda^k x_i$
-\begin{equation}\label{eq:chap3dominant}
-A^k y_{(0)} = \sum_{i=1}^n \alpha_i \lambda_i^k x_i.
-\end{equation}
-Wir wollen ohne Einschr"ankung annehmen, dass $|\lambda_1| \ge |\lambda_i|$ f"ur alle $i$ mit
-$1<i\le n$ gilt. Gegebenenfalls nummerieren wir die Eigenpaare und Skalare um. Dann wird f"ur gr"o"ser werdende $k$ die rechte Seite von \eqref{eq:chap3dominant} durch den Term $\alpha_1 \lambda_1^k x_1$ dominiert. In Kombination mit der Normierung f"uhrt dies letztlich
-zur behaupteten Approximierung.\footnote{Ein formaler Beweis ist im Anhang zu finden.}\\
+Bei der Normalisierung ist allerdings Vorsicht geboten: In seinen Abhandlungen "uber Unterraumiterationen
+merkt Y. Saad in ~\cite[Abschnitt 5.1]{saad} an,
+dass es beim ungeschickten Normalisieren vorkommen kann, dass die Spalten von $Y_{(k)}$ zunehmend ihre lineare Unabh"angigkeit verlieren.\footnote{Dies ist unmittelbar einzusehen, wenn man bedenkt, dass jede Spalte gegen einen dominanten Eigenvektor konvergiert.}\\
 
-Da uns daran gelegen ist, nicht nur mit einzelnen Elementen des $\Cn$ zu arbeiten sondern mit Matrizen zu hantieren, m"ussen wir ein allgemeinere Form der Potenzmethode betrachten.
+Anstatt jede Spalte von $Y_{(k)}$ separat zu normalisieren, wird eine QR-Zerlegung bem"uht.
 
-In seinen Abhandlungen "uber Unterraumiterationen
-schl"agt Y. Saad in ~\cite[118 f.]{saad} folgende Methode vor.\footnote{Der Algorithmus wurde vom Autor frei in die deutsche Sprache "ubersetzt und die Notation im Sinne der Konsistenz dieser Arbeit angepasst.}
+\begin{algorithm}\label{alg:chap3rriter}
+\caption{Verallgemeinerte Potenzmethode (Vgl. ~\cite[115]{saad})}\label{euclid}
+\begin{algorithmic}[1]
+\State W"ahle linear unabh"angige Vektoren $\{x_i\}_{i=1:m}$ und setze $X_{(0)}\gets[x_i]_{i=1:m}$ und $k\gets 1$
+\State \textbf{repeat}
+\State \ \ \ \ Setze $X_{(k)} \gets AX_{(k-1)}$ und berechne QR-Zerlegung $X_{(k)} = QR$.
+\State \ \ \ \ Setze $X_{(k)} \gets Q$ und $k\gets k+1$.
+\State \textbf{until} Verfahren konvergiert.
+\end{algorithmic}
+\end{algorithm}
+
+Q hat Norm 1 und so.
 
 \begin{algorithm}\label{alg:chap3rriter}
 \caption{Rayleigh-Ritz-Iteration}\label{euclid}
