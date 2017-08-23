@@ -25,7 +25,7 @@ Wir wollen aber im Rahmen dieser Arbeit aus dem Katalog der Verfahren lediglich 
 
 \newpage
 
-\section{Rayleigh-Ritz Verfahren}\label{sec:ritz}
+\section{Rayleigh-Ritz Verfahren}\label{sec:chap3:rayleighRitz}
 %\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
 Die Idee dieser Klasse von Verfahren ist das Approximieren des von
 den gesuchten Eigenvektoren aufgespannten Unterraums.
@@ -296,7 +296,7 @@ Da jedoch der Unterraum $\S_m$ im Allgemeinen nicht bekannt ist, stellt sich die
 Wir werden jedoch alsbald feststellen, dass %zumindest
 die Matrix $S_m S_m^H$ mit Methoden der Funktionentheorie berechnbar ist.
 
-\section{Konturintegration}\label{sec:kontur}
+\section{Konturintegration}\label{sec:chap3:konturintegration}
 
 Betrachten wir das $n$-dimensionale Eigenwertproblem $(A,B)$. Zu einer gegebenen Teilmenge $\Lambda_1$ vom Spektrum des besagten Problems wollen wir
 den Spektralprojektor konstruieren, welcher Vektoren auf den von den zu $\Lambda_1$ korrespondierenden Eigenvektoren aufgespannten Unterraum $\S_1$ projeziert.
@@ -513,17 +513,22 @@ analog zu Gleichung \ref{eq:chap3:factorization} gegeben, so schlie"st man auf "
 = P_1.
 \]
 
+%\section{Zusammenfassung}
+
+%An dieser Stelle wollen wir kurz zusammentragen, was bisher diskutiert wurde und identifizieren, wie die in den vorigen Abschnitten besprochenen Konzepte mit dem Filtern zusammenh"angen. Sei dazu im Folgenden mit $(A,B)$ ein Eigenwertproblem gegeben.\\
+
+%Das zentrale Thema des Abschnittes \ref{sec:chap3:rayleighRitz} war das Rayleigh-Ritz Verfahren. Hierbei wurden ausgehend von einem Suchraum Ritz-Paare gesucht, die einer gewissen Orthogonalit"atsbedingung gen"ugen sollten. Dabei wurde die Dimension des Ausgangsproblems reduziert und nach Eigenpaaren des transformierten Eigenwertproblems gesucht.
+%Es wurde bereits angemerkt, dass bei dieser Vorgehensweise nicht direkt von einer Filterung gesprochen werden kann, da es von der Wahl des Suchraums abh"angt, ob Eigenpaare gefunden werden k"onnen oder lediglich N"aherungen.\\
+
+%Betrachten wir nun eine Teilmenge $\mathcal{E}$ von Eigenpaaren von $(A,B)$ und eine Filterfunktion $\mathfrak{F}$ auf der Menge aller Eigenpaare mit $\mathfrak{F}^{-1}(\{1\}) = \mathcal{E}_1$. Hinzu nehmen wir eine Folge $(\S_k)_{k\in\N}$ von Suchr"aumen sowie eine Folge
+%$(\widetilde{\lambda}_k, \widetilde{x}_k)_{k\in\N}\subseteq\C\times\Co$, sodass
+%$(\widetilde{\lambda}_i, \widetilde{x}_i)$ ein zu $\S_i$ korrespondierendes Ritz-Paar ist.
+
 \section{Illustration}\label{sec:bsp}
 
-Bevor wir uns vom zweiten Kapitel verabschieden, sollen die Erkenntnisse der vorangegangenen
-Abschnitte an einem Beispiel vorgef"uhrt werden. Dabei werden wir ausgehend von einem
-verallgemeinerten Eigenwertproblem gewisse Eigenwerte filtern und die Konturintegration
-mit der Ritz-Methode kombinieren.\\
+Bevor wir uns vom laufenden Kapitel verabschieden, soll die Theorie der vorangegangenen Abschnitte an einem konkreten Beispiel vorgef"uhrt werden. Dabei werden wir mit Hilfe der Konturintegration zun"achst den Spektralprojektor berechnen. Ist dies erledigt, reduzieren wir wie im Rayleigh-Ritz Verfahren die Dimension des Eigenwertproblems und konstruieren ausgehend vom transformierten Problem Eigenpaare des urspr"unglichen Problems.\\
 
 Daf"ur wenden wir uns den beiden Matrizen
-%Beipsiel: einmal mit irgendner matrix $\widetilde{B}$ und dann einmal $P^H AP$
-%mit dem Spektralprojektor l"osen. (hei"st: einmal gro"ses Problem und einmal
-%kleines Problem)
 $A,B \in \C^{3,3}$ zu, welche durch
 \[
 A:= \text{diag}(3,1,4)\text{ und }
@@ -531,7 +536,7 @@ B:= \text{diag}(1,5,9)
 \]
 gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
 Durch einfaches Nachrechnen "uberpr"uft man, dass das
-verallgemeinerte Eigenwertproblem \eqref{eq:eigen} durch Vektoren
+HPD-Eigenwertproblem $(A,B)$ durch Vektoren
 $x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
 $x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
 Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
