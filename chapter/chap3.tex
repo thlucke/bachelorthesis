@@ -336,7 +336,7 @@ dekomponieren l"asst und trivialerweise $P_2 x \bot \S_2^\bot$ gilt, k"onnen wir
 
 Der Projektor $P_1$ aus \eqref{eq:chap3:projection} l"asst sich mit Hilfe eines Integrals darstellen. Bevor wir dazu kommen, ben"otigen wir zus"atzliches Vokabular.
 
-\begin{defn}[Einfache geschlossene Kurve]
+\begin{defn}[Einfache geschlossene Kurve]\label{defn:chap3:jordanKurve}
 Es sei $S := \{x\in\R^2 : \|x\|_2 = 1\}$ und $\gamma\colon\S\to\R^2$ ein Hom"oomorphismus, das hei"st, eine stetige Bijektion mit stetiger Umkehrabbildung.
 Dann hei"st $\Gamma := \Bild(\gamma)$ \emph{einfache geschlossene Kurve} oder auch \emph{Jordan-Kurve}.
 \end{defn}
@@ -535,28 +535,27 @@ A:= \text{diag}(3,1,4)\text{ und }
 B:= \text{diag}(1,5,9)
 \]
 gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
-Durch einfaches Nachrechnen "uberpr"uft man, dass das
+Durch einfaches Nachrechnen "uberpr"uft man, dass sich das
 HPD-Eigenwertproblem $(A,B)$ durch Vektoren
 $x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
 $x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
 Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
-gel"ost wird.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\Cn$ die kanonischen Einheitsvektoren.}\\
+l"osen l"asst.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\C^3$ die Einheitsvektoren, also $e_1 = [1,0,0], e_2 = [0,1,0]$ und $e_3 = [0,0,1]$.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
-mit den Methoden, die in den vorangegangenen Abschnitten vorgestellt wurden, die Eigenpaare auf $I = [-1,1]$ zu bestimmen.
-Gem"a"s Abschnitt \ref{sec:kontur} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
+mit den Methoden, welche wir in den vorangegangenen Abschnitten besprochen haben, die Eigenpaare auf dem reellen Intervall $I = [-1,1]$ zu bestimmen.
+Gem"a"s Abschnitt \ref{sec:chap3:konturintegration} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
 \begin{equation}\label{kurve}
 \gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
 \end{equation}
-und integrieren die Green-Funktion
+und integrieren dar"uber die Green-Funktion
 \[
 G(\omega) = \text{diag}(\omega-3, 5\omega-1, 9\omega-4)^{-1}
-=\text{diag}\left(\frac{1}{\omega-3}, \frac{1}{5\omega-1}, \frac{1}{9\omega-4}\right)
+=\text{diag}\left(\frac{1}{\omega-3}, \frac{1}{5\omega-1}, \frac{1}{9\omega-4}\right).
 \]
-dar"uber.
-Nach Definition 2.4 ist $\Gamma$ eine Jordan-Kurve.
+Nach Definition \ref{defn:chap3:jordanKurve} ist $\Gamma$ eine positiv orientierte Jordan-Kurve.
 Da nach Konstruktion keiner der Eigenwerte im Bild von
-$\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
+$\gamma$ liegt, ist $G$ auf der gesamten Kurve wohldefiniert.
 %\begin{figure}[h!]
 %	\center
 %	\begin{tikzpicture}
@@ -575,29 +574,32 @@ $\gamma$ liegt, ist $G$ auf der gesamten Kontur wohldefiniert.
 	%\end{tikzpicture}
 	%\caption{Skizze der Kurve \textcolor{red}{$\gamma$} in der komplexen Ebene.}
 %\end{figure}
-Folgen wir also weiter dem Abschnitt \ref{sec:kontur}, so erhalten wir
+Folgen wir also weiter dem Abschnitt \ref{sec:chap3:konturintegration}, so erhalten wir
 \[
 \frac{1}{2\pi\iota} \int_\Gamma G \text{ d}s =
 \frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
 \text{ d}\omega
 = \text{diag}\left( 0, \frac{1}{5}, \frac{1}{9} \right)
 \]
-
-Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $u_1 = 1/\sqrt5 \cdot e_2$
-und $u_2 = 1/3\cdot e_3$ wie gew"unscht in
+Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $x_1 = 1/\sqrt6 \cdot e_2$
+und $x_2 = 1/3\cdot e_3$ wie gew"unscht in der Art
 \[
 \begin{bmatrix} 0 & 0 & 0 \\ 0 & 1/6 & 0 \\ 0 & 0 & 1/9 \end{bmatrix}
 = \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
-\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} =: U_2 U_2^H
+\begin{bmatrix} 0 & 1/\sqrt6 & 0 \\ 0 & 0 & 1/3 \end{bmatrix} = x_1 x_1^H + x_2 x_2^H =: X X^H
 \]
-faktorisieren. Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt \ref{sec:ritz} diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
-Hilfe einer vollrangigen Matrix $V\in\C^{3,2}$ auf ein Problem kleinerer Dimension.
+darstellen.
+
+\newpage
+
+Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt \ref{sec:chap3:rayleighRitz} diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
+Hilfe einer vollrangigen Matrix $S \in\C^{3,2}$ auf ein Problem kleinerer Dimension.
 Zu diesem Zwecke w"ahlen wir
 \[
-V:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
+S:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
 \]
-und benutzen die Matrix $Q:=U_2 U_2^H V$ um das Ausgangsproblem vem"oge
-$\widetilde{A}:= Q^H A Q$ und $\widetilde{B}:=Q^H B Q$ auf das Problem
+und benutzen die Matrix $P :=X X^H S$ um das Ausgangsproblem vem"oge
+$\widetilde{A}:= P^H A P$ und $\widetilde{B}:=P^H B P$ auf das Problem
 \[
 \widetilde{A}y = \begin{bmatrix}1/36 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}5/36 & 0\\0 & 1/4 \end{bmatrix} y = \mu \widetilde{B}y
 \]
@@ -617,18 +619,18 @@ y_2 := \begin{bmatrix}
 \]
 und setzen $Y = [y_1 \ y_2]$. Wir erhalten dann
 \[
-QY = \begin{bmatrix} 0 & 0 \\ 1/6 & 0 \\ 0 & 1/9 \end{bmatrix}
+PY = \begin{bmatrix} 0 & 0 \\ 1/6 & 0 \\ 0 & 1/9 \end{bmatrix}
 \begin{bmatrix}
 \sqrt6 & 0 \\ 0 & 3
 \end{bmatrix}
 =
 \begin{bmatrix} 0 & 0  \\ 1/\sqrt6 & 0  \\ 0 & 1/3  \end{bmatrix}
-= U_2.
+= X.
 \]
 
-Eine Bemerkung zum Abschluss: Erinnern wir und an Satz \ref{thm:invariant}, so ist es nicht verwunderlich, dass diese Rechnung
-exakte Eigenpaare liefert. Schlie"slich hat $Q$
-vollen Rang und das Bild der von $Q$ induzierten linearen Abbildung ist invariant unter $B^{-1}A$.
+Eine Bemerkung zum Abschluss: Erinnern wir und an Satz \ref{thm:chap3:invariant}, so ist es nicht verwunderlich, dass diese Rechnung
+exakte Eigenpaare liefert. Schlie"slich hat $P$
+vollen Rang und das $\Bild(P)$ ist invariant unter $B^{-1}A$.
 
 
 %dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
