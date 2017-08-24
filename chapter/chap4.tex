@@ -2,7 +2,7 @@ Nachdem das vorangegangene Kapitel Ideen zum Filtern von Eigenpaaren theoretisch
 Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
 Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
 
-\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap3:beschrr}
+\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap4:beschrr}
 
 %Diese Erkenntnis ist aus algorithmischer Sicht h"ochst interessant. In seiner iterativen Variante kann das Rayleigh-Ritz Verfahren abgebrochen werden, sobald die Suchraumiterierte Wandelt man das Rayleigh-Ritz Verfahren der Art ab, dass
 
@@ -49,49 +49,57 @@ Bei der Normalisierung ist allerdings Vorsicht geboten: In seinen Abhandlungen "
 merkt Y. Saad in ~\cite[Abschnitt 5.1]{saad} an,
 dass es beim ungeschickten Normalisieren vorkommen kann, dass die Spalten von $Y_{(k)}$ zunehmend ihre lineare Unabh"angigkeit verlieren.\footnote{Dies ist unmittelbar einzusehen, wenn man bedenkt, dass jede Spalte gegen einen dominanten Eigenvektor konvergiert.}\\
 
-Anstatt jede Spalte von $Y_{(k)}$ separat zu normalisieren, wird eine QR-Zerlegung bem"uht.
+Anstatt jede Spalte von $Y_{(k)}$ separat zu normalisieren, wird eine QR-Zerlegung\footnote{Eine Formulierung des Satzes "uber die Existenz der QR-Zerlegung ist im Anhang zu finden. Siehe Satz \ref{thm:appTheorems:QR}. F"ur weitere Ausf"uhrungen siehe auch \cite[55 ff.]{stewart}.}
+bem"uht. Diese f"uhrt in der Tat zu einer Normalisierung. Ist n"amlich $Y_{(k)} = QR$ mit
+$Q = [q_i]_{i=1:m}$ die QR-Zerlegung, so gilt $\Bild(Y_{(k)}) = \Bild(Q)$ und $\|q_i\|_2 = 1$ f"ur $i=1:m$. Folglich stellt folgender Algorithmus eine Verallgemeinerung der Potenzmethode dar.
 
-\begin{algorithm}\label{alg:chap3rriter}
-\caption{Verallgemeinerte Potenzmethode (Vgl. ~\cite[115]{saad})}\label{euclid}
+\begin{algorithm}
+\caption{Verallgemeinerte Potenzmethode (Vgl. \cite[Algorithmus 5.1, 115]{saad})}\label{alg:chap4:potenzverfahrenMatrix}
 \begin{algorithmic}[1]
-\State W"ahle linear unabh"angige Vektoren $\{x_i\}_{i=1:m}$ und setze $X_{(0)}\gets[x_i]_{i=1:m}$ und $k\gets 1$
+\State W"ahle linear unabh"angige Vektoren $\{y_i\}_{i=1:m}$ und setze $Y_{(0)}\gets[y_i]_{i=1:m}$ und $k\gets 1$
 \State \textbf{repeat}
-\State \ \ \ \ Setze $X_{(k)} \gets AX_{(k-1)}$ und berechne QR-Zerlegung $X_{(k)} = QR$.
-\State \ \ \ \ Setze $X_{(k)} \gets Q$ und $k\gets k+1$.
+\State \ \ \ \ Setze $Y_{(k)} \gets AY_{(k-1)}$ und berechne QR-Zerlegung $Y_{(k)} = QR$.
+\State \ \ \ \ Setze $Y_{(k)} \gets Q$ und $k\gets k+1$.
 \State \textbf{until} Verfahren konvergiert.
 \end{algorithmic}
 \end{algorithm}
 
-Q hat Norm 1 und so.
+Saad weist darauf hin, dass die Kosten der Berechnung der QR-Zerlegung sehr hoch werden k"onnen. Da der von den Spalten von $Y_{(k)}$ aufgespannte Unterraum gleich dem von den Spalten von $A^k Y_{(0)}$ aufgespannten Unterraum ist, schl"agt Saad daher folgende Abwandlung des eben vorgestellen Algorithmus' vor.
 
-\begin{algorithm}\label{alg:chap3rriter}
-\caption{Rayleigh-Ritz-Iteration}\label{euclid}
+\begin{algorithm}
+\caption{Gebrauch variabler Exponenten (Vgl. ~\cite[Algorithmus 5.2, 116]{saad})}\label{alg:chap4:potentePotenz}
 \begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
-Setze $k \gets 1$ und w"ahle initialen Exponenten $p_{(1)} \in\N$.
+\State W"ahle linear unabh"angige Vektoren $\{y_i\}_{i=1:m}$, setze $Y_\gets[y_i]_{i=1:m}$ und w"ahle initialen Exponenten $k$.
 \State \textbf{repeat}
-\State \ \ \ \ Setze $\hat{Q}_{(k)} \gets A^{p_{(k)}} V_{(k-1)}$.
-\State \ \ \ \ Orthonormalisiere die Spalten von $\hat{Q}_{(k)}$ zu $Q_{(k)}$.
-\State \ \ \ \ Setze $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$.
-\State \ \ \ \ Berechne die Schurvektoren $\widetilde{X}_{(k)} \gets [x_i]_{i=1:m}$ von $\widetilde{A}$ mit Hilfe des QR-Algorithmus'.
-\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
-\State \ \ \ \ $k \gets k+1$.
+\State \ \ \ \ Setze $S \gets A^kY$ und orthonormalisiere $S$ zu $\widehat{S}$.
+\State \ \ \ \ Setze $Y \gets \widehat{S}$.
+\State \ \ \ \ W"ahle neuen Exponenten $k$.
 \State \textbf{until} Verfahren konvergiert.
 \end{algorithmic}
 \end{algorithm}
 
-Hierbei ist $(p_{(k)})_{k\in\N}$ eine Folge von nat"urlichzahligen Exponenten auf die wir sp"ater eingehen werden. Zuvor
-begutachten wir die Zeilen vier bis sieben. Hier ist eine deutliche N"ahe zu dem Rayleigh-Ritz-Verfahren zu erkennen.
-Als Suchraum wird die lineare H"ulle der Spaltenvektoren von $\hat{Q}_{(k)}$ benutzt und die Berechnung von Ritz-Vektoren erfolgt in Schritt sechs -- schlie"slich stimmen unserer Voraussetzungen wegen die Schurvektoren gerade mit den Eigenvektoren von $\widetilde{A}_{(k)}$ "uberein.
-Wir verzichten an dieser Stelle auf Ausf"uhrungen "uber die Funktionsweise des \emph{QR-Algorithmus'}. Der interessierte Leser wende sich zum Beispiel an ~\cite[55 ff.]{stewart}.\\
+Auch hier ist zu beachten, dass im Falle der Wahl eines sehr gro"sen Exponenten die Unabh"angigkeit der Spalten von $S$ nicht mehr gew"ahrleistet werden kann.
+Wir wollen an dieser Stelle auf Konvergenz- und Laufzeitanalysen der eben vorgestellten Algorithmen verzichten und kommen schlie"slich zur vielfach angek"undigten Iterationsvorschrift, welche sich aus der Potenzmethode ableitet.
 
-Nun zur Folge der Exponenten. Im Spezialfall, dass $p_{(k)} = k$ f"ur alle $k\in\N$ gilt, ist obiger Algorithmus stark mit der \emph{Potenzmethode} zur Bestimmung von Eigenpaaren verwandt, ja sogar eine Verallgemeinerung davon.\footnote{Vgl. ~\cite[115 ff.]{saad} und ~\cite[1 f.]{kpt}.}
-W"urden die Exponenten so gew"ahlt werden, m"usste entsprechend oft der dritte Schritt des Algorithmus' durchgef"uhrt werden.
-Y. Saad ~\cite[116]{saad} merkt an, dass es aufgrund der hohen Kosten dieser Berechnung sinnvoll sein kann,
-die Wahl der Exponenten flexibler zu gestalten.
+\newpage
 
+\begin{algorithm}
+\caption{Iteratives Rayleigh-Ritz Verfahren (Vgl. \cite[Algorithmus 5.3, 118]{saad})}\label{alg:chap4:rrIteration}
+\begin{algorithmic}[1]
+\State W"ahle linear unabh"angige Vektoren $\{y_i\}_{i=1:m}$, setze $Y_\gets[y_i]_{i=1:m}$ und w"ahle initialen Exponenten $k$.
+\State \textbf{repeat}
+\State \ \ \ \ Setze $S \gets A^k Y$.
+\State \ \ \ \ Orthonormalisiere die Spalten von $S$ und setze $\widetilde{A} \gets S^H A S$.
+\State \ \ \ \ Berechne Eigenvektoren $\widetilde{X} \gets [\widetilde{x}_i]_{i=1:m}$ von $\widetilde{A}$.
+\State \ \ \ \ Setze $Y \gets S \widetilde{X}$.
+\State \ \ \ \ W"ahle neuen Exponenten $k$.
+\State \textbf{until} Verfahren konvergiert.
+\end{algorithmic}
+\end{algorithm}
 
-\textcolor{red}{man will nicht dauern orthogonalisieren, daher blabla s. 116 in saad}
+Zun"achst ein Wort zur f"unften Zeile. Hier wurde das Berechnen von Schurvektoren -- so wie es in der oben zitierten Quelle vorgeschlagen wird -- durch das Berechnen von Eigenvektoren ersetzt. Dies ist m"oglich, weil $A$ nach Vereinbarung ein hermitesche Matrix ist und somit unit"ar diagonalisiert werden kann. Es ist daher nicht n"otig zwischen Eigenvektoren und Schurvektoren zu unterscheiden. Wie genau diese Eigenvektoren berechnet werden, wollen wir im Rahmen dieser Arbeit nicht genauer erl"autern.\\
+
+Die Wurzeln des eben erarbeiteten Algorithmus' sind deutlich zu erkennen. In den Zeilen vier bis sechs wird das Rayleigh-Ritz Verfahren benutzt. Anstelle von Ritz-Paaren werden allerdings lediglich Ritz-Vektoren berechnet. In jeder Iteration wird wie beim Potenzverfahren ein neuer Exponent festgelegt und somit ein neuer Suchraum $\S = \Bild(A^k Y)$ vorgegeben. Erl"auterungen zum Konvergenzverhalten sind in \cite[Abschnitt 5]{saad} zu finden.
 
 
 %Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
@@ -107,19 +115,19 @@ die Wahl der Exponenten flexibler zu gestalten.
 %mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
 %oben zitierten Paper wie folgt zu "andern.
 
-\begin{algorithm}\label{alg:beschlrr}
-\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{euclid}
+\begin{algorithm}
+\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{alg:chap4:beschlRrIteration}
 \begin{algorithmic}[1]
-\State W"ahle $m$ Zufallsvektoren $V_{(0)} \gets [v_i]_{i=1:m} \in\C^{n,m}$.
+\State W"ahle $m$ linear unabh"angige Vektoren $Y_{(0)} \gets [y_i]_{i=1:m} \in\C^{n,m}$.
 Setze $k \gets 1$.
 \State \textbf{repeat}
-\State \ \ \ \ Approximiere den Unterraumprojektor: $Q_{(k)} \gets \p(B^{-1}A)V_{(k-1)}$
-\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets Q_{(k)}^H A Q_{(k)}$,
-$\widetilde{B}_{(k)} \gets Q_{(k)}^H B Q_{(k)}$.
+\State \ \ \ \ Approximiere den Unterraumprojektor: $P_{(k)} \gets \p(B^{-1}A)Y_{(k-1)}$
+\State \ \ \ \ Reduziere die Dimension: $\widetilde{A}_{(k)} \gets P_{(k)}^H A P_{(k)}$,
+$\widetilde{B}_{(k)} \gets P_{(k)}^H B P_{(k)}$.
 \State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}_{(k)}\widetilde{X}_{(k)}
 = \widetilde{B}_{(k)}\widetilde{X}_{(k)}\widetilde{\Lambda}_{(k)}$ in
 $\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
-\State \ \ \ \ Setze $V_{(k)} \gets Q_{(k)}\widetilde{X}_{(k)}$.
+\State \ \ \ \ Setze $Y_{(k)} \gets P_{(k)}\widetilde{X}_{(k)}$.
 \State \ \ \ \ $k \gets k+1$.
 \State \textbf{until} Abbruchkriterium ist erf"ullt.
 \end{algorithmic}
