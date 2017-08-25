@@ -2,7 +2,7 @@ Nachdem das vorangegangene Kapitel Ideen zum Filtern von Eigenpaaren theoretisch
 Im Mittelpunkt wird dabei die Konstruktion geeigneter Suchr"aume stehen, welche im Rayleigh-Ritz-Verfahren zum Einsatz kommen sollen.
 Es wird sich zeigen, dass die Konturintegration hierbei ein n"utzliches Hilfsmittel darstellt.
 
-\section{Beschleunigte Rayleigh-Ritz Iteration}\label{chap4:beschrr}
+\section{Rayleigh-Ritz Iteration}\label{chap4:beschrr}
 
 %Diese Erkenntnis ist aus algorithmischer Sicht h"ochst interessant. In seiner iterativen Variante kann das Rayleigh-Ritz Verfahren abgebrochen werden, sobald die Suchraumiterierte Wandelt man das Rayleigh-Ritz Verfahren der Art ab, dass
 
@@ -99,24 +99,12 @@ Wir wollen an dieser Stelle auf Konvergenz- und Laufzeitanalysen der eben vorges
 
 Zun"achst ein Wort zur f"unften Zeile. Hier wurde das Berechnen von Schurvektoren -- so wie es in der oben zitierten Quelle vorgeschlagen wird -- durch das Berechnen von Eigenvektoren ersetzt. Dies ist m"oglich, weil $A$ nach Vereinbarung ein hermitesche Matrix ist und somit unit"ar diagonalisiert werden kann. Es ist daher nicht n"otig zwischen Eigenvektoren und Schurvektoren zu unterscheiden. Wie genau diese Eigenvektoren berechnet werden, wollen wir im Rahmen dieser Arbeit nicht genauer erl"autern.\\
 
-Die Wurzeln des eben erarbeiteten Algorithmus' sind deutlich zu erkennen. In den Zeilen vier bis sechs wird das Rayleigh-Ritz Verfahren benutzt. Anstelle von Ritz-Paaren werden allerdings lediglich Ritz-Vektoren berechnet. In jeder Iteration wird wie beim Potenzverfahren ein neuer Exponent festgelegt und somit ein neuer Suchraum $\S = \Bild(A^k Y)$ vorgegeben. Erl"auterungen zum Konvergenzverhalten sind in \cite[Abschnitt 5]{saad} zu finden.
+Die Wurzeln des eben erarbeiteten Algorithmus' sind deutlich zu erkennen. In den Zeilen vier bis sechs wird das Rayleigh-Ritz Verfahren benutzt. Anstelle von Ritz-Paaren werden allerdings lediglich Ritz-Vektoren berechnet. In jeder Iteration wird wie beim Potenzverfahren ein neuer Exponent festgelegt und somit ein neuer Suchraum $\S = \Bild(A^k Y)$ vorgegeben. Erl"auterungen zum Konvergenzverhalten sind in \cite[Abschnitt 5]{saad} zu finden. Zur Berechnung von Eigenpaaren eines HPD-Eigenwertproblems $(A,B)$ bei dem $B$ nicht mehr der Identit"at entspricht, m"ussen die Zeilen vier bis sechs gem"a"s Algorithmus \ref{alg:chap3:grp} angepasst werden.\\
 
-
-%Diese Methode l"asst sich nicht nur als direktes Verfahren implementieren, sondern ist auch iterativ umsetzbar. Doch wie genau geht diese Iteration vonstatten? Wor"uber wird iteriert?\\
-
-%Die folgenden Abs"atze
-%an den Ausf"uhrungen
-%von Ping Tak Peter Tang und Eric Polizzi in ~\cite{ptep}. Allerdings wird
-%die Notation im Sinne der Konsistenz dieser Arbeit an einigen Stellen abweichen.\\
-
-%Betrachten wir zur Beantwortung dieser Fragen wie bisher das verallgemeinerte Eigenwertproblem mit zwei
-%komplexwertigen, hermiteschen $(n\times n)$-Matrizen $A$ und $B$ und fordern
-%zus"atzlich die positive Definitheit von $B$. Zu diesem Duo gesellt sich nun
-%mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um den Algorithmus \ref{alg:grp} aus dem vorigen Kapitel gem"a"s dem
-%oben zitierten Paper wie folgt zu "andern.
+Es ist m"oglich, den zuletzt eingef"uhren Algorithmus weiter abzuwandeln. Dazu betrachten wir wieder ein HPD-Eigenwertproblem $(A,B)$. Zu diesem Duo gesellt sich nun mit $\p(B^{-1}A)$ ein Polynom in $B^{-1}A$, welches wir benutzen, um das iterative Rayleigh-Ritz Verfahren wie folgt zu "andern.
 
 \begin{algorithm}
-\caption{Beschleunigtes iteratives Rayleigh-Ritz-Verfahren}\label{alg:chap4:beschlRrIteration}
+\caption{Beschleunigte Rayleigh-Ritz Iteration (Vgl. \cite[Algorithmus A]{ptep})}\label{alg:chap4:beschlRrIteration}
 \begin{algorithmic}[1]
 \State W"ahle $m$ linear unabh"angige Vektoren $Y_{(0)} \gets [y_i]_{i=1:m} \in\C^{n,m}$.
 Setze $k \gets 1$.
@@ -133,22 +121,21 @@ $\widetilde{X}_{(k)}$ und $\widetilde{\Lambda}_{(k)}$.
 \end{algorithmic}
 \end{algorithm}
 
+Diese Methode "ahnelt stark dem Algorithmus \ref{alg:chap4:rrIteration}. Die Zeilen vier bis sechs entsprechen erneut dem Rayleigh-Ritz Verfahren, aber die Berechnung des Suchraums $\S := \Bild(P_{(k)})$ geht anders vonstatten.
 
-
-Die obigen Fragen sind also leicht beantwortet: In dieser Variante des Rayleigh-Ritz-Verfahrens wird solange "uber den Suchraum iteriert, bis die ermittelten Ritz-Paare gewisse Anforderungen erf"ullen.
-Es dr"angt sich jedoch eine weitere Frage auf. Welche Funktion erf"ullt das Polynom $\p$?\\
+\newpage
 
 Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter} oder \emph{Beschleuniger}
 bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
 werden: Sei $[\lambda_1,\lambda_2]$ ein reelles Intervall, auf dem $l\in\N$ Eigenwerte und die korrespondierenden Eigenvektoren gefunden werden k"onnen. Ist nun $\p(B^{-1}A)$ der Spektralprojektor,
-$m=l$ und hat die Matrix $Q_{(1)} = \p(B^{-1}A) V_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:beschlrr} in einer Iteration
+$m=l$ und hat die Matrix $Y_{(1)} = \p(B^{-1}A) Y_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:chap4:beschlRrIteration} in einer Iteration
 (Vgl. ~\cite[356]{ptep}).
-Dies folgt unter Ausnutzung der Invarianz des Bildes von $Q_{(1)}$ unter $B^{-1}A$
-aus dem Satz $\ref{thm:invariant}$.\\
+Dies folgt unter Ausnutzung der Invarianz des Bildes von $P_{(1)}$ unter $B^{-1}A$
+aus dem Satz $\ref{thm:chap3:invariant}$.\\
 
 Da der Spektralprojektor in den meisten F"allen unbekannt sein d"urfte, liegt
-die Idee nahe, ihn wenigstens zu approximieren. Tang und Polizzi ~\cite[356]{ptep} merken an, dass dies gut funktioniert, falls $\p$ eine durch \emph{Gau"s-Legendre-Quadratur} konstruierte rationale Funktion ist.
-Um den Gedankengang der Autoren nachvollziehen zu k"onnen, wird sich das folgende Intermezzo mit der Auffrischung des Konzeptes von Quadraturformeln und rationalen Funktionen besch"aftigen. Im Anschluss fahren wir mit der
+die Idee nahe, ihn zu approximieren. Tang und Polizzi ~\cite[356]{ptep} merken an, dass dies gut funktioniert, falls $\p$ eine durch \emph{Gau"s-Legendre-Quadratur} konstruierte rationale Funktion ist.
+Um den Gedankengang der Autoren nachvollziehen zu k"onnen, wird sich das folgende Intermezzo mit der Auffrischung des Konzeptes von Quadraturformeln und rationalen Funktionen besch"aftigen. Dabei sehen wir von Beweisen und ausufernden Erl"auterungen ab, da diese Thematik in den meisten Einf"uhrungsb"uchern zur numerischen Mathematik ausf"uhrlich besprochen wird.\footnote{Siehe zum Beispiel \cite[Abschnitt 6]{plato}} Im Anschluss fahren wir mit der
 Konstruktion des Projektors fortfahren.
 
 \section{Gau"s'sche Quadratur}
@@ -168,25 +155,29 @@ als \emph{interpolatorische Quadraturformel}. Dabei gilt
 = \frac{x_j-a}{b-a}.
 \]
 Die Qualit"at der Approximation, also die Abweichung vom exakten Integral, h"angt ma"sgeblich von der Wahl und Anzahl der St"utzpunkte ab. Wollten wir
-beispielsweise das Integral einer konstanten Funktion berechnen, so erschiene es wenig plausibel, anstelle der direkten Berechnung ein Polynom vom Grad 69 auf 70 St"utzstellen f"ur die Approximation zu bem"uhen.\\
+beispielsweise das Integral einer konstanten Funktion berechnen, so erschiene es wenig plausibel, anstelle der direkten Berechnung ein Polynom vom Grad 69 auf 70 St"utzstellen f"ur die Approximation zu bem"uhen.
+
+\newpage
 
 Bei der Anwendung von Gau"s-Legendre-Quadraturen ergibt sich die Wahl der St"utzpunkte durch die Berechnung von Nullstellen von Polynomen, die in einer Orthogonalit"atsbeziehung zueinander stehen.
-Wir werden gleich formal formulieren, wie dies zu verstehen ist.\\
+Wir werden in K"urze formal formulieren, wie dies zu verstehen ist.\\
 
 Ausgangspunkt f"ur die Integration ist nun eine stetige Funktion $f$, die eine Faktorisierung in zwei stetige Funktionen $g$ und $\omega$ der Art
 \[
 f = g\cdot \omega
 \]
-besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll.\footnote{Im unstetigen Fall darf die Funktion $\omega$ in h"ochstens endlich vielen Punkten negativ sein.} Ziel ist daher die Berechnung von
+besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll. Die Funktion $\omega$ wird auch als \emph{Gewichtsfunktion} bezeichnet.
+Ziel ist also nun die Berechnung von
 \begin{equation}\label{eq:gintegral}
-\int_a^b g(x)\omega(x) \text{ d}x.
+\int_a^b g(x)\omega(x) \text{ d}x,
 \end{equation}
-Wir fordern nun, dass \eqref{eq:quadratur} mit \eqref{eq:gintegral} f"ur alle Polynome bis zum Grad $(2n-1)$ "ubereinstimmt.
-Dazu betrachten wir die Standardbasis $\{x^i\}_{i=1:(2n-1)}$ auf dem Raum der Polynome vom
-Grad $2n-1$. Dann landen wir unweigerlich bei dem
+wobei wir zus"atzlich fordern, dass \eqref{eq:quadratur} und \eqref{eq:gintegral} f"ur alle Polynome bis zum Grad $(2n-1)$ "ubereinstimmen.\\
+
+Dazu betrachten wir die Standardbasis $\{x^k\}_{k=0:(2n-1)}$ auf dem Raum der Polynome vom
+Grad $(2n-1)$. Dann landen wir unweigerlich bei dem
 Gleichungssystem
 \[
-\sum_{j=1}^n \omega_j x_j^k = \int_a^b x^k \omega(x) \text{ d}x \text{ mit } k = 0,\ldots,2n-1.
+\sum_{j=1}^n \omega_j x_j^k = \int_a^b x^k \omega(x) \text{ d}x \text{ mit } k = 0:2n-1.
 \]
 Man kann zeigen, dass die L"osung dieses Systems durch Nullstellen eines Polynoms gegeben ist, welches durch
 ein Gram-Schmidt-Orthogonalisierungsverfahren bez"uglich des Skalarproduktes
@@ -198,7 +189,7 @@ konstruiert wurde. Das hei"st konkret: Ausgehend vom Polynom $p_0 \equiv 1$ ist
 p_n(x) := x^n - \sum_{j=0}^{n-1} \frac{\langle x^n, p_j \rangle_\omega}{\langle p_j, p_j\rangle_\omega} p_j (x)
 \]
 gerade dasjenige Polynom, durch dessen Nullstellen das obige Gleichungssystem gel"ost wird. Sind nun
-$x_1,\ldots,x_n$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so he"ist die numerische
+$\{x_j\}_{j=1:n}$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so he"ist die numerische
 Integrationsformel
 \[
 Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
@@ -206,45 +197,41 @@ Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
 = \int_a^b L_j(x)\p(x\text{ d}x
 \]
 \emph{Gau"s'sche Quadraturformel der $n$-ten Ordnung}.
-Dabei ist
+%Dabei ist
 \[
 L_j(x) = \prod_{k\neq j=1}^n \frac{x-x_j}{x_k - x_j}.
 \]
 
+\newpage
+
 \section{Approximation des Spektralprojektors}
 
-Nachdem wir diese Kurzzusammenfassung des Gau"s-Quadratur-Verfahrens diskutiert haben,
-widmen wir uns wieder der Approximation des Spektralprojektors
-$P = X_k X_k^H B$. Dabei "ubernehmen wir die am Anfang dieses Kapitels eingef"uhrte Notation, sowie die an die Matrizen $A$ und $B$ gestellten Voraussetzungen.\\
+Nachdem wir dieser kurzen Zusammenfassung,
+widmen wir uns nun der Approximation des Spektralprojektors. Dazu nehmen wir uns das HPS-Eigenwertproblem $(A,B)$ und ein reelles Intervall $I := [\lambda_1, \lambda_2]$ her.\\
 
-Wenden wir uns daher wieder dem reellen Intervall $I := [\lambda_1, \lambda_2]$ zu. Das Ziel ist
-die Konstruktion einer rationalen Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$,
-die auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht. Dazu
-bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
+Die erste Ingredienz f"ur das Gelingen der Approximation ist eine rationale Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$, welche n"aherungsweise der Indikatorfunktion von $I$ entspricht.
+Daf"ur bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
 wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
 rationale Funktion $\r$ um.\\
 
-Zu"achst zur Indikatorfunktion: Ist $c\in\R$ der Mittelpunkt des Intervalls $I$ und
+Zu"achst zur Indikatorfunktion: Ist $c$ der Mittelpunkt des Intervalls $I$ und
 $r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die Menge
 \[
 \mathcal{C} := \{z\in\C : |z-c| = r\}
 \]
-gerade einer Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
+der Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
 l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
 \[
 \frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
 = \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
 \]
-gilt. Dieses Integral gilt es nun zu approximieren.\textcolor{red}{wie genau?}(Vgl. ~\cite[20]{jaenich}).\\
-
-Wir werden das eben diskutierte Integral mit einer Gau"s-Legendre Quadraturformel ann"ahern.
-Dazu ist es n"otig die Kontur $\mathcal{C}$ so zu parametrisieren, dass eine Transformation
-der Integrationsgrenzen auf das Intervall $[-1,1]$ m"oglichst einfach m"oglich ist. Zu diesem Zweck sei
-\begin{align*}
-\gamma\colon[-1,3]&\to\C \\
-t&\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
-\end{align*}
-als Parametrisierung der Sph"are gew"ahlt. Die
+gilt. Um dieses Integral mit einer Gau"s'schen Quadraturformel ann"ahern zu k"onnen, ben"otigen wir eine Parametrisierung von $\mathcal{C}$. Hierf"ur ziehen wir \cite{ptep} zurate und "ubernehmen s"amtliche Rechenschritte.
+Demzufolge w"ahlen wir die Funktion
+\[
+\gamma\colon[-1,3]\to\C\text{, }
+t\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
+\]
+als Parametrisierung der Sph"are $\mathcal{C}$. Die
 Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
 \[
 \gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
@@ -261,13 +248,15 @@ gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $
 \frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\right)\text{d}t
 \end{align*}
 wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
-von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.\\
+von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.
 
-F"ur $q\in\N$ mit \textcolor{red}{wie gro"s ist $q$ genau?} seien $(w_j, t_j)_{j=1:q}$
+\newpage
+
+Es seien nun $(w_j, t_j)_{j=1:m}$
 die f"ur die Gau"s-Legendre-Quadratur ben"otigten Gewichte und Diskretisierungspunkte.
 Dann setzen wir
 \[
-\rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^q \left(
+\rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^m \left(
 \frac{w_j \cdot \gamma'(t_j)}{\gamma(t_j)-z} - \frac{w_j \cdot \overline{\gamma'(t_j)}}{\overline{\gamma(t_j)}-z}
 \right)
 \]
@@ -275,17 +264,17 @@ und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
 $\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
 Funktion
 \[
-\r\colon\C\to\C, z\mapsto\sum_{j=1}^q\left(\frac{\sigma_j}{\gamma_j - z} +
+\r\colon\C\to\C, z\mapsto\sum_{j=1}^m\left(\frac{\sigma_j}{\gamma_j - z} +
 \frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
 \]
 zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
 rationale Funktion bereits in Partialbruchzerlegung vorliegt. Setzen wir schlie"slich $B^{-1}A$ in die
 rationale Funktion ein, so erhalten wir
 \begin{align*}
-\r(B^{-1}A) &= \sum_{k=1}^q \sigma_k (\gamma_k I - B^{-1}A)^{-1} +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} I - B^{-1}A)^{-1}\\
-&= \sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} B +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} B
+\r(B^{-1}A) &= \sum_{k=1}^m \sigma_k (\gamma_k I - B^{-1}A)^{-1} +
+\sum_{k=1}^m \overline{\sigma_k} (\overline{\gamma_k} I - B^{-1}A)^{-1}\\
+&= \sum_{k=1}^m \sigma_k (\gamma_k B - A)^{-1} B +
+\sum_{k=1}^m \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} B
 \end{align*}
 und folglich
 \[
@@ -293,7 +282,7 @@ und folglich
 \sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BV +
 \sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BV
 \]
-f"ur eine Matrix $V\in\C^{n,q}$.
+f"ur eine Matrix $V\in\C^{n,m}$.
 
 %Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
 %\[
@@ -308,3 +297,7 @@ f"ur eine Matrix $V\in\C^{n,q}$.
 %\section{Der FEAST-Algorithmus}
 
 %f"urderhin
+\section{FEAST-Algorithmus}
+
+
+Im dritten Kapitel wurde mit Satz \ref{thm:chap3:invariant} gezeigt, dass Ritz-Paare im Falle der $(B^{-1}A)$-Invarianz des Suchraumes $\S$ schon Eigenpaare sind. Wir k"onnten folglich die Iteration in Algorithmus \ref{alg:chap4:rrIteration} beenden, sobald eine Potenz

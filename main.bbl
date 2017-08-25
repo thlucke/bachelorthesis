@@ -206,6 +206,22 @@
   \field{year}{1998}
 \endentry
 
+\entry{plato}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Plato}{P.}%
+     {Robert}{R.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{PR1}
+  \strng{fullhash}{PR1}
+  \field{labelalpha}{Pla58}
+  \field{sortinit}{P}
+  \field{title}{Numerische Mathematik kompakt}
+  \field{year}{1758}
+\endentry
+
 \entry{polizzi}{article}{}
   \name{author}{1}{}{%
     {{}%
