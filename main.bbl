@@ -16,6 +16,28 @@
   {}
 \endgroup
 
+\entry{lzp}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {A.~R.~Levin}{A.~R.~L.}%
+     {D.~Zhang}{D.~Z.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Polizzi}{P.}%
+     {E.}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{ARLDZPE1}
+  \strng{fullhash}{ARLDZPE1}
+  \field{labelalpha}{ARLP12}
+  \field{sortinit}{A}
+  \field{title}{FEAST fundamental framework for electronic structure
+  calculations: reformulation and solution of the muffin-tin problem}
+  \field{year}{2012}
+\endentry
+
 \entry{vanbarel}{article}{}
   \name{author}{1}{}{%
     {{}%

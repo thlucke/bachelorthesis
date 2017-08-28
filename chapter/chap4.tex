@@ -206,11 +206,10 @@ L_j(x) = \prod_{k\neq j=1}^n \frac{x-x_j}{x_k - x_j}.
 
 \section{Approximation des Spektralprojektors}
 
-Nachdem wir dieser kurzen Zusammenfassung,
-widmen wir uns nun der Approximation des Spektralprojektors. Dazu nehmen wir uns das HPS-Eigenwertproblem $(A,B)$ und ein reelles Intervall $I := [\lambda_1, \lambda_2]$ her.\\
+Sei $(A,B)$ ein HPD-Eigenwertproblem und $I:=[\lambda_1, \lambda_2]$ ein reelles Intervall. Sei weiter $\mathcal{X}\subseteq\Cn$ derjenige Unterraum, welcher von den Eigenvektoren aufgespannt wird, die zu den im Inneren von $I$ befindlichen Eigenwerten korrespondieren. Wir wollen in diesem Abschnitt den Spektralprojektor approximieren, welcher den Vektorraum $\Cn$ auf $\mathcal{X}$ projeziert.\\
 
-Die erste Ingredienz f"ur das Gelingen der Approximation ist eine rationale Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$, welche n"aherungsweise der Indikatorfunktion von $I$ entspricht.
-Daf"ur bem"uhen wir die Cauchy'sche Integraldarstellung der Indikatorfunktion und
+Die erste Ingredienz, die zum Gelingen dieser Approximation beitr"agt, ist eine rationale Funktion $\r\colon\C\to\C$ mit $\r(\R) \subseteq \R$, welche auf $I$ n"aherungsweise der Indikatorfunktion von $I$ entspricht.
+Daf"ur bem"uhen wir die Cauchy'sche Integraldarstellung von der Indikatorfunktion und
 wandeln diese mit Hilfe numerischer Quadraturformeln in die gew"unschte
 rationale Funktion $\r$ um.\\
 
@@ -225,18 +224,19 @@ l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
 \frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
 = \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
 \]
-gilt. Um dieses Integral mit einer Gau"s'schen Quadraturformel ann"ahern zu k"onnen, ben"otigen wir eine Parametrisierung von $\mathcal{C}$. Hierf"ur ziehen wir \cite{ptep} zurate und "ubernehmen s"amtliche Rechenschritte.
-Demzufolge w"ahlen wir die Funktion
+gilt. Um dieses Integral mit einer Gau"s'schen Quadraturformel ann"ahern zu k"onnen, ben"otigen wir eine Parametrisierung von $\mathcal{C}$. Hierf"ur ziehen wir \cite{ptep} zurate und w"ahlen demzufolge
+die Funktion
 \[
 \gamma\colon[-1,3]\to\C\text{, }
 t\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
 \]
-als Parametrisierung der Sph"are $\mathcal{C}$. Die
-Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
-\[
-\gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
-\]
-gegeben. Mit den bekannten Regeln der Integration erhalten wir somit f"ur alle $z\notin\mathcal{C}$
+als Parametrisierung der Sph"are $\mathcal{C}$.
+%Die Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
+%\[
+%\gamma'(t)=\iota \frac{\pi}{2}re^{\iota \frac{\pi}{2}(1+t)}
+%\]
+%gegeben.
+Wir erhalten dann f"ur alle $z\notin\mathcal{C}$ die Gleichung
 \begin{align*}
 \frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
 &= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \\
@@ -253,7 +253,7 @@ von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.
 \newpage
 
 Es seien nun $(w_j, t_j)_{j=1:m}$
-die f"ur die Gau"s-Legendre-Quadratur ben"otigten Gewichte und Diskretisierungspunkte.
+die f"ur die Gau"s'sche Quadraturformel ben"otigten Gewichte und Diskretisierungspunkte.
 Dann setzen wir
 \[
 \rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^m \left(
@@ -278,26 +278,16 @@ rationale Funktion ein, so erhalten wir
 \end{align*}
 und folglich
 \[
-\r(B^{-1}A)V =
+\r(B^{-1}A)Y =
 \sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BV +
 \sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BV
 \]
-f"ur eine Matrix $V\in\C^{n,m}$.
+f"ur eine Matrix $Y\in\C^{n,m}$.
 
-%Ausgehend von zwei Polynomen $p, q\in\C [t]$ mit
-%\[
-%p := \sum_{k=0}^n p_k t^k \text{ \ und\ } q := \sum_{k=0}^n q_k t^k
-%\]
-%definieren wir eine rationale Funktion $\rho\colon\C\setminus{N_q}\to\C$ verm"oge
-%\[
-%\r(t) := \frac{p(t)}{q(t)}
-%\]
-%und identifizieren wie "ublich die Unbestimmte $t$ mit den Argumenten von $p$ und $q$.
-%Dabei ist $N_q := \{t\in\C \mid q(t) = 0\}$.
-%\section{Der FEAST-Algorithmus}
-
-%f"urderhin
 \section{FEAST-Algorithmus}
 
+Im Jahr 2009 stellte Eric Polizzi in \cite{polizzi} ein Verfahren vor, welches sich die Theorien der vorigen Abschnitte zu Nutze macht. Dieser \glqq[\ldots] \emph{fast and stable algorithm for solving the symmetric eigenvalue problem} [\ldots]\grqq\ \cite[Abstract]{polizzi} wurde seither weiterentwickelt und zahlreichen Analysen unterzogen.\footnote{Siehe etwa \cite{ptep},\cite{kpt} und \cite{lzp}.}
+Wir wollen in diesem Abschnitt die wichtigen Punkte des oben zitierten Papers skizzieren und damit das vierte Kapitel abschlie"sen.\\
 
-Im dritten Kapitel wurde mit Satz \ref{thm:chap3:invariant} gezeigt, dass Ritz-Paare im Falle der $(B^{-1}A)$-Invarianz des Suchraumes $\S$ schon Eigenpaare sind. Wir k"onnten folglich die Iteration in Algorithmus \ref{alg:chap4:rrIteration} beenden, sobald eine Potenz
+
+%Im dritten Kapitel wurde mit Satz \ref{thm:chap3:invariant} gezeigt, dass Ritz-Paare im Falle der $(B^{-1}A)$-Invarianz des Suchraumes $\S$ schon Eigenpaare sind. Wir k"onnten folglich die Iteration in Algorithmus \ref{alg:chap4:rrIteration} beenden, sobald eine Potenz
