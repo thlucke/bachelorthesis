@@ -381,11 +381,11 @@ falls sie in ihrer Parametrisierung im mathematisch positiven Sinne \glqq durchl
 %Des Weiteren ben"otigen wir sogenannte \emph{Jordan-Kurven}. Diese definieren wir im Kontext
 %dieser Arbeit wie folgt.
 
-Wir k"onnen nun den Gedanken aus ~\cite[Abschnitt 4.9]{liesen} weiter folgen und betrachten f"ur $\Omega\subseteq\Cn$ die durch
+Wir k"onnen nun den Gedanken aus ~\cite[Abschnitt 4.9]{liesen} weiter folgen und betrachten f"ur $t\subseteq\Cn$ die durch
 \[
 G\colon\Omega \setminus \Lambda(A) \to\Cnn
 \text{, }
-\omega \mapsto (\omega I_n - A)^{-1}
+t \mapsto (t I_n - A)^{-1}
 \]
 definierte \emph{Resolventenfunktion} -- auch \emph{Green-Funktion} genannt (Vgl. ~\cite{polizzi}).
 Angenommen, die Menge $\Lambda_1$ liegt im Inneren eines von einer positiv orientierten Jordan-Kurve $\Gamma$ umschlossenen
@@ -393,21 +393,21 @@ Gebiets und $\Lambda_2$ im Inneren des Komplementes dieses Gebiets.
 
 Dann gilt die Identit"at
 \begin{equation}\label{eq:chap3:kontur}
-P_1 = \frac{1}{2\pi\iota}\int_\Gamma G(\omega)\text{ d}\omega
+P_1 = \frac{1}{2\pi\iota}\int_\Gamma G(t)\text{ d}t
 \end{equation}
 beziehungsweise unter Ausnutzung der Faktorisierung \eqref{eq:chap3:factorization}
 \begin{equation}\label{eq:chap3:konturMatrix}
 P_1 = \frac{1}{2\pi\iota} S
 \begin{bmatrix}
-\int_\Gamma (\omega I_m - A_1)^{-1} \text{ d}\omega & 0 \\
-0 & \int_\Gamma (\omega I_{n-m} - A_2)^{-1} \text{ d}\omega
+\int_\Gamma (t I_m - A_1)^{-1} \text{ d}t & 0 \\
+0 & \int_\Gamma (t I_{n-m} - A_2)^{-1} \text{ d}t
 \end{bmatrix} S^{-1}.
 \end{equation}
 
 Hierbei ist das Integral eintragsweise zu verstehen und $\iota$ als imagin"are Einheit zu lesen.
 Da die Menge $\Lambda_2$ nach Vorgabe au"serhalb des umrandeten Gebietes liegt, folgt aus dem Cauchy'schen Integralsatz\footnote{Siehe Satz \ref{thm:appTheorems:Cauchy} im Anhang.}
 \[
-\int_\Gamma (\omega I_{n-m} - A_2)^{-1} \text{ d}\omega = 0_{n-m}.
+\int_\Gamma (t I_{n-m} - A_2)^{-1} \text{ d}t = 0_{n-m}.
 \]
 Zur weiteren Argumentation ben"otigen wir den folgenden Satz.
 
@@ -434,32 +434,32 @@ folgt dann durch Umstellen die Behauptung.
 \end{proof}
 
 \begin{kor}\label{kor:chap3:potenzreihe}
-Mit den obigen Notationen folgt f"ur alle $\omega\in\C$ mit $|\omega| > \|A_1\|_2$ die Identit"at
+Mit den obigen Notationen folgt f"ur alle $t\in\C$ mit $|t| > \|A_1\|_2$ die Identit"at
 \[
-(\omega I_m - A_1)^{-1} = \frac{1}{\omega} \sum_{j=0}^\infty (\omega^{-1} A_1)^j.
+(t I_m - A_1)^{-1} = \frac{1}{t} \sum_{j=0}^\infty (t^{-1} A_1)^j.
 \]
 \end{kor}
 \begin{proof}
 Man mache sich die Identit"at
 \[
-(\omega I_m - A_1)^{-1} = \frac{1}{\omega}(I_m - \omega^{-1}A_1)^{-1}
+(t I_m - A_1)^{-1} = \frac{1}{t}(I_m - t^{-1}A_1)^{-1}
 \]
 klar und benutze obigen Satz.
 \end{proof}
 
 Wenden wir uns nun wieder der Gleichung \eqref{eq:chap3:konturMatrix} zu. Es bleibt zu zeigen, dass
 \begin{equation}\label{eq:chap3:identitaet}
-\frac{1}{2\pi\iota}\int_\Gamma (\omega I_m - A_1)^{-1} \text{ d}\omega = I_m
+\frac{1}{2\pi\iota}\int_\Gamma (t I_m - A_1)^{-1} \text{ d}t = I_m
 \end{equation}
 gilt. Dazu halten wir uns nachwievor an die Ausf"uhrungen von ~\cite[Abschnitt 4.9]{liesen}. Wie von den Autoren vorgeschlagen, setzen wir
 \[
-F(A_1,\omega) := \frac{1}{\omega}\sum_{j=1}^\infty(\omega^{-1}A_1)^j
+F(A_1,t) := \frac{1}{k}\sum_{j=1}^\infty(t^{-1}A_1)^j
 \]
 und erhalten mit Hilfe des Korollars \ref{kor:chap3:potenzreihe}
 \begin{equation}\label{eq:chap3:resolventenZerlegung}
-(\omega I_m - A_1)^{-1} = \frac{1}{\omega} I_m + F(A_1,\omega).
+(t I_m - A_1)^{-1} = \frac{1}{t} I_m + F(A_1,t).
 \end{equation}
-Nach Konstruktion sind alle Eigenwerte von $A_1$ beziehungsweise die Singularit"aten von $(\omega I_m - A_1)^{-1}$ im Inneren von $\Gamma$. Der Wert des Integrals auf der linken Seite von Gleichung \eqref{eq:chap3:identitaet} ver"andert sich nicht, wenn wir anstelle von $\Gamma$ "uber eine
+Nach Konstruktion sind alle Eigenwerte von $A_1$ beziehungsweise die Singularit"aten von $(t I_m - A_1)^{-1}$ im Inneren von $\Gamma$. Der Wert des Integrals auf der linken Seite von Gleichung \eqref{eq:chap3:identitaet} ver"andert sich nicht, wenn wir anstelle von $\Gamma$ "uber eine
 andere Jordan-Kurve, die das von $\Gamma$ umschlossene Gebiet enth"alt, integrieren. Daher k"onnen wir als Integrationskontur  $\widehat{\Gamma}$ ebenso gut den Kreis um den Nullpunkt mit hinreichend gro"sem Radius $r > \|A_1\|_2$
 w"ahlen.
 
@@ -467,49 +467,49 @@ w"ahlen.
 
 F"ur $t\in[0,2\pi]$ ist die Abbildung $t\mapsto re^{\iota t}$ eine Parametrisierung von $\widehat{\Gamma}$. Diese Kurve ist dann positiv orientiert und wir erhalten wegen
 \[
-\int_{\widehat{\Gamma}} \frac{1}{\omega} \text{ d}\omega = \int_0^{2\pi}\frac{1}{r e^{\iota t}} \iota r e^{\iota t} \text{ d}t = 2\pi \iota
+\int_{\widehat{\Gamma}} \frac{1}{t} \text{ d}t = \int_0^{2\pi}\frac{1}{r e^{\iota t}} \iota r e^{\iota t} \text{ d}t = 2\pi \iota
 \]
 und unter Ausnutzung von Gleichung \eqref{eq:chap3:resolventenZerlegung}
 \[
-\int_\Gamma (\omega I_m - A_1)^{-1} \text{ d}\omega =
-\int_{\widehat{\Gamma}} \frac{1}{\omega}I_m
-\text{ d}\omega
-+ \int_{\widehat{\Gamma}} F(A_1,\omega) \text{ d}\omega
-= 2\pi\iota \cdot I_m + \int_{\widehat{\Gamma}} F(A_1,\omega) \text{ d}\omega.
+\int_\Gamma (t I_m - A_1)^{-1} \text{ d}t =
+\int_{\widehat{\Gamma}} \frac{1}{t}I_m
+\text{ d}t
++ \int_{\widehat{\Gamma}} F(A_1,t) \text{ d}t
+= 2\pi\iota \cdot I_m + \int_{\widehat{\Gamma}} F(A_1,t) \text{ d}t.
 \]
-Betrachten wir nun f"ur $\omega \in\widehat{\Gamma}$ den Ausdruck $F(A_1,\omega)$ etwas genauer.
+Betrachten wir nun f"ur $t \in\widehat{\Gamma}$ den Ausdruck $F(A_1,t)$ etwas genauer.
 Es gilt
 \[
-\|F(A_1,\omega)\|_2 =
-\left\| \frac{1}{\omega} \sum_{j=1}^\infty \left( \frac{1}{\omega} A_1 \right)^j \right\|_2
-\le \frac{1}{|\omega|} \sum_{j=1}^\infty \left(\frac{\|A_1\|_2}{|\omega|} \right)^j
-= \frac{\|A_1\|_2}{|\omega|^2}\sum_{j=0}^\infty \left(\frac{\|A_1\|_2}{|\omega|} \right)^j.
+\|F(A_1,t)\|_2 =
+\left\| \frac{1}{t} \sum_{j=1}^\infty \left( \frac{1}{t} A_1 \right)^j \right\|_2
+\le \frac{1}{|t|} \sum_{j=1}^\infty \left(\frac{\|A_1\|_2}{|t|} \right)^j
+= \frac{\|A_1\|_2}{|t|^2}\sum_{j=0}^\infty \left(\frac{\|A_1\|_2}{|t|} \right)^j.
 \]
-Nach Konstruktion gilt $\|A_1\|_2 < r \le |\omega|$.
+Nach Konstruktion gilt $\|A_1\|_2 < r \le |t|$.
 Mit der Kenntnis "uber den Grenzwert der geometrischen Reihe erhalten wir daher die Absch"atzung
 \[
-\|F(A_1,\omega)\|_2 \le \frac{\| A_1 \|_2}{r}
+\|F(A_1,t)\|_2 \le \frac{\| A_1 \|_2}{r}
 \frac{1}{1-\|A_1\|_2 / r}.
 \]
 Da diese Absch"atzung f"ur alle $r > \|A_1\|$ gilt und die rechte Seite f"ur $r\to\infty$ den Wert Null annimmt, muss daher
 \[
-\frac{1}{2\pi\iota}\int_\Gamma (\omega I_m - A_1)^{-1} \text{ d}\omega =
- \frac{1}{2\pi\iota} \left(2\pi\iota \cdot I_m + \int_{\widehat{\Gamma}} F(A_1,\omega) \text{ d}\omega\right)
+\frac{1}{2\pi\iota}\int_\Gamma (t I_m - A_1)^{-1} \text{ d}t =
+ \frac{1}{2\pi\iota} \left(2\pi\iota \cdot I_m + \int_{\widehat{\Gamma}} F(A_1,t) \text{ d}t\right)
 = I_m
 \]
 und somit auch Gleichung \eqref{eq:chap3:kontur} gelten.\\
 
 Welche Schlussfolgerungen lassen sich hieraus f"ur ein Eigenwertproblem $(A,B)$ ziehen, bei der eine beliebige Matrix $B$ vorgegeben ist? Diese Frage soll zumindest f"ur HPD-Eigenwertprobleme beantwortet werden.\\
 
-Sei also $(A,B)$ ein HPD-Eigenwertproblem. Dann ist $B$ invertierbar und jede Singularit"at der Greenfunktion $G_1(\omega) := (\omega I_n - B^{-1}A)^{-1}$
-ist auch eine Singularit"at der Funktion $G_2(\omega):=(\omega B - A)^{-1}$. Ist wie eben $\Lambda_1$ eine Teilmenge des Spektrums, $\Gamma$ eine umschlie"sende Jordan-Kurve und die Zerlegung
+Sei also $(A,B)$ ein HPD-Eigenwertproblem. Dann ist $B$ invertierbar und jede Singularit"at der Greenfunktion $G_1(t) := (t I_n - B^{-1}A)^{-1}$
+ist auch eine Singularit"at der Funktion $G_2(t):=(t B - A)^{-1}$. Ist wie eben $\Lambda_1$ eine Teilmenge des Spektrums, $\Gamma$ eine umschlie"sende Jordan-Kurve und die Zerlegung
 \[
 B^{-1}A = S\begin{bmatrix} B^{-1}_1 A_1 & 0 \\ 0 & B^{-1}_2 A_2 \end{bmatrix} S^{-1}
 \]
 analog zu Gleichung \ref{eq:chap3:factorization} gegeben, so schlie"st man auf "ahnliche Weise
 \[
-\frac{1}{2\pi\iota}\int_\Gamma (\omega I_n - B^{-1}A)^{-1} \text{ d}\omega =
-\frac{1}{2\pi\iota}\int_\Gamma (\omega B - A)^{-1} \text{ d}\omega
+\frac{1}{2\pi\iota}\int_\Gamma (t I_n - B^{-1}A)^{-1} \text{ d}t =
+\frac{1}{2\pi\iota}\int_\Gamma (t B - A)^{-1} \text{ d}t
 = P_1.
 \]
 
@@ -550,8 +550,8 @@ Gem"a"s Abschnitt \ref{sec:chap3:konturintegration} w"ahlen wir daher als Integr
 \end{equation}
 und integrieren dar"uber die Green-Funktion
 \[
-G(\omega) = \text{diag}(\omega-3, 5\omega-1, 9\omega-4)^{-1}
-=\text{diag}\left(\frac{1}{\omega-3}, \frac{1}{5\omega-1}, \frac{1}{9\omega-4}\right).
+G(t) = \text{diag}(t-3, 5t-1, 9t-4)^{-1}
+=\text{diag}\left(\frac{1}{t-3}, \frac{1}{5t-1}, \frac{1}{9t-4}\right).
 \]
 Nach Definition \ref{defn:chap3:jordanKurve} ist $\Gamma$ eine positiv orientierte Jordan-Kurve.
 Da nach Konstruktion keiner der Eigenwerte im Bild von
@@ -577,8 +577,8 @@ $\gamma$ liegt, ist $G$ auf der gesamten Kurve wohldefiniert.
 Folgen wir also weiter dem Abschnitt \ref{sec:chap3:konturintegration}, so erhalten wir
 \[
 \frac{1}{2\pi\iota} \int_\Gamma G \text{ d}s =
-\frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(\omega))\cdot \gamma'(\omega)
-\text{ d}\omega
+\frac{1}{2\pi\iota}\int_0^{2\pi} G(\gamma(t))\cdot \gamma'(t)
+\text{ d}t
 = \text{diag}\left( 0, \frac{1}{5}, \frac{1}{9} \right)
 \]
 Diese Matrix l"asst sich mit den $B$-orthonormalen Vektoren $x_1 = 1/\sqrt6 \cdot e_2$

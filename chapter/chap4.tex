@@ -164,12 +164,12 @@ Wir werden in K"urze formal formulieren, wie dies zu verstehen ist.\\
 
 Ausgangspunkt f"ur die Integration ist nun eine stetige Funktion $f$, die eine Faktorisierung in zwei stetige Funktionen $g$ und $\omega$ der Art
 \[
-f = g\cdot \omega
+f = \omega \cdot g
 \]
 besitzt, wobei $\omega$ auf dem Integrationsintervall $[a,b]$ positiv sein soll. Die Funktion $\omega$ wird auch als \emph{Gewichtsfunktion} bezeichnet.
 Ziel ist also nun die Berechnung von
 \begin{equation}\label{eq:gintegral}
-\int_a^b g(x)\omega(x) \text{ d}x,
+\int_a^b \omega(x)g(x) \text{ d}x,
 \end{equation}
 wobei wir zus"atzlich fordern, dass \eqref{eq:quadratur} und \eqref{eq:gintegral} f"ur alle Polynome bis zum Grad $(2n-1)$ "ubereinstimmen.\\
 
@@ -177,12 +177,12 @@ Dazu betrachten wir die Standardbasis $\{x^k\}_{k=0:(2n-1)}$ auf dem Raum der Po
 Grad $(2n-1)$. Dann landen wir unweigerlich bei dem
 Gleichungssystem
 \[
-\sum_{j=1}^n \omega_j x_j^k = \int_a^b x^k \omega(x) \text{ d}x \text{ mit } k = 0:2n-1.
+\sum_{j=1}^n \omega_j x_j^k = \int_a^b \omega(x)\cdot x^k \text{ d}x \text{ mit } k = 0:2n-1.
 \]
 Man kann zeigen, dass die L"osung dieses Systems durch Nullstellen eines Polynoms gegeben ist, welches durch
 ein Gram-Schmidt-Orthogonalisierungsverfahren bez"uglich des Skalarproduktes
 \[
-\langle p,q\rangle_\omega := \int_a^b p(t) q(t)\omega(t) \text{ d}t
+\langle p,q\rangle_\omega := \int_a^b p(x) q(x)\omega(x) \text{ d}x
 \]
 konstruiert wurde. Das hei"st konkret: Ausgehend vom Polynom $p_0 \equiv 1$ ist
 \[
@@ -221,14 +221,14 @@ $r$ der Abstand des Mittelpunktes zum Rand des Intervalls, dann entspricht die M
 der Sph"are mit Radius $r$ um $c$. Mit dem Cauchy'schen Integralsatz
 l"asst sich zeigen, dass im Falle $z\notin \mathcal{C}$
 \[
-\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
+\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{t-z}\text{ d}t
 = \begin{cases}1 &\text{ falls }|z-c| < r \\ 0 &\text{ falls }|z-c| > 0 \end{cases}
 \]
 gilt. Um dieses Integral mit einer Gau"s'schen Quadraturformel ann"ahern zu k"onnen, ben"otigen wir eine Parametrisierung von $\mathcal{C}$. Hierf"ur ziehen wir \cite{ptep} zurate und w"ahlen demzufolge
 die Funktion
 \[
 \gamma\colon[-1,3]\to\C\text{, }
-t\mapsto c+re^{\iota \frac{\pi}{2}(1+t)}
+x\mapsto c+re^{\iota \frac{\pi}{2}(1+x)}
 \]
 als Parametrisierung der Sph"are $\mathcal{C}$.
 %Die Ableitung von $\gamma$ ist dann f"ur jedes $t\in[-1,3]$ durch
@@ -238,37 +238,38 @@ als Parametrisierung der Sph"are $\mathcal{C}$.
 %gegeben.
 Wir erhalten dann f"ur alle $z\notin\mathcal{C}$ die Gleichung
 \begin{align*}
-\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{\omega-z}\text{ d}\omega
-&= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \\
-&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
-\int_{1}^3\frac{\gamma'(t)}{\gamma(t)-z}\text{ d}t \right) \\
-&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(t)}{\gamma(t)-z} \text{ d}t +
-\int_{-1}^1\frac{\gamma'(2-t)}{\gamma(2-t)-z}\text{ d}t \right) \\
-&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(t)}{\gamma(t)-z} +
-\frac{\overline{\gamma'(t)}}{\overline{\gamma(t)}-z}\right)\text{d}t
+\frac{1}{2\pi\iota}\int_{ \mathcal{C}}\frac{1}{t-z}\text{ d}t
+&= \frac{1}{2\pi\iota} \int_{-1}^3 \frac{\gamma'(x)}{\gamma(x)-z}\text{ d}x \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(x)}{\gamma(x)-z} \text{ d}x +
+\int_{1}^3\frac{\gamma'(x)}{\gamma(x)-z}\text{ d}x \right) \\
+&= \frac{1}{2\pi\iota} \left( \int_{-1}^1 \frac{\gamma'(x)}{\gamma(x)-z} \text{ d}x +
+\int_{-1}^1\frac{\gamma'(2-x)}{\gamma(2-x)-z}\text{ d}x \right) \\
+&= \frac{1}{2\pi\iota} \int_{-1}^1 \left( \frac{\gamma'(x)}{\gamma(x)-z} +
+\frac{\overline{\gamma'(x)}}{\overline{\gamma(x)}-z}\right)\text{d}x
 \end{align*}
-wobei $\overline{\gamma(t)}$ und $\overline{\gamma'(t)}$ die komplexen Konjugationen
-von $\gamma(t)$ beziehungsweise $\gamma'(t)$ bezeichnen.
+wobei $\overline{\gamma(x)}$ und $\overline{\gamma'(x)}$ die komplexen Konjugationen
+von $\gamma(x)$ beziehungsweise $\gamma'(x)$ bezeichnen.
 
 \newpage
 
-Es seien nun $(w_j, t_j)_{j=1:m}$
+Es seien nun $(w_j, x_j)_{j=1:m}$
 die f"ur die Gau"s'sche Quadraturformel ben"otigten Gewichte und Diskretisierungspunkte.
 Dann setzen wir
 \[
 \rho(z) := \frac{1}{2\pi\iota}\sum_{j=1}^m \left(
-\frac{w_j \cdot \gamma'(t_j)}{\gamma(t_j)-z} - \frac{w_j \cdot \overline{\gamma'(t_j)}}{\overline{\gamma(t_j)}-z}
+\frac{w_j \cdot \gamma'(x_j)}{\gamma(x_j)-z} - \frac{w_j \cdot \overline{\gamma'(x_j)}}{\overline{\gamma(x_j)}-z}
 \right)
 \]
-und erhalten nach der Substitution $\gamma(t_j) := \gamma_j$ und
-$\sigma_j := w_j \gamma'(t_j) / (2\pi\iota)$ die gew"unschte rationale
+und erhalten nach der Substitution $\gamma(x_j) := \gamma_j$ und
+$\sigma_j := w_j \gamma'(x_j) / (2\pi\iota)$ die gew"unschte rationale
 Funktion
 \[
 \r\colon\C\to\C, z\mapsto\sum_{j=1}^m\left(\frac{\sigma_j}{\gamma_j - z} +
 \frac{\overline{\sigma_j}}{\overline{\gamma_j} - z}\right)
 \]
 zur Approximation der Indikatorfunktion. Hierbei ist bemerkenswert, dass die
-rationale Funktion bereits in Partialbruchzerlegung vorliegt. Setzen wir schlie"slich $B^{-1}A$ in die
+rationale Funktion bereits in Partialbruchzerlegung vorliegt.
+Setzen wir schlie"slich $B^{-1}A$ in die
 rationale Funktion ein, so erhalten wir
 \begin{align*}
 \r(B^{-1}A) &= \sum_{k=1}^m \sigma_k (\gamma_k I - B^{-1}A)^{-1} +
@@ -279,15 +280,69 @@ rationale Funktion ein, so erhalten wir
 und folglich
 \[
 \r(B^{-1}A)Y =
-\sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BV +
-\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BV
+\sum_{k=1}^q \sigma_k (\gamma_k B - A)^{-1} BY +
+\sum_{k=1}^q \overline{\sigma_k} (\overline{\gamma_k} B - A)^{-1} BY
 \]
-f"ur eine Matrix $Y\in\C^{n,m}$.
+f"ur eine Matrix $Y\in\C^{n,m}$. Sind $A, B$ und $Y$ reellwertig, so l"asst sich dies zu
+\begin{equation}\label{eq:chap4:realteilsumme}
+\r(B^{-1}A)Y =
+2\sum_{k=1}^q \mathfrak{Re}\left(\sigma_k (\gamma_k B - A)^{-1} BY\right)
+\end{equation}
+vereinfachen. Dabei gebe die Funktion $\mathfrak{Re}$ den Realteil ihres Inputs an.
 
 \section{FEAST-Algorithmus}
 
 Im Jahr 2009 stellte Eric Polizzi in \cite{polizzi} ein Verfahren vor, welches sich die Theorien der vorigen Abschnitte zu Nutze macht. Dieser \glqq[\ldots] \emph{fast and stable algorithm for solving the symmetric eigenvalue problem} [\ldots]\grqq\ \cite[Abstract]{polizzi} wurde seither weiterentwickelt und zahlreichen Analysen unterzogen.\footnote{Siehe etwa \cite{ptep},\cite{kpt} und \cite{lzp}.}
-Wir wollen in diesem Abschnitt die wichtigen Punkte des oben zitierten Papers skizzieren und damit das vierte Kapitel abschlie"sen.\\
+Wir wollen in diesem Abschnitt die wichtigen Punkte des oben zitierten Papers skizzieren und damit das vierte Kapitel abschlie"sen.
 
+\newpage
+
+Polizzi beginnt seine Ausf"uhrungen mit einem Blick in die Physik und motiviert das L"osen von Eigenwertproblemen anhand der Schr"odinger Eigenwertgleichung
+\[
+\textbf{\text{H}}\Psi = E\textbf{\text{S}}\Psi
+\]
+welche die Fragestellung modelliert, ob gewisse Quantenobjekte, die von einer Wellenfunktion $\Psi$ beschrieben werden, kinetische Energie besitzen oder nicht. Hierbei ist \textbf{H} eine hermitesche Matrix und \textbf{S} eine symmetrisch positiv definite Matrix.\\
+
+Der Autor merkt an, dass das L"osen solcher Systeme, insbesondere dann, wenn sie sehr gro"s sind, enorme Anforderungen an die Numeriker stellt. Die Frage ist stets, wie Eigenpaare effizient berechnet werden k"onnen und welche Genauigkeit man erwarten darf. Polizzi bewirbt seinen Algorithmus mit hoher Geschwindigkeit, Robustheit und guter Skalierbarkeit. Seinem Urteil nach, werden Methoden, wie \glqq\emph{Rayleigh-quotient multigrid}\grqq\ oder \glqq\emph{parallel Chebyshev subspace iteration}\grqq\ als weniger effizient eingesch"atzt.\\
+
+Ausgehend von einer Ausf"uhrung "uber das Konzept der Konturintegration zur Bestimmung von Eigenpaaren, baut Polizzi seinen Algorithmus auf, der auf ein $N$-dimensionales Eigenwertproblem $(A,B)$ mit hermiteschem oder reell symmetrischem $A$ und symmetrisch positiv definitem $B$ ausgelegt ist und auf einem reellen Intervall $[\lambda_1,\lambda_2]$ die $m\in\N$ Eigenpaare finden soll.\\
+
+Sind $(\omega_j, s_j)_{j=1:k}$ die f"ur die Gau"s'sche Quadraturformel ben"otigten Gewichte und St"utzstellen, so l"asst sich der vorgestellte FEAST-Algorithmus wie folgt notieren.
+
+\begin{algorithm}
+\caption{FEAST-Algorithmus (Vgl. \cite[Abschnitt III]{polizzi})}\label{alg:chap4:feast}
+\begin{algorithmic}[1]
+\State W"ahle $M > m$ linear unabh"angige Vektoren $Y \gets [y_i]_{i=1:M} \in\C^{n,M}$, setze $Q\gets 0_{n,M}$ und $r\gets (\lambda_1 - \lambda_2)/2$.
+\State \textbf{repeat}
+\State \ \ \ \ \textbf{for j=1:k}
+
+\State \ \ \ \ \ \ \ \ Berechne $\theta_{(j)} \gets -(\pi/2)(s_j-1)$.
+\State \ \ \ \ \ \ \ \ Berechne $t_{(j)} \gets (\lambda_2 + \lambda_1)/2 + re^{\iota\theta_{(j)}}$.
+\State \ \ \ \ \ \ \ \ L"ose $(t_{(j)} B-A)Q_{(j)} = Y$ in $Q_{(j)}$.
+\State \ \ \ \ \ \ \ \ Setze $Q\gets Q - (\omega_j/2)\cdot\mathfrak{Re}\left(re^{\iota \theta_{(j)}} Q_{(j)}\right)$.
+\State \ \ \ \ \textbf{endfor}
+\State \ \ \ \ Reduziere die Dimension: $\widetilde{A} \gets Q^H A Q$,
+$\widetilde{B} \gets Q^H B Q$.
+\State \ \ \ \ L"ose das transformierte Problem $\widetilde{A}\widetilde{X}
+= \widetilde{B}\widetilde{X}\widetilde{\Lambda}$ in
+$\widetilde{X}$ und $\widetilde{\Lambda} = \text{diag}(\widetilde{\lambda}_1,\ldots,\widetilde{\lambda}_M)$.
+\State \ \ \ \ Setze $X \gets [x_i]_{i=1:M} = Q\widetilde{X}$.
+\State \ \ \ \ Gilt $\widetilde{\lambda_i} \in [\lambda_1,\lambda_2]$, so gibt Eigenpaar $(\widetilde{\lambda_i},x_i)$ aus.
+
+\State \textbf{until} Abbruchkriterium ist erf"ullt.
+\end{algorithmic}
+\end{algorithm}
+
+Dieser Algorithmus stellt eine Umsetzung der beschleunigten Rayleigh-Ritz Iteration dar.mDie Zeilen drei bis acht erf"ullen den Zweck des Berechnens von $\p(B^{-1}A)Y$, wobei man sich hier einer "ahnlichen Umformulierung bedient, wie in Gleichung \eqref{eq:chap4:realteilsumme}.\footnote{Die entsprechende Anpassung von Algorithmus \ref{alg:chap4:beschlRrIteration} ist in \cite[365]{ptep} zu finden.}
+
+\newpage
+
+Es ist zu beachten, dass sich hier durch die Verwendung einer negativ orientierten Kurve -- zu erkennen in der vierten und f"unften Zeile -- Vorzeichenwechsel ergeben. Da bei einer entsprechenden Parametrisierung auf der rechten Seite der Identit"at \eqref{eq:chap3:kontur} der zus"atzliche Faktor $(-1)$ ben"otigt wird, muss dies entsprechend bei der Konstruktion der rationalen Funktion $\p$ ber"ucksichtigt werden.\\
+
+Die weiteren Abschnitte des Papers besch"aftigen sich vornehmlich mit numerischen Experimenten. Polizzi demonstriert anhand elektronenstrukturell bezogenen Berechnungen auf Kohlenstoffnanor"ohren die numerische Stabilit"at, Robustheit und Skalierbarkeit des FEAST-Algorithmus. Dabei vergleicht er FEAST mit ARPACK -- einer Bibliothek auf FORTAN77 basierenden Methoden zum L"osen hochdimensionaler Eigenwertprobleme.\\
+
+Abschlie"send hebt der Autor einige Merkmale seines Algorithmus' heraus, von denen an dieser Stelle eine bescheidene Auswahl vorgestellt wird. Zun"achst einmal kommt FEAST g"anzlich ohne Orthogonalisierungsmethoden aus, wie es etwa bei der unbeschleunigten Rayleigh-Ritz Iteration n"otig ist. Des Weiteren weist Polizzi auf auf das Potential der parallelen Implementierung hin.\\
+
+In Papern aus den vergangenen zwei Jahren, wie etwa in \cite[Abschnitt 4.1]{kpt}, wird auf dieses Potential genauer eingegangen. Inzwischen wurden auch Versuche unternommen, FEAST auf nicht hermitesche Eigenwertprobleme auszuweiten.\footnote{Siehe \cite{kpt}.}
 
 %Im dritten Kapitel wurde mit Satz \ref{thm:chap3:invariant} gezeigt, dass Ritz-Paare im Falle der $(B^{-1}A)$-Invarianz des Suchraumes $\S$ schon Eigenpaare sind. Wir k"onnten folglich die Iteration in Algorithmus \ref{alg:chap4:rrIteration} beenden, sobald eine Potenz
