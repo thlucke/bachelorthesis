@@ -1,6 +1,6 @@
-\begin{thm}[Singul"arwertzerlegung]\label{thm:svd}
+\begin{thm}[Singul"arwertzerlegung]\label{thm:appTheorems:svd}
 Ist $A\in\C^{m,n}$ eine $r$-rangige Matrix, so existieren unit"are Matrizen $U\in\C^{m,m}, V\in\Cnn$
-und $\Sigma^2_+ =\text{diag}(\sigma^2_1,\ldots,\sigma^2_r)\in\C^{r,r}$ mit der Eigenschaft $\sigma_1 \ge \ldots \ge \sigma_r > 0$, die
+und eine Diagonalmatrix $\Sigma^2_+ =\text{diag}(\sigma^2_1,\ldots,\sigma^2_r)\in\C^{r,r}$ mit der Eigenschaft $\sigma_1 \ge \ldots \ge \sigma_r > 0$, die
 eine Faktorisierung der Art
 \[
 A = U \Sigma V^H
@@ -10,25 +10,36 @@ erm"oglichen. Dabei ist
 \Sigma = \begin{bmatrix} \Sigma_+ & 0_{r,n-r} \\
 0_{m-r,r} & 0_{m-r,n-r} \end{bmatrix}.
 \]
-\textcolor{red}{nochmal bearbeiten mit den quadraten}
+\end{thm}
 
+\begin{thm}[Beste Rang-$k$ Approximierung]\label{thm:appTheorems:rang}
+Ist $A\in\C^{m,n}$ eine $r$-rangige Matrix und $A = U\Sigma V^H$ mit $U=[u_i]_{i=1:m}$ und $V=[v_i]_{i=1:n}$ die Singul"arwertzerlegung von $A$ wie in Satz \ref{thm:appTheorems:svd}, dann gilt
+\[
+\left\|A-\sum_{i=1}^k \sigma_i u_i v_i^H\right\|_2 = \min_{\substack{B\in\C^{m,n} \\ \text{Rang}(B)=k}} \|A-B\|_2
+\]
+f"ur alle $k=1:r$.
 \end{thm}
 
 \begin{thm}[Spektralsatz f"ur hermitesche Matrizen]\label{thm:appTheorems:Spektralsatz}
-bla
+Eine Matrix $A\in\Cnn$ ist genau dann hermitesch, wenn sie unit"ar diagonalisierbar ist und alle Eigenwerte von $A$ reell sind.
 \end{thm}
 
 \begin{thm}[Existenz der Cholesky-Zerlegung]\label{thm:appTheorems:Cholesky}
-bla
+Ist $A\in\Cnn$ eine HPD-Matrix, so existiert eine eindeutig bestimmte untere Dreiecksmatrix $L\in\Cnn$ mit positiven Diagonalelementen, mit $A=LL^H$.
 \end{thm}
 
-\begin{thm}[Jordan'sche Normalform]\label{thm:appTheorems:Jordan}
-blubb
-\end{thm}
+%\begin{thm}[Jordan'sche Normalform]\label{thm:appTheorems:Jordan}
+%blubb
+%\end{thm}
 
 \begin{thm}[Cauchy'scher Integralsatz]\label{thm:appTheorems:Cauchy}
-bla
+Ist $\Omega\subseteq\C$ ein einfach zusammenh"angendes Gebiet, $f\colon\Omega\to\C$ eine holomorphe Funktion, sowie $\Gamma$ eine Jordan-Kurve, so gilt
+\[
+\oint_\Gamma f(z) \text{ d}z = 0.
+\]
 \end{thm}
+
+\newpage
 
 \begin{thm}[Potenzmethode]\label{thm:appTheorems:Potenzmethode} Es sei $A\in\Cnn$ eine hermitesche Matrix mit Eigenpaaren $(\lambda_i,x_i)_{i=1:n} \in \R\times\Co$ und $n\ge 2$.
 Es gelte weiter $|\lambda_1| > |\lambda_j|$ f"ur alle
@@ -40,10 +51,9 @@ y_{(k+1)} = \frac{1}{\|A^{k+1} y_{(0)}\|} A^{k+1}y_{(0)}
 gegen einen normierten Eigenvektor zum Eigenwert $\lambda_1$
 \end{thm}
 
-\begin{proof}
-
-\end{proof}
-
 \begin{thm}[QR-Zerlegung]\label{thm:appTheorems:QR}
-
+Sei $A\in\C^{n,m}$ mit $n\ge m$. Dann exisitert eine unit"are Matrix $Q\in\Cnn$ und eine obere Dreiecksmatrix $R = [r_{ij}]_{i,j=1:m}\in\C^{m,m}$ mit $r_{ii}\ge 0$ f"ur $i=1:m$ mit
+\[
+A = Q\begin{bmatrix} R \\ 0_{n-m,m} \end{bmatrix}.
+\]
 \end{thm}

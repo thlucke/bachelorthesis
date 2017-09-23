@@ -1,0 +1,215 @@
+\begin{lstlisting}[caption=Eigenpaarberechnung mit Zeiterfassung, captionpos=b, label=alg:appAlgorithm:eigenPlot]
+% Eingabe: -; Ausgabe: -
+% Funktionsaufruf: eigenPlot
+
+function eigenPlot
+
+% Anpassung an Latexfont
+set(0,'defaulttextinterpreter','latex');
+
+% Beschriftung des Plots
+figure; hold on;
+xlabel('Dimension'); ylabel('Ben\"{o}tigte Rechenzeit in Sekunden');
+
+% Initialisierung der x,y-Achsenwerte
+xDimension = 10:10:1500; yTime = 10:10:1500;
+
+  % Beginn der Eigenpaarberechnung
+  for i=1:3
+    for N=10:10:1500  % zehnstufiger Dimensionszuwachs
+      tMatrix = tic; tEigenpairs = tic; % Timerinitialisierung
+      A = rand(N); A = A'*A; % Erzeugung einer symmetrischen Matrix
+      endMatrix = toc(tMatrix); % Dauer Matrixinitialisierung
+      [X, D] = eig(A);  % Berechnung der Eigenpaare
+      endEigenpairs = toc(tEigenpairs);
+      yTime(N/10) = endEigenpairs-endMatrix;  % Dauer Eigenpaarberechnung
+    end%for
+    plot(xDimension, yTime);  % Erstellung des Diagramms
+  end%for
+  print -depsc eigLaufzeit;  % Umwandlung in .eps Datei
+
+end%function
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}[caption=Rayleigh-Ritz Verfahren mit Zeiterfassung, captionpos=b, label=alg:appAlgorithm:rayleighRitz]
+% Eingabe: -; Ausgabe: -
+% Funktionsaufruf: rayleighRitz
+
+function rayleighRitz
+
+% Anpassung an Latexfont
+set(0,'defaulttextinterpreter','latex');
+
+% Beschriftung des Plots
+figure; hold on;
+xlabel('Dimension $N$ der untersuchten Matrix');
+ylabel({'Ben\"{o}tigte Rechenzeit in Sekunden'; ...
+  'f\"{u}r $N/5$-dimensionalen Suchraum'});
+
+% Initialisierung der x,y-Achsenwerte
+xDimension = 10:10:1500; yTime = 10:10:1500;
+
+  % Beginn der Eigenpaarberechnung
+  for i=1:3
+    for N=10:10:1500  % zehnstufiger Dimensionszuwachs
+      tMatrix = tic; tRitzpairs = tic; % Timerinitialisierung
+      A = rand(N); A = A'*A; % Erzeugung einer symmetrischen Matrix
+      S = rand(N, N/5); % Suchraum der Dimension N/5
+      endMatrix = toc(tMatrix); % Dauer Matrixinitialisierung
+
+      % Rayleigh-Ritz Verfahren
+      S = orth(S);  % Orthogonalisierung der Basisvektoren
+      A = S'*A*S; % Verringerung der Dimension
+      [X, D] = eig(A); S*X; % Berechnung der Ritz-Paare
+      endRitzpairs = toc(tRitzpairs);
+      yTime(N/10) = endRitzpairs-endMatrix;  % Dauer Eigenpaarberechnung
+    end%for
+    plot(xDimension, yTime);  % Erstellung des Diagramms
+  end%for
+  print -depsc rayleighRitzLaufzeit;  % Umwandlung in .eps Datei
+
+end%function
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}[caption=Berechnung des Winkels zwischen Ritz- und Eigenvektoren, captionpos=b, label=alg:appAlgorithm:ritzVecAngle]
+% Eingabe: -; Ausgabe: -
+% Funktionsaufruf: ritzPairAngle
+
+function ritzPairAngle
+
+% Anpassung an Latexfont
+set(0,'defaulttextinterpreter','latex');
+
+% Beschriftung des Plots
+figure; hold on;
+xlabel('Dimension der untersuchten Matrix');
+ylabel({'Winkel in Bogenma{\ss}'});
+
+% Initialisierung der x-Achse
+xDimension = 10:10:500;
+
+  % Beginn der Eigenpaarberechnung
+  for i = 1:3
+    for N = 10:10:500  % zehnstufiger Dimensionszuwachs
+      %clearvars -except i N xDimension yMaxDist
+      [i, N]
+      A = rand(N); A = A'*A; % Erzeuge symmetrische Matrix
+      [X,D] = eig(A);
+      S = rand(N, 2); % Suchraum der Dimension 5
+
+      % Rayleigh-Ritz Verfahren
+      S = orth(S);  % Orthogonalisierung der Basisvektoren
+      A2 = S'*A*S; % Verringerung der Dimension
+      [X2, D2] = eig(A2); X2 = S*X2; % Berechnung der Ritz-Paare
+
+      % Berechnung des minimalen Winkels
+      p = 1:N; P = nchoosek(p,2);
+      for k = 1:length(P) % = #Zeilen von P, wegen N >= 10
+          Theta(k) = subspace(X2, X(:,P(k,:)));
+      end
+      yTheta(N/10) = min(Theta);
+    end%for
+    plot(xDimension, yTheta);  % Erstellung des Diagramms
+  end%for
+  print -depsc ritzPairAngle;  % Umwandlung in .eps Datei
+
+end%function
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[caption=Berechnung des Winkels zwischen Ritz- und Eigenvektoren bei iterativem Rayleigh-Ritz Verfahren, captionpos=b, label=alg:appAlgorithm:iterRitzVecAngle]
+% Eingabe: -; Ausgabe: -
+% Funktionsaufruf: iterRayleighRitz
+
+function iterRayleighRitz
+
+% Anpassung an Latexfont
+set(0,'defaulttextinterpreter','latex');
+
+% Beschriftung des Plots
+figure; hold on; xIteration = 1:50;
+xlabel('Iteration'); ylabel('Winkel in Bogenma{\ss}');
+
+%for i=1:3
+A = rand(500); A=A'*A; [X, D] = eig(A);
+Y1 = rand(500,2);
+k1 = 1;
+
+for j=1:100
+
+    % Rayleigh-Ritz Prozedur
+    S1 = A^k1*Y1; S1 = orth(S1);
+    A1 = S1'*A*S1;
+    [X1, D1] = eig(A1); Y1 = S1*X1;
+
+    % Berechnung des Winkels
+    p = 1:500; P = nchoosek(p,2);
+    for k = 1:length(P) % = #Zeilen von P
+        Theta(k) = subspace(Y1, X(:,P(k,:)));
+    end
+    yTheta(j) = min(Theta);
+end%for
+plot(xIteration, yTheta);
+
+%print -depsc iterRitzAngle;
+
+end%function
+\end{lstlisting}
+
+\newpage
+
+\begin{lstlisting}[caption=FEAST, captionpos=b, label=alg:appAlgorithm:FEAST]
+% Eingabe: -; % Ausgabe: -
+% Funktionsaufruf: feast
+
+function feast
+
+% Initialisierungen
+n = 500; iter = 10; lmin = 1; lmax = 2.5;
+
+% Initialisierung des Plots
+set(0,'defaulttextinterpreter','latex');
+figure; hold on;
+xlabel('Durchgef\"{u}hrte Iterationen');
+ylabel('Winkel $\theta_{\min}(\mathcal{X},\mathcal{R})$');
+
+% Erzeuge und transformiere die Filterfunktionen r auf
+% das Intervall [lmin,lmax].
+x = rkfun(); t = 2/(lmax-lmin)*x - (lmin+lmax)/(lmax-lmin);
+s = rkfun('step', 5); r = s(t);
+
+for j=1:3
+    % Erzeuge HPD-Eigenwertproblem und skaliere die Matrizen
+    A = 10*rand(n); A=A'*A - 1;
+    B = 20*rand(n); B=B'*B;
+
+    % Berechne Eigenpaare auf ]lmin,lmax[ mit eig(A,B) als Referenz
+    [X, D] = eig(A,B);
+
+    for i=1:n
+        if lmin < D(i,i) < lmax
+           eigVecInterval(:,i) = X(:,i);
+           eigValInterval(i) = D(i,i);
+        end%if
+    end%for
+
+    Yk = rand(n, length(eigValInterval));
+    xAxis = 1:iter; M = B\A;
+
+    for k=1:iter
+        % Beschleunnigtes Rayleigh-Ritz Verfahren
+        Pk = r(M, Yk); % Approximierung des Projektors
+        Ak = Pk'*A*Pk; Bk = Pk'*B*Pk;
+        [Xk, Dk] = eig(Ak, Bk);
+        Yk = Pk*Xk;
+        % Berechnung des Unterraumwinkels
+        theta(k) = subspace(Yk, eigVecInterval);
+    end%for
+    semilogy(xAxis, theta);
+end%for
+end%function
+
+\end{lstlisting}

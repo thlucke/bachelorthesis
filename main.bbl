@@ -16,139 +16,117 @@
   {}
 \endgroup
 
-\entry{lzp}{article}{}
-  \name{author}{2}{}{%
-    {{}%
-     {A.~R.~Levin}{A.~R.~L.}%
-     {D.~Zhang}{D.~Z.}%
-     {}{}%
-     {}{}}%
-    {{}%
-     {Polizzi}{P.}%
-     {E.}{E.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{ARLDZPE1}
-  \strng{fullhash}{ARLDZPE1}
-  \field{labelalpha}{ARLP12}
+\entry{facebook}{misc}{}
   \field{sortinit}{A}
-  \field{title}{FEAST fundamental framework for electronic structure
-  calculations: reformulation and solution of the muffin-tin problem}
-  \field{year}{2012}
+  \field{howpublished}{\url{https://de.statista.com/statistik/daten/studie/37545/umfrage/anzahl-der-aktiven-nutzer-von-facebook/}}
+  \field{note}{Letzter Zugriff: 03.09.2017}
+  \field{title}{Anzahl der monatlich aktiven Facebook Nutzer weltweit vom 3.
+  Quartal 2008 bis zum 2. Quartal 2017}
 \endentry
 
-\entry{vanbarel}{article}{}
-  \name{author}{1}{}{%
-    {{}%
-     {Barel}{B.}%
-     {Marc}{M.}%
-     {van}{v.}%
-     {}{}}%
-  }
-  \strng{namehash}{BMv1}
-  \strng{fullhash}{BMv1}
-  \field{labelalpha}{Bar15}
+\entry{amazon}{misc}{}
   \field{sortinit}{B}
-  \field{title}{Designing rational filter functions for solving eigenvalue
-  problems by contour integration.}
-  \field{year}{2015}
+  \field{howpublished}{\url{https://de.statista.com/statistik/daten/studie/158229/umfrage/online-shops-in-deutschland-nach-besucherzahlen/}}
+  \field{note}{Letzter Zugriff: 03.09.2017}
+  \field{title}{Besucherzahlen der gr\"{o}{\ss}ten Online-Shops in Deutschland
+  im Oktober 2014}
 \endentry
 
-\entry{rkt}{article}{}
+\entry{loan}{book}{}
   \name{author}{1}{}{%
     {{}%
-     {Berljafa}{B.}%
-     {Mario}{M.}%
-     {}{}%
+     {Charles F. Van~Loan}{C.~F. V.~L.}%
+     {Gene H.~Golub}{G.~H.~G.}%
+     {und}{u.}%
      {}{}}%
   }
-  \strng{namehash}{BM1}
-  \strng{fullhash}{BM1}
-  \field{labelalpha}{Ber16}
-  \field{sortinit}{B}
-  \field{title}{Rational Krylov Toolbox for MATLAB.}
-  \field{year}{2016}
-\endentry
-
-\entry{gohberg}{book}{}
-  \name{author}{1}{}{%
-    {{}%
-     {I.~Gohberg}{I.~G.}%
-     {P.~Lancaster und L.~Rodman}{P.~L. u. L.~R.}%
-     {}{}%
-     {}{}}%
+  \list{publisher}{1}{%
+    {Johns Hopkins University Press}%
   }
-  \strng{namehash}{IGPLuLR1}
-  \strng{fullhash}{IGPLuLR1}
-  \field{labelalpha}{IG96}
-  \field{sortinit}{I}
-  \field{title}{Invariant subspaces of matrices with applications}
+  \strng{namehash}{CFVLGHGu1}
+  \strng{fullhash}{CFVLGHGu1}
+  \field{sortinit}{C}
+  \field{isbn}{0-8018-5414-8}
+  \field{title}{Matrix Computations (3rd Ed.)}
+  \list{location}{1}{%
+    {Baltimore, MD, USA}%
+  }
   \field{year}{1996}
 \endentry
 
 \entry{jaenich}{book}{}
   \name{author}{1}{}{%
     {{}%
-     {J"anich}{J.}%
+     {J\"{a}nich}{J.}%
      {Klaus}{K.}%
      {}{}%
      {}{}}%
   }
+  \list{publisher}{1}{%
+    {Springer}%
+  }
   \strng{namehash}{JK1}
   \strng{fullhash}{JK1}
-  \field{labelalpha}{J"age}
   \field{sortinit}{J}
-  \field{title}{Funktionentheorie. Eine Einf"uhrung.}
-  \field{year}{Irgendein Jahr}
+  \field{isbn}{978-3-540-35015-6}
+  \field{title}{Funktionentheorie: Eine Einführung}
+  \list{location}{1}{%
+    {Berlin New York}%
+  }
+  \field{year}{2004}
+\endentry
+
+\entry{lzp}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Levin}{L.}%
+     {Alan~R.}{A.~R.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Zhang}{Z.}%
+     {Deyin}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+  }
+  \keyw{FEAST}
+  \strng{namehash}{LARZDPE1}
+  \strng{fullhash}{LARZDPE1}
+  \field{sortinit}{L}
+  \verb{doi}
+  \verb http://dx.doi.org/10.1016/j.cpc.2012.06.004
+  \endverb
+  \field{issn}{0010-4655}
+  \field{number}{11}
+  \field{pages}{2370 \bibrangedash  2375}
+  \field{title}{FEAST fundamental framework for electronic structure
+  calculations: Reformulation and solution of the muffin-tin problem}
+  \verb{url}
+  \verb http://www.sciencedirect.com/science/article/pii/S0010465512002056
+  \endverb
+  \field{volume}{183}
+  \field{journaltitle}{Computer Physics Communications}
+  \field{year}{2012}
 \endentry
 
 \entry{kpt}{article}{}
   \name{author}{1}{}{%
     {{}%
+     {P.~Tang}{P.~T.}%
      {J.~Kestyn}{J.~K.}%
-     {E.~Polizzi und P.~Tang}{E.~P. u. P.~T.}%
-     {}{}%
+     {und E. Polizzi~und}{u.~E. P.~u.}%
      {}{}}%
   }
-  \strng{namehash}{JKEPuPT1}
-  \strng{fullhash}{JKEPuPT1}
-  \field{labelalpha}{JK15}
-  \field{sortinit}{J}
+  \strng{namehash}{PTJKuEPu1}
+  \strng{fullhash}{PTJKuEPu1}
+  \field{sortinit}{P}
   \field{title}{FEAST eigensolver for non-hermitian problems}
   \field{year}{2015}
-\endentry
-
-\entry{liesen}{book}{}
-  \name{author}{1}{}{%
-    {{}%
-     {Liesen}{L.}%
-     {J"org}{J.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{LJ1}
-  \strng{fullhash}{LJ1}
-  \field{labelalpha}{Lie13}
-  \field{sortinit}{L}
-  \field{title}{Krylov subspace methods. Principles and analysis.}
-  \field{year}{2013}
-\endentry
-
-\entry{loan}{book}{}
-  \name{author}{1}{}{%
-    {{}%
-     {loan}{l.}%
-     {golub}{g.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{lg1}
-  \strng{fullhash}{lg1}
-  \field{labelalpha}{loa00}
-  \field{sortinit}{L}
-  \field{title}{Matrix Computations}
-  \field{year}{1500}
 \endentry
 
 \entry{page}{report}{}
@@ -179,7 +157,6 @@
   }
   \strng{namehash}{PL+1}
   \strng{fullhash}{PLBSMRWT1}
-  \field{labelalpha}{Pag+99}
   \field{sortinit}{P}
   \field{abstract}{%
   The importance of a Web page is an inherently subjective matter, which
@@ -218,7 +195,6 @@
   }
   \strng{namehash}{PBN1}
   \strng{fullhash}{PBN1}
-  \field{labelalpha}{Par98}
   \field{sortinit}{P}
   \field{isbn}{0-89871-402-8}
   \field{title}{The Symmetric Eigenvalue Problem}
@@ -236,12 +212,19 @@
      {}{}%
      {}{}}%
   }
+  \list{publisher}{1}{%
+    {Vieweg+Teubner Verlag / GWV Fachverlage, Wiesbaden}%
+  }
   \strng{namehash}{PR1}
   \strng{fullhash}{PR1}
-  \field{labelalpha}{Pla58}
   \field{sortinit}{P}
-  \field{title}{Numerische Mathematik kompakt}
-  \field{year}{1758}
+  \field{isbn}{978-3-8348-9644-5}
+  \field{title}{Numerische Mathematik kompakt Grundlagenwissen für Studium
+  und Praxis}
+  \list{location}{1}{%
+    {Wiesbaden}%
+  }
+  \field{year}{2010}
 \endentry
 
 \entry{polizzi}{article}{}
@@ -252,29 +235,69 @@
      {}{}%
      {}{}}%
   }
+  \list{publisher}{1}{%
+    {American Physical Society}%
+  }
   \strng{namehash}{PE1}
   \strng{fullhash}{PE1}
-  \field{labelalpha}{Pol09}
   \field{sortinit}{P}
-  \field{title}{Density-matrix-based algorithm for solving eigenvalue
-  problems.}
+  \verb{doi}
+  \verb 10.1103/PhysRevB.79.115112
+  \endverb
+  \field{issue}{11}
+  \field{pages}{115112}
+  \field{title}{Density-matrix-based algorithm for solving eigenvalue problems}
+  \verb{url}
+  \verb https://link.aps.org/doi/10.1103/PhysRevB.79.115112
+  \endverb
+  \field{volume}{79}
+  \field{journaltitle}{Phys. Rev. B}
   \field{year}{2009}
+  \warn{\item Invalid format of field 'month'}
 \endentry
 
 \entry{saad}{book}{}
   \name{author}{1}{}{%
     {{}%
      {Saad}{S.}%
-     {Y.}{Y.}%
+     {Yousef}{Y.}%
      {}{}%
      {}{}}%
   }
+  \list{publisher}{1}{%
+    {SIAM}%
+  }
   \strng{namehash}{SY1}
   \strng{fullhash}{SY1}
-  \field{labelalpha}{Saa11}
   \field{sortinit}{S}
+  \verb{doi}
+  \verb 10.1137/1.9781611970739
+  \endverb
   \field{title}{Numerical methods for large eigenvalue problems}
-  \field{year}{2011?}
+  \field{year}{2011}
+\endentry
+
+\entry{netflix}{misc}{}
+  \field{sortinit}{S}
+  \field{howpublished}{\url{https://de.statista.com/themen/1840/netflix/}}
+  \field{note}{Letzter Zugriff: 03.09.2017}
+  \field{title}{Statistiken zu Netflix}
+\endentry
+
+\entry{rkt}{misc}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Stefan~Güttel}{S.~G.}%
+     {Mario~Berljafa}{M.~B.}%
+     {und}{u.}%
+     {}{}}%
+  }
+  \strng{namehash}{SGMBu1}
+  \strng{fullhash}{SGMBu1}
+  \field{sortinit}{S}
+  \field{howpublished}{\url{http://guettel.com/rktoolbox/index.html}}
+  \field{note}{Letzter Zugriff: 05.09.2017}
+  \field{title}{Rational Krylov Toolbox for MATLAB.}
 \endentry
 
 \entry{stewart}{book}{}
@@ -285,13 +308,20 @@
      {}{}%
      {}{}}%
   }
+  \list{publisher}{2}{%
+    {Society for Industrial}%
+    {Applied Mathematics}%
+  }
   \strng{namehash}{SGW1}
   \strng{fullhash}{SGW1}
-  \field{labelalpha}{Ste13}
   \field{sortinit}{S}
-  \field{title}{Matrix algorithms}
-  \field{volume}{2: Eigensystems}
-  \field{year}{2013}
+  \field{isbn}{9780898715033}
+  \field{series}{Other Titles in Applied Mathematics}
+  \field{title}{Matrix Algorithms Volume 2: Eigensystems}
+  \verb{url}
+  \verb https://books.google.de/books?id=Y3k5TNTnEmEC
+  \endverb
+  \field{year}{2001}
 \endentry
 
 \entry{ptep}{article}{}
@@ -309,11 +339,78 @@
   }
   \strng{namehash}{TPTPPE1}
   \strng{fullhash}{TPTPPE1}
-  \field{labelalpha}{TP16}
   \field{sortinit}{T}
-  \field{title}{Feast as a subspace iteration eigensolver accelerated by
-  approximate spectral projection.}
+  \verb{doi}
+  \verb 10.1137/13090866X
+  \endverb
+  \verb{eprint}
+  \verb https://doi.org/10.1137/13090866X
+  \endverb
+  \field{number}{2}
+  \field{pages}{354\bibrangedash 390}
+  \field{title}{FEAST As A Subspace Iteration Eigensolver Accelerated By
+  Approximate Spectral Projection}
+  \verb{url}
+  \verb https://doi.org/10.1137/13090866X
+  \endverb
+  \field{volume}{35}
+  \field{journaltitle}{SIAM Journal on Matrix Analysis and Applications}
+  \field{year}{2014}
+\endentry
+
+\entry{feast}{misc}{}
+  \field{sortinit}{T}
+  \field{howpublished}{\url{http://guettel.com/rktoolbox/examples/html/example_feast.html}}
+  \field{note}{Letzter Zugriff: 05.09.2017}
+  \field{title}{The FEAST algorithm for Hermitian eigenproblems}
+\endentry
+
+\entry{vanbarel}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Van~Barel}{V.~B.}%
+     {Marc}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{VBM1}
+  \strng{fullhash}{VBM1}
+  \field{sortinit}{V}
+  \verb{doi}
+  \verb 10.1016/j.laa.2015.05.029
+  \endverb
+  \field{pages}{346\bibrangedash 365}
+  \field{title}{Designing rational filter functions for solving eigenvalue
+  problems by contour integration}
+  \verb{url}
+  \verb https://lirias.kuleuven.be/handle/123456789/498035
+  \endverb
+  \field{volume}{502}
+  \field{journaltitle}{Linear Algebra and Its Applications}
+  \field{month}{08}
   \field{year}{2016}
+\endentry
+
+\entry{liesen}{book}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Zdenek~Strakos}{Z.~S.}%
+     {J\"{o}rg~Liesen}{J.~L.}%
+     {und}{u.}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {OUP Oxford}%
+  }
+  \strng{namehash}{ZSJLu1}
+  \strng{fullhash}{ZSJLu1}
+  \field{sortinit}{Z}
+  \field{series}{Numerical Mathematics and Scientific Computation}
+  \field{title}{Krylov Subspace Methods: Principles and Analysis}
+  \verb{url}
+  \verb https://books.google.de/books?id=hDZoAgAAQBAJ
+  \endverb
+  \field{year}{2013}
 \endentry
 
 \lossort

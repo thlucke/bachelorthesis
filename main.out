@@ -1,19 +1,18 @@
-\BOOKMARK [0][-]{chapter.1}{Pr\344ludium}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Einleitung}{}% 1
 \BOOKMARK [0][-]{chapter.2}{Mathematische Grundlagen}{}% 2
 \BOOKMARK [0][-]{chapter.3}{Filtertechniken}{}% 3
 \BOOKMARK [1][-]{section.3.1}{Rayleigh-Ritz Verfahren}{chapter.3}% 4
 \BOOKMARK [1][-]{section.3.2}{Konturintegration}{chapter.3}% 5
 \BOOKMARK [1][-]{section.3.3}{Illustration}{chapter.3}% 6
-\BOOKMARK [0][-]{chapter.4}{Rationales Filtern}{}% 7
+\BOOKMARK [0][-]{chapter.4}{Hilfsmittel: Rationale Funktionen}{}% 7
 \BOOKMARK [1][-]{section.4.1}{Rayleigh-Ritz Iteration}{chapter.4}% 8
 \BOOKMARK [1][-]{section.4.2}{Gau\337'sche Quadratur}{chapter.4}% 9
 \BOOKMARK [1][-]{section.4.3}{Approximation des Spektralprojektors}{chapter.4}% 10
 \BOOKMARK [1][-]{section.4.4}{FEAST-Algorithmus}{chapter.4}% 11
 \BOOKMARK [0][-]{chapter.5}{Numerische Experimente}{}% 12
-\BOOKMARK [1][-]{section.5.1}{Rayleigh-Ritz}{chapter.5}% 13
-\BOOKMARK [1][-]{section.5.2}{Konturintegration}{chapter.5}% 14
-\BOOKMARK [1][-]{section.5.3}{FEAST Algorithmus}{chapter.5}% 15
-\BOOKMARK [1][-]{section.5.4}{Tools f\374r MATLAB}{chapter.5}% 16
-\BOOKMARK [0][-]{appendix.A}{Notationen}{}% 17
-\BOOKMARK [0][-]{appendix.B}{S\344tze und Beweise}{}% 18
-\BOOKMARK [0][-]{appendix.C}{Nebenrechnungen}{}% 19
+\BOOKMARK [1][-]{section.5.1}{Qualit\344tstests}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.2}{RKToolbox}{chapter.5}% 14
+\BOOKMARK [0][-]{appendix.A}{Symbolverzeichnis}{}% 15
+\BOOKMARK [0][-]{appendix.B}{S\344tze}{}% 16
+\BOOKMARK [0][-]{appendix.C}{Algorithmen}{}% 17
+\BOOKMARK [0][-]{appendix*.18}{Literatur}{}% 18

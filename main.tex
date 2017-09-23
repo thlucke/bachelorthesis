@@ -1,4 +1,5 @@
-\documentclass[11pt, twoside]{report} %no headers, no twosided layout by default
+\documentclass[11pt, twoside]{report}
+%no headers, no twosided layout by default
 
 % -------------------------------- %
 % ------- P A C K A G E S -------- %
@@ -18,34 +19,63 @@
 
 % preface
 \thispagestyle{empty}
-\cleardoublepage
+\textcolor{white}{bla} \\
+\vfill
+\textit{Dem Institut f"ur Mathematik\\
+der Technischen Universit"at Berlin\\
+vorgelegte Bachelorarbeit von} \\
+Thorsten Matthias Lucke.\\
+
+\textit{Betreuer und Erstgutachter}:\\
+Prof. Dr. J"org Liesen\\
+
+\emph{Zweitgutachter}:\\ Prof. Dr. Christian Mehl\\
+
+\emph{Datum der Einreichung}:\\
+Freitag, der 13. Oktober 2017
+
+
+\chapter*{Erkl"arung}
+Die selbst"andige und eigenh"andige Anfertigung versichert an Eides statt\\
+
+Berlin, den 13. Oktober 2017\\
+
+\rule{5cm}{1pt}\\
+Unterschrift
+
+
+%Ich versichere, dass ich die vorliegende Arbeit selbst"andig verfasst und keine anderen als die
+%angegebenen Quellen und Hilfsmittel benutzt habe. Ich reiche sie erstmals als Pr"ufungsleistung ein.
+%Mir ist bekannt, dass ein Betrugsversuch mit der Note \glqq nicht ausreichend\grqq \ geahndet wird und im Wiederholungsfall zum Ausschluss
+%von der Erbringung weiterer Pr"ufungsleistungen f"uhren kann.
+
+%Name:
+
+%Vorname:
+
+%Matrikelnummer:
+
+%\textcolor{white}{filler}
+
+%Berlin, den
+
+%Signatur
+\newpage
+
 \chapter*{}
+
+\newpage
+
+\chapter*{}
+
 \textit{Meiner Familie,\\
 der Thesisselbsthilfegruppe,\\
 der H"angemathe und dem 1 Caf\'e}
 
-\chapter*{Erkl"arung}
-Ich versichere, dass ich die vorliegende Arbeit selbst"andig verfasst und keine anderen als die
-angegebenen Quellen und Hilfsmittel benutzt habe. Ich reiche sie erstmals als Pr"ufungsleistung ein.
-Mir ist bekannt, dass ein Betrugsversuch mit der Note \glqq nicht ausreichend\grqq \ geahndet wird und im Wiederholungsfall zum Ausschluss
-von der Erbringung weiterer Pr"ufungsleistungen f"uhren kann.
-
-Name:
-
-Vorname:
-
-Matrikelnummer:
-
-\textcolor{white}{filler}
-
-Berlin, den
-
-Signatur
-
 \chapter*{Danksagung}
 Obschon die vorliegende Arbeit der eigenen Feder entstammt, h"atte dieses Werk kaum vollendet werden k"onnen,
 w"aren nicht einige H"urden beiseite geschafft worden.
-So sehe ich es als meine Pflicht, den Helfern des \glqq R"aumungsdienstes\grqq\ ein paar Worte der Ehrung
+So sehe ich es als meine Pflicht, den Helferinnen und Helfern des \glqq R"aumungsdienstes\grqq\ ein paar Worte der Ehrung
 zukommen zu lassen.\\
 
 Der erste Dank gilt meinen Betreuern Prof. Dr. J"org Liesen und Prof. Dr. Christian Mehl deren Sprechstunden
@@ -60,9 +90,9 @@ Fehler entdeckt haben und damit das Lesen dieser Arbeit zu einem gr"o"seren Verg
 
 % content
 \tableofcontents
-
+\chapter*{}
 % chapters
-\chapter{Pr"aludium}%{Introductio}
+\chapter{Einleitung}%{Introductio}
 \pagenumbering{arabic}
 \input{chapter/chap1_intro.tex}
 
@@ -74,31 +104,25 @@ Fehler entdeckt haben und damit das Lesen dieser Arbeit zu einem gr"o"seren Verg
 \input{chapter/chap3.tex}
 
 %\chapter{Rationalfunktionelle Filter}
-\chapter{Rationales Filtern}%rationale beschleuniger?
+\chapter{Hilfsmittel: Rationale Funktionen}%rationale beschleuniger?
 \input{chapter/chap4.tex}
 
 %\chapter{Implementation und numerische Experimente}
 \chapter{Numerische Experimente}
 \input{chapter/chap5.tex}
 
-%\chapter{}%{Conclusio}
-%\input{chapter/chap5.tex}
-
 \appendix
-\chapter{Notationen}\label{appNotation}
+\chapter{Symbolverzeichnis}\label{appNotation}
 \input{chapter/notation.tex}
 
-\chapter{S"atze und Beweise}
+\chapter{S"atze}\label{appTheorems}
 \input{chapter/theorems.tex}
 
-\chapter{Nebenrechnungen}
-\input{chapter/computations.tex}
-
-%\chapter{Quellcode}
-
-
+\chapter{Algorithmen}\label{appAlgorithms}
+\input{chapter/algorithms.tex}
 
 \nocite{*}
-\printbibliography
+%\addcontentsline{toc}{chapter}{Literatur}
+\printbibliography[heading=bibintoc]
 
 \end{document}

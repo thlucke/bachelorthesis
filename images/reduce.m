@@ -1,5 +1,5 @@
 % open Lena image and convert from uint8 to double
-cat = double(imread('Cat.jpg'));
+cat = double(imread('Ccat.jpg'));
 
 % perform SVD on Lena
 [U,S,V] = svd(cat);
@@ -9,8 +9,8 @@ singvals = diag(S);
 
 
 % find out where to truncate the U, S, V matrices
-indices = find(singvals >= singvals(300));
-%indices = 100:400;
+%indices = find(singvals >= singvals(300));
+indices = [1 5 10];
 
 
 % reduce SVD matrices
@@ -27,4 +27,4 @@ m = num2str(length(singvals));
 disp(['Low-rank approximation used ',r,' of ',m,' singular values']);
 
 % save reduced Lena
-imwrite(uint8(Cat_red),'Cat300.jpg');
+imwrite(uint8(Cat_red),'Cat1-5-10.jpg');

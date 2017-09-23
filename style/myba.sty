@@ -10,13 +10,15 @@
 
 % fontrelated
 %\usepackage{fontspec}
+%\usepackage[T1]{fontenc}
 
 % layout related
 \usepackage{geometry}
-\usepackage{fancyhdr}
+ %\usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{subcaption}
+\usepackage{tabularx}
 
 % picture stuff
 \usepackage{pgfplots}
@@ -34,7 +36,7 @@
 
 % reference related
 \usepackage{hyperref}
-\usepackage[backend=bibtex,style=alphabetic]{biblatex}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
 \addbibresource{chapter/references.bib}
 
 % useful tools
@@ -63,7 +65,18 @@
   bottom=25mm,
   bindingoffset=6mm}  % space for binding
 
-\pagestyle{fancy}     % initialize header
+
+%\lhead{\nouppercase}
+%\rhead{\nouppercase}
+
+%\renewcommand{\chaptermark}[1]{\markleft{\thechapter.\ #1}}
+
+%\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+%\fancyhead[LE]{\chaptermark}
+%\fancyhead[LO]{\sectionmark}
+ %\pagestyle{fancy}     % initialize header
+
+\usepackage[marginal,bottom,stable]{footmisc}
 
 % -------------------------------- %
 % --- E N V I R O N M E N T S ---- %
@@ -100,6 +113,14 @@
 \DeclareMathOperator{\Bild}{Bild}
 \DeclareMathOperator{\Rang}{Rang}
 
+%JONAS
 
+\usepackage[markcase=used,automark,headsepline]{scrlayer-scrpage}
+  \automark[chapter]{chapter}
+  \ihead{}% Inner header
+  \ohead{\headmark}% Outer header
+  \ifoot{}% Inner footer
+  \ofoot[\pagemark]{\pagemark}% Outer footer
+  \automark*[section]{}
 
 \endinput

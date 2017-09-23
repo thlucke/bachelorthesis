@@ -1,156 +1,176 @@
-Im abschlie"ssenden Kapitel werden wir die Methoden, die in den Kapiteln zwei und drei vorgestellt wurden, naiv implementieren.
-Dabei werden wir uns auf reelle, symmetrische Eigenwertprobleme beschr"anken. Im Folgenden untersuchen wir also das Problem
+Nachdem wir uns der Thematik des Filterns von verschiedenen Seiten gen"ahert haben, ist es nun an der Zeit, die Kompetenz der besprochenen Methoden auf die Probe zu stellen. Dabei wollen wir Kriterien, wie ben"otigte Rechenzeit, Konsistenz und Genauigkeit am Beispiel von Eigenwertproblemen unterschiedlicher Dimension ber"ucksichtigen.\\
+
+Alle verwendeten Algorithmen wurden in \emph{MATLAB} (Version 2016b) implementiert und k"onnen bei Bedarf im Anhang \ref{appAlgorithms} nachgeschlagen werden. Entsprechende Verweise sind im Flie"stext zu finden.
+Bei der Durchf"uhrung der Experimente wurde eine Rechenmaschine mit folgenden Spezifikationen verwendet.
+
+\vspace{.5cm}
+\begin{center}
+	\begin{tabular}{ll}
+	\hline
+	Bauart & Laptop \\
+	Hersteller & Packard bell \\
+	Modell & EasyNote TS \\
+	Betriebssystem & Microsoft Windows 7 Professional, 64 Bit \\
+	Prozessor & Intel Core i5-2410M CPU, 2.30 GHz\\
+	Hauptspeicher & 1000 GB HDD\\
+	Platte & IDE ATA/ATAPI-Controller, NTFS-Dateisystem\\
+	Grafikkarte & NVIDIA GeForce GT 540M, 2 GB VRAM\\
+	\hline
+	\end{tabular}
+\end{center}
+
+\vspace{.5cm}
+Zu Beginn wollen wir eine kurze Laufzeitanalyse der build-in Funktion \mcode{eig} von \emph{MATLAB} durchf"uhren und im Anschluss den FEAST-Algorithmus unter die Lupe nehmen. Dieser bietet sich an, da er sowohl das Rayleigh-Ritz Verfahren alsauch die Konturintegration benutzt. Dabei werden wir als Hilfsmittel die von S. G"uttel und M. Berfjala entwickelte \emph{RKToolbox} \cite{rkt} verwenden.
+
+%Im abschlie"senden Kapitel werden wir die Methoden, die in den Kapiteln zwei und drei vorgestellt wurden, naiv implementieren.
+%Dabei werden wir uns auf reelle, symmetrische Eigenwertprobleme beschr"anken. Im Folgenden untersuchen wir also das Problem
+%\[
+%Ax = \lambda Bx
+%\]
+%f"ur zwei symmetrische Matrizen $A,B\in\R^{n,n}$ und
+%fordern au"serdem die positive Definitheit von $B$.
+%Desweiteren setzen wir voraus, dass der Input des Users sinnvoll ist und den f"ur die Funktionsf"ahigkeit der Algorithmen notwendigen Voraussetzungen gen"ugt.\\
+
+%Die Implementation erfolgt durchweg mit \emph{Octave}, ist aber ohne Weiteres in \emph{MATLAB}
+%"ubersetzbar.
+\newpage
+\section{Qualit"atstests}
+Im Verlauf der Arbeit wurde mehrfach behauptet, dass das Berechnen von Eigenpaaren bei hinreichend gro"ser Dimension sehr zeitaufwendig werden kann. Um dies zu illustrieren, bem"uhen wir den Algorithmus \ref{alg:appAlgorithm:eigenPlot}. Diese Methode berechnet mit dem Aufruf
 \[
-Ax = \lambda Bx
+\mcode{[X, D] = eig(A)}
 \]
-f"ur zwei symmetrische Matrizen $A,B\in\R^{n,n}$ und
-fordern au"serdem die positive Definitheit von $B$.
-Desweiteren setzen wir voraus, dass der Input des Users sinnvoll ist und den f"ur die Funktionsf"ahigkeit der Algorithmen notwendigen Voraussetzungen gen"ugt.\\
+eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespondierenden Eigenwerten von $A$. Mit \mcode{eig(A,B)} l"asst sich eine analoge Berechnung f"ur beliebige Eigenwertprobleme $(A,B)$ durchf"uhren. Wir verweilen binnen dieses Abschnittes durchweg beim gew"ohnlichen Eigenwertproblem $(A,I)$.\\
 
-Die Implementation erfolgt durchweg mit \emph{Octave}, ist aber ohne Weiteres in \emph{MATLAB}
-"ubersetzbar.
+Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschauung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. F"ur fundiertere Argumentationen wende sich der Leser vetrauensvoll an die bisher zitierte Literatur.\\
 
-\section{Rayleigh-Ritz}
-Beginnen wir mit dem Rayleigh-Ritz-Verfahren (Algorithmus \ref{alg:grp}). "Ahnlich dem Pseudocode, bezeichnen wir mit \mcode{U}
-den Suchraum und verzichten dabei im Code auf den Index $m$. Zur Orthogonalisierung des Suchraumes benutzen wir die bereits in Octave implementierte Funktion
+Der Algorithmus \ref{alg:appAlgorithm:eigenPlot} berechnet nun f"ur zufallsgenerierte Matrizen mit in Zehnerschritten aufsteigender Dimension -- von 10 beginnend und bei 1500 endend -- die Eigenpaare und misst die ben"otigte Rechenzeit. Zwischen den Dimensionen ist der Plot linear interpoliert. Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche die eben beschriebene Berechnung drei Mal durchf"uhrt. Die folgende Grafik zeigt das Ergebnis der Berechnungen. Dabei ist jede Iteration mit einer eigenen Farbe gekennzeichnet.
+
+\begin{figure}[h!]
+\centering
+
+\resizebox{.7\textwidth}{!}{\includegraphics{images/eigLaufzeit}}
+
+\caption{Laufzeitplot bei der Berechnung des Spektrums.}\label{fig:chap5:laufzeit}
+\end{figure}
+
+Die Abbildung deutet quadratisches Wachstum der Laufzeit in Abh"angigkeit von der gew"ahlten Dimension an.
+ Erh"ohen wir die Dimension noch weiter, so ergibt sich folgende Tabelle.
+
+\begin{center}
+\begin{tabular}{lccccc}
+Dimension & 2000 & 3000 & 4000 & 5000 & 10000 \\
+\hline
+Rechenzeit in s & $\approx$ 12.2436 & $\approx$ 33.2689 & $\approx$ 75.5942 & $\approx$ 133.1339 & $\approx$ 1047.5028
+\end{tabular}
+\end{center}
+
+Diese Werte vermitteln eine Intuition, von der Gr"o"senordnung von Laufzeiten bei hochdimensionalen Eigenwertproblemen, wie sie etwa bei Berechnungen von Netflix, Facebook oder Amazon vorkommen. Hier sprechen wir von Dimensionen im Millionenbereich.\footnote{Siehe \cite{facebook}, \cite{amazon} und \cite{netflix}.}\\
+
+Die obigen Zahlen motivieren dazu einen Weg zu finden, beim Filtern von Eigenpaaren von einer Berechnung des gesamten Spektrums abzusehen. Wollen wir Eigenpaare durch Ritz-Paare zu einem gegebenen Unterraum ann"ahern, so zeigt sich, dass das Rayleigh-Ritz Verfahren zu einer k"urzeren Laufzeit f"uhrt. Das ist freilich nicht verwunderlich, da das Problem auf eine niedrigere Dimension reduziert wird. Der Algorithmus \ref{alg:appAlgorithm:rayleighRitz} zeichnet entsprechend folgendes Bild bei der Berechung von Ritz-Paaren.
+
+\begin{figure}[h!]
+\centering
+
+\resizebox{.7\textwidth}{!}{\includegraphics{images/rayleighRitzLaufzeit}}
+
+\caption{Laufzeitplot bei der Berechnung von Ritzpaaren.}\label{fig:chap5:laufzeitRayleighRitz}
+\end{figure}
+
+Die Dimension des verwendeten Suchraums entsprach bei der Ausf"uhrung des Algorithmus' einem F"unftel der Dimension der untersuchten Matrix. Die Rechenzeit liegt f"ur alle hier betrachteten $N$ deutlich unterhalb der Sekundenmarke.\\
+
+Es gibt jedoch die Kehrseite der Medaille: Die Willk"uhrlichkeit bei der Wahl der Suchr"aume spiegelt sich in der G"ute der Ritz-Paare wieder. Um dies einzusehen w"ahlen wir als G"utekritierum den \emph{minimalen kanonischen Winkel} zwischen dem von den Ritz-Vektoren aufgespannten Unterraum $\mathcal{R}$ und dem von den Eigenvekoren aufgespannten Unterraum $\mathcal{X}$.
+
+\newpage
+
+Diesen minimalen kanonischen Winkel definiert man folgenderma"sen:
 \[
-\mcode{orth(U)}
+\theta_{\min}(\mathcal{R},\mathcal{X}) =
+\min
+\left\{\arccos\frac{|x^H r|}{\|x\|\|r\|} : r\in\mathcal{R}\setminus\{0\}, x\in\mathcal{X}\setminus\{0\}\right\}.
 \]
-und die \mcode{eig}-Funktion zum L"osen des reduzierten Eigenwertproblems. Eine Implementation k"onnte also wie folgt aussehen.
-
-\begin{lstlisting}[caption=Implementation des Rayleigh-Ritz Verfahrens zur Bestimmung eines Ritz-Paares., captionpos=b]
-%% Eingabe: Matrizen A, B des Eigenwertproblems,
-%%          Suchraum U
-%% Ausgabe: Matrix X mit Ritz-Vektoren,
-%%          Zeilenvektor L mit Ritz-Werten
-
-%% Funktionsaufruf: [X, L] = rayleighRitz[A, B, U]
-
-function[X,lambda] = rayleighRitz(A,B,U);
-
-% orthonormiere U
-U = orth(U);
-
-% transformiere Problem
-A = U'*A*U; B = U'*B*U;
-
-% loese reduziertes Problem
-[L,Y] = eig(A,B);
-
-% berechne Ritz-Paare
-X = U*Y;
-L = diag(L);
-
-\end{lstlisting}
-
-
-
-
-
-
-
-\section{Konturintegration}
-
-Zun"achst w"ahlen wir also f"ur $k\in\N$ eine vollrangige Zufallsmatrix $Y_k$, um
-die Transformationsmatrix $Q$ zu ermitteln. Dazu f"uhren wir die \textsc{Green}-Funktion
+Sind $R$ und $X$ Matrizen mit $\Bild(R)=\mathcal{R}$ und $\Bild(X)=\mathcal{X}$, so l"asst sich $\theta_{\min}(\mathcal{R},\mathcal{X})$ mit Hilfe der \emph{MATLAB}-Funktion
 \[
-\mcode{funGreen = @(w) inv( w.*B-A )}
+\mcode{subspace(R,X)}
 \]
-ein und w"ahlen eine passende Integrationskontur
-$C$. Um es einfach zu halten, wird diese in der Implementation die Menge
+n"aherungsweise bestimmen. Dies machen wir uns in Algorithmus \ref{alg:appAlgorithm:ritzVecAngle} zu Nutze.
+Diese Methode berechnet den kleinsten Winkel zwischen einem zweidimensionalen Suchraum und allen zweidimensionalen Unterr"aumen, die sich aus Eigenvektoren konstruieren lassen. Erneut wird die Berechnung dreimal durchgef"uhrt, um ein wenig Konsistenz zu erhalten. Speziell bedient sich die Methode symmetrischer Matrizen.
+
+\begin{figure}[h!]
+\centering
+
+\resizebox{.5\textwidth}{!}{\includegraphics{images/ritzPairAngle}}
+
+\caption{Berechnung des Winkels zwischen Ritz- und Eigenvektoren.}\label{fig:chap5:winkel}
+\end{figure}
+
+Nach Konstruktion gilt $\theta_{\min}(\mathcal{R},\mathcal{X})\in[0,\pi/2]$.
+Demnach l"asst Abbildung \ref{fig:chap5:winkel} vermuten, dass diese Methode f"ur gewisse Gr"o"senordnungen vollkommen unbrauchbar ist: Mit gr"o"ser werdender Dimension n"ahert sich der Winkel $\pi/2$ an. Hingegen liefert die iterative Version des Rayleigh-Ritz Verfahrens folgenden Plot.
+
+%Viel besser sieht es hingegen mit der iterativen Version des Rayleigh-Ritz Verfahrens aus. Der Algorithmus \ref{alg:appAlgorithm:iterRitzVecAngle} liefert -- ebenfalls f"ur symmetrische Matrizen -- folgenden Plot.\\
+
+\begin{figure}[h!]
+\center
+\begin{subfigure}[c]{.4\textwidth}
+\includegraphics[width=.9\linewidth]{images/iterRRDistConstant}
+\subcaption{Konstanter Exponent.}
+\end{subfigure}
+\begin{subfigure}[c]{.4\textwidth}
+\includegraphics[width=.9\linewidth]{images/iterRRDistIncreasing}
+\subcaption{Wachsender Exponent.}
+\end{subfigure}
+\caption{Unterraumwinkel bei iterativem Rayleigh-Ritz Verfahren.}\label{chap1:im:catinterval}
+\end{figure}
+
+\newpage
+
+Ausgehend von einer zufallsgenerierten Matrix, welche ebenfalls symmetrisch ist, wurde die Methode zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss mit sich stets um 1 erh"ohendem Exponenten durchgef"uhrt. Im Gegensatz zur Prozedur ohne Iteration ist hier zumindest in dieser kleinen getesteten Stichprobe eine Konvergenz zu erkennen. Dies ist nicht weiter verwunderlich, da die Verwandtschaft zur Potenzmethode dazu f"uhrt, dass der zweidimensionale Suchraum gegen den zweidimensionalen Unterraum konvergiert, welcher von den zwei dominierenden Eigenvektoren aufgespannt wird.\\
+
+Zum Abschluss wollen wir unsere Filterkriterien etwas konkreter angeben. Erscheint es bisher so, als h"atte man nicht so recht in der Hand, welche Unterr"aume approximiert werden, wollen wir nun gezielt Eigenpaare gewisser Art aus dem Spektrum extrahieren. Dazu betrachten wir abschlie"send den FEAST-Algorithmus.
+
+\section{RKToolbox}
+
+Wir schr"anken uns nun nicht mehr auf das gew"ohnliche Eigenwertproblem ein, sondern betrachten stattdessen allgemeiner das HPD-Eigenwertproblem $(A,B)$ der Dimension $n$. Gesucht sind Eigenpaare, bei denen die Eigenwerte innerhalb eines gegebenen Intervalls $[\lambda_{\min}, \lambda_{\max}]$ liegen sollen.\\
+
+Wir wollen den FEAST-Algorithmus wie in Algorithmus \ref{alg:chap4:beschlRrIteration} formuliert implementieren. Zur Erinnerung: Ersetzt man $\p(B^{-1}A)$ durch eine geeignete rationale Funktion, so entspricht der eben referenzierte Algorithmus dem Algorithmus \ref{alg:chap4:feast}.\\
+
+Zur Konstruktion dieser Funktion bedienen wir uns an der von S. G"uttel und M. Berfjala entwickelten \emph{RKToolbox} \cite{rkt}. Diese erm"oglicht uns das Erstellen eines sogenannten \mcode{rkfun}-Objektes, mit dessen Hilfe diverse Filterfunktionen konstruiert werden k"onnen. Da so erstellte Filterfunktionen standardm"a"sig die Indikatorfunktion auf dem Intervall $[-1,1]$ approximieren, muss dem Kontext entsprechend eine passende Transformation angewendet werden.\\
+
+Mit der RKToolbox k"onnen rationale Filterfunktionen \mcode{r} durch die Syntax
 \[
-C = \left\{ z \in \C : \left\lVert z - \frac{\lambda_\text{max} -
-\lambda_\text{min}}{2} \right\rVert_1\ = 1\right\}
+\mcode{r = rkfun('step', k)}
 \]
-sein, wobei $\lambda_\text{min}$ und $\lambda_\text{max}$ die vorgegebenen Intervallgrenzen
-bezeichnen. Die entsprechenden Quadraturpunkte werden im Quellcode durch die
-Variablen
+initialisiert werden. Dabei steuert der Parameter \mcode{'step'} welcher Funktionstyp zur Approximation benutzt werden soll und der Parameter $\mcode{k} \in \N$ steuert den Ausschlag der Funktionen.\footnote{F"ur genauere Ausf"uhrungen wende sich der Leser an die Dokumentation der RKToolbox \cite{rkt}.}
+
+\newpage
+
+Zu Demonstrationszwecken setzen wir
 \[
-\mcode{n0, n1, n2, n3}
+\mcode{r4 = rkfun('step',4)}\text{,  }\mcode{r5 = rkfun('step',5)}\text{,  }
+\mcode{r6 = rkfun('step',6)}.
 \]
-repr"asentiert.\\
+Wie im folgenden Plot zu erkennen ist, approximieren die Funktionen die Indikatorfunktion auf $[-1,1]$ zumindest nach optischen Kriterien recht gut.
 
-Ist $Q$ bestimmt, benutzen wir die MATLAB interne Eigenwertfunktion
-\[
-\mcode{eig(Aq, Bq)}
-\]
-um die \textsc{Ritz}-Paare des transformierten Problems zu berechnen. Schlie"slich
-berechnen wir die Eigenwerte und Eigenvektoren des urspr"unglichen Problems.
-Die Matrix $\Phi_k$ wird im Quelltext mit  \mcode{Vq} bezeichnet.\\
+\begin{figure}[h!]
+\centering
 
-Wir wollen annehmen, dass der Input des Users die Voraussetzungen des
-Problems \eqref{eq:eigen} erf"ullt und die Anzahl $k\in\N$ der Eigenwerte
-im Intervall $[\lambda_\text{min}, \lambda_\text{max}]$ bekannt ist.
-Eine naive Implementation k"onnte daher wie folgt aussehen:
+\resizebox{.5\textwidth}{!}{\includegraphics{images/ratFun}}
 
-\begin{lstlisting}[caption=Naive FEAST Implementation., captionpos=b]
-%% Eingabe: Matrizen A, B des Eigenwertproblems,
-%%          Intervallgrenzen lmin, lmax,
-%%	        Anzahl k der erwarteten Eigenwerte
-%% Ausgabe: Matrix V mit Eigenvektoren,
-%%          Matrix D mit Eigenwerten auf der Diagonalen
+\caption{Plot der Filterfunktionen \mcode{r4}, \mcode{r5} und \mcode{r6}.}\label{fig:chap5:ratFun}
+\end{figure}
 
-%% Funktionsaufruf: [V, D] = feast[A, B, lmin, lmax, k]
+Das Einbinden dieser Filterfunktion in die beschleunigte Rayleigh-Ritz Iteration f"uhrt zu der in Algorithmus \ref{alg:appAlgorithm:FEAST} vorgestellten Umsetzung des FEAST-Algorithmus mit folgendem Plot.
 
-function[V, D] = feast(A, B, lmin, lmax, k);
+\begin{figure}[h!]
+\centering
 
-n = length(A);
+\resizebox{.5\textwidth}{!}{\includegraphics{images/feastAngle}}
 
-% erzeuge Zufallsmatrix
-Y = randn(n, k);
+\caption{Plot von Algorithmus \ref{alg:appAlgorithm:FEAST}.}\label{fig:chap5:feast}
+\end{figure}
 
-% generiere Green-Funktion
-funGreen = @(w) inv( w.*B - A );
+Mit $\mathcal{X}$ und $\mathcal{R}$ ist hier der zum Intervall $[1,2.5]$ korrespondierende Eigenraum beziehungsweise der ermittelte approximierte Suchraum gemeint.
 
-% berechne die Integrationsknotenpunkte
-n0 = lmax;
-n1 = (lmin + lmax)/2 + (lmax - (lmin + lmax)/2)*i;
-n2 = lmin;
-n3 = (lmin + lmax)/2 - (lmax - (lmin + lmax)/2)*i;
+\newpage
+Es zeigt sich, dass bereits im ersten Durchlauf der Winkel zwischen den Unterraum verschwindend gering ist. Damit best"atigt sich die These, dass die beschleunigte Rayleigh-Ritz Iteration in einem Schritt konvergiert, falls $\p(B^{-1}A)$ der Spektralprojektor ist, $m$ der Anzahl der Eigenwerte auf $[1,2.5]$ entspricht und $\p(B^{-1}A)Y_{(0)}$ vollen Rang hat -- denn genau so wurden alle Werte bei der Umsetzung des FEAST-Algorithmus' gew"ahlt.\footnote{Vgl. Seite \pageref{eq:quadratur} erster Absatz. F"ur weitere Demonstrationen siehe \cite{feast}.}\\
 
-% Integrationskontur
-C = [n1 n2 n3];
-
-% berechne Transformationsmatrix Q
-Q = (-1/(2*pi*i))*integral(funGreen, n0, n0,...
-	'Waypoints', C, 'ArrayValued', true) * Y;
-
-% berechne Ritz-Paare des transformierten Problems
-Aq = Q'*A*Q; Bq = Q'*B*Q;
-[Vq, D] = eig(Aq, Bq);
-
-% berechne die gesuchten Eigenvektoren
-V = Q*Vq;
-\end{lstlisting}
-
-"Uberpr"ufen wir die Funktionalit"at mit den Matrizen $A$ und $B$ aus dem Abschnitt
-\ref{sec:bsp}, erhalten wir folgende Ausgabe:
-
-\begin{lstlisting}[numbers=none]
->> [V, D] = feast(A, B, -3, 3, 2)
-
-V =
-
-  -1.4142 - 0.0000i   0.0000 + 0.0000i
-   0.0000 + 0.0000i   1.4142 - 0.0000i
-  -0.0000 + 0.0000i  -0.0000 + 0.0000i
-
-
-D =
-
-    0.0000         0
-         0    2.0000
-
->>
-\end{lstlisting}
-
-\vspace{0.5cm}
-Die vorgestellte Umsetzung des FEAST-Algorithmus' l"asst sich ohne Weiteres auf
-dynamische Matrixdimensionen "ubertragen. Da sich mit zunehmender Dimension
-unter Umst"anden auch die Kardinalit"at des Spektrums und die Anzahl der Eigenr"aume "andert, sollten
-gegebenenfalls Optimierungsma"snahmen getroffen werden, wie etwa die Wahl der Knotenpunkte f"ur die
-Konturintegration.
-
-\section{FEAST Algorithmus}
-
-\section{Tools f"ur MATLAB}
+Mit diesen Eindr"ucken verabschiedet sich der Verfasser der vorliegenden Arbeit von seinem Leser und bedankt sich f"ur die Geduld und die investierte Zeit.

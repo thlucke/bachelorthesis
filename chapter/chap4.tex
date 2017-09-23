@@ -23,7 +23,7 @@ oder dazu "aquivalent
 \[
 y_{(k+1)} = \frac{1}{\|Ay_{(k)}\|} Ay_{(k)}
 \]
-berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Man kann zeigen, dass die Folge der Iterierten gegen einen zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert.\footnote{Ein Beweis hierzu ist im Anhang zu finden. Siehe Satz \ref{thm:appTheorems:Potenzmethode}.}
+berechnet. Dieser Vorgang wird wiederholt, bis gewisse Abbruchkriterien erf"ullt sind. Man kann zeigen, dass die Folge der Iterierten gegen einen zum betragsm"a"sig gr"o"sten Eigenwert geh"orenden Eigenvektor konvergiert.\footnote{Eine exaktere Formulierung bietet Satz \ref{thm:appTheorems:Potenzmethode} im Anhang \ref{appTheorems}.}
 %, begn"ugen wir uns an dieser Stelle mit folgender Plausibilit"atsbetrachtung, welche in "ahnlicher Form in ~\cite[56]{stewart}
 %zu finden ist.\\
 
@@ -49,7 +49,7 @@ Bei der Normalisierung ist allerdings Vorsicht geboten: In seinen Abhandlungen "
 merkt Y. Saad in ~\cite[Abschnitt 5.1]{saad} an,
 dass es beim ungeschickten Normalisieren vorkommen kann, dass die Spalten von $Y_{(k)}$ zunehmend ihre lineare Unabh"angigkeit verlieren.\footnote{Dies ist unmittelbar einzusehen, wenn man bedenkt, dass jede Spalte gegen einen dominanten Eigenvektor konvergiert.}\\
 
-Anstatt jede Spalte von $Y_{(k)}$ separat zu normalisieren, wird eine QR-Zerlegung\footnote{Eine Formulierung des Satzes "uber die Existenz der QR-Zerlegung ist im Anhang zu finden. Siehe Satz \ref{thm:appTheorems:QR}. F"ur weitere Ausf"uhrungen siehe auch \cite[55 ff.]{stewart}.}
+Anstatt jede Spalte von $Y_{(k)}$ separat zu normalisieren, wird eine QR-Zerlegung\footnote{Eine Formulierung des Satzes "uber die Existenz der QR-Zerlegung ist im Anhang \ref{appTheorems} zu finden. Siehe hierzu Satz \ref{thm:appTheorems:QR}. F"ur weitere Ausf"uhrungen siehe auch \cite[S. 55 ff.]{stewart}.}
 bem"uht. Diese f"uhrt in der Tat zu einer Normalisierung. Ist n"amlich $Y_{(k)} = QR$ mit
 $Q = [q_i]_{i=1:m}$ die QR-Zerlegung, so gilt $\Bild(Y_{(k)}) = \Bild(Q)$ und $\|q_i\|_2 = 1$ f"ur $i=1:m$. Folglich stellt folgender Algorithmus eine Verallgemeinerung der Potenzmethode dar.
 
@@ -125,7 +125,7 @@ Diese Methode "ahnelt stark dem Algorithmus \ref{alg:chap4:rrIteration}. Die Zei
 
 \newpage
 
-Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter} oder \emph{Beschleuniger}
+Im Kontext dieses Algorithmus' wird $\p$ auch als \emph{Filter}\footnote{Dieser Filter ist nicht mit dem in Definition \ref{defn:chap3:filter} eingef"uhrten Begriff zu verwechseln.} oder \emph{Beschleuniger}
 bezeichnet. Von dessen Wahl h"angt n"amlich ab, ob und wie gut Eigenpaare approximiert
 werden: Sei $[\lambda_1,\lambda_2]$ ein reelles Intervall, auf dem $l\in\N$ Eigenwerte und die korrespondierenden Eigenvektoren gefunden werden k"onnen. Ist nun $\p(B^{-1}A)$ der Spektralprojektor,
 $m=l$ und hat die Matrix $Y_{(1)} = \p(B^{-1}A) Y_{(0)}$ vollen Rang, so konvergiert der Algorithmus \ref{alg:chap4:beschlRrIteration} in einer Iteration
@@ -189,7 +189,7 @@ konstruiert wurde. Das hei"st konkret: Ausgehend vom Polynom $p_0 \equiv 1$ ist
 p_n(x) := x^n - \sum_{j=0}^{n-1} \frac{\langle x^n, p_j \rangle_\omega}{\langle p_j, p_j\rangle_\omega} p_j (x)
 \]
 gerade dasjenige Polynom, durch dessen Nullstellen das obige Gleichungssystem gel"ost wird. Sind nun
-$\{x_j\}_{j=1:n}$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so he"ist die numerische
+$\{x_j\}_{j=1:n}$ die Nullstellen dieses $n$-ten Orthogonalit"atspolynoms, so hei"st die numerische
 Integrationsformel
 \[
 Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
@@ -197,7 +197,7 @@ Q_n(f) = \sum_{j=1}^n \omega_j f(x_j) \text{ mit }
 = \int_a^b L_j(x)\p(x\text{ d}x
 \]
 \emph{Gau"s'sche Quadraturformel der $n$-ten Ordnung}.
-%Dabei ist
+Dabei ist
 \[
 L_j(x) = \prod_{k\neq j=1}^n \frac{x-x_j}{x_k - x_j}.
 \]
@@ -288,14 +288,14 @@ f"ur eine Matrix $Y\in\C^{n,m}$. Sind $A, B$ und $Y$ reellwertig, so l"asst sich
 \r(B^{-1}A)Y =
 2\sum_{k=1}^q \mathfrak{Re}\left(\sigma_k (\gamma_k B - A)^{-1} BY\right)
 \end{equation}
-vereinfachen. Dabei gebe die Funktion $\mathfrak{Re}$ den Realteil ihres Inputs an.
+vereinfachen. Dabei gebe die Funktion $\mathfrak{Re}$ den Realteil ihres Inputs aus. Wie man nun konkret diese Werte berechnet und wie ein Algorithmus aussehen kann, der dies umsetzt, besprechen wir im anschlie"senden Abschnitt. In diesem werden wir den sogenannten \emph{FEAST-Algorithmus} kennenlernen.
+
+\newpage
 
 \section{FEAST-Algorithmus}
 
-Im Jahr 2009 stellte Eric Polizzi in \cite{polizzi} ein Verfahren vor, welches sich die Theorien der vorigen Abschnitte zu Nutze macht. Dieser \glqq[\ldots] \emph{fast and stable algorithm for solving the symmetric eigenvalue problem} [\ldots]\grqq\ \cite[Abstract]{polizzi} wurde seither weiterentwickelt und zahlreichen Analysen unterzogen.\footnote{Siehe etwa \cite{ptep},\cite{kpt} und \cite{lzp}.}
-Wir wollen in diesem Abschnitt die wichtigen Punkte des oben zitierten Papers skizzieren und damit das vierte Kapitel abschlie"sen.
-
-\newpage
+Im Jahr 2009 stellte Eric Polizzi in \cite{polizzi} ein Verfahren vor, welches sich die Theorien der vorigen Abschnitte zu Nutze macht. Dieser \glqq[\ldots] \emph{fast and stable algorithm for solving the symmetric eigenvalue problem} [\ldots]\grqq\ \cite[Abstract]{polizzi} wurde seither weiterentwickelt und zahlreichen Analysen unterzogen.\footnote{Siehe etwa \cite{lzp},\cite{kpt} und \cite{ptep}.}\\
+%Wir wollen in diesem Abschnitt die wichtigen Punkte des oben zitierten Papers skizzieren und damit das vierte Kapitel abschlie"sen.\\
 
 Polizzi beginnt seine Ausf"uhrungen mit einem Blick in die Physik und motiviert das L"osen von Eigenwertproblemen anhand der Schr"odinger Eigenwertgleichung
 \[
@@ -303,10 +303,9 @@ Polizzi beginnt seine Ausf"uhrungen mit einem Blick in die Physik und motiviert 
 \]
 welche die Fragestellung modelliert, ob gewisse Quantenobjekte, die von einer Wellenfunktion $\Psi$ beschrieben werden, kinetische Energie besitzen oder nicht. Hierbei ist \textbf{H} eine hermitesche Matrix und \textbf{S} eine symmetrisch positiv definite Matrix.\\
 
-Der Autor merkt an, dass das L"osen solcher Systeme, insbesondere dann, wenn sie sehr gro"s sind, enorme Anforderungen an die Numeriker stellt. Die Frage ist stets, wie Eigenpaare effizient berechnet werden k"onnen und welche Genauigkeit man erwarten darf. Polizzi bewirbt seinen Algorithmus mit hoher Geschwindigkeit, Robustheit und guter Skalierbarkeit. Seinem Urteil nach, werden Methoden, wie \glqq\emph{Rayleigh-quotient multigrid}\grqq\ oder \glqq\emph{parallel Chebyshev subspace iteration}\grqq\ als weniger effizient eingesch"atzt.\\
+Der Autor merkt an, dass das L"osen solcher Systeme, insbesondere dann, wenn sie sehr gro"s sind, enorme Anforderungen an die Numeriker stellt. Die Frage ist stets, wie Eigenpaare effizient berechnet werden k"onnen und welche Genauigkeit man erwarten darf. Polizzi bewirbt seinen Algorithmus mit hoher Geschwindigkeit, Robustheit und guter Skalierbarkeit.\\ %Seinem Urteil nach, werden Methoden, wie \glqq\emph{Rayleigh-quotient multigrid}\grqq\ oder \glqq\emph{parallel Chebyshev subspace iteration}\grqq\ als weniger effizient eingesch"atzt.\\
 
-Ausgehend von einer Ausf"uhrung "uber das Konzept der Konturintegration zur Bestimmung von Eigenpaaren, baut Polizzi seinen Algorithmus auf, der auf ein $N$-dimensionales Eigenwertproblem $(A,B)$ mit hermiteschem oder reell symmetrischem $A$ und symmetrisch positiv definitem $B$ ausgelegt ist und auf einem reellen Intervall $[\lambda_1,\lambda_2]$ die $m\in\N$ Eigenpaare finden soll.\\
-
+Ausgehend von einer Ausf"uhrung "uber das Konzept der Konturintegration zur Bestimmung von Eigenpaaren, baut Polizzi seinen Algorithmus auf, welcher auf $N$-dimensionale Eigenwertprobleme $(A,B)$ mit hermiteschem oder reell symmetrischem $A$ und symmetrisch positiv definitem $B$ ausgelegt ist und auf einem reellen Intervall $[\lambda_1,\lambda_2]$ die $m\in\N$ Eigenpaare finden soll.
 Sind $(\omega_j, s_j)_{j=1:k}$ die f"ur die Gau"s'sche Quadraturformel ben"otigten Gewichte und St"utzstellen, so l"asst sich der vorgestellte FEAST-Algorithmus wie folgt notieren.
 
 \begin{algorithm}
@@ -333,15 +332,13 @@ $\widetilde{X}$ und $\widetilde{\Lambda} = \text{diag}(\widetilde{\lambda}_1,\ld
 \end{algorithmic}
 \end{algorithm}
 
-Dieser Algorithmus stellt eine Umsetzung der beschleunigten Rayleigh-Ritz Iteration dar.mDie Zeilen drei bis acht erf"ullen den Zweck des Berechnens von $\p(B^{-1}A)Y$, wobei man sich hier einer "ahnlichen Umformulierung bedient, wie in Gleichung \eqref{eq:chap4:realteilsumme}.\footnote{Die entsprechende Anpassung von Algorithmus \ref{alg:chap4:beschlRrIteration} ist in \cite[365]{ptep} zu finden.}
+Dieser Algorithmus stellt eine Umsetzung der beschleunigten Rayleigh-Ritz Iteration dar. Die Zeilen drei bis acht erf"ullen den Zweck des Berechnens von $\p(B^{-1}A)Y$, wobei man sich hier einer "ahnlichen Umformulierung bedient, wie in Gleichung \eqref{eq:chap4:realteilsumme}.\footnote{Die entsprechende Anpassung von Algorithmus \ref{alg:chap4:beschlRrIteration} ist in \cite[365]{ptep} zu finden.}\\
 
-\newpage
-
-Es ist zu beachten, dass sich hier durch die Verwendung einer negativ orientierten Kurve -- zu erkennen in der vierten und f"unften Zeile -- Vorzeichenwechsel ergeben. Da bei einer entsprechenden Parametrisierung auf der rechten Seite der Identit"at \eqref{eq:chap3:kontur} der zus"atzliche Faktor $(-1)$ ben"otigt wird, muss dies entsprechend bei der Konstruktion der rationalen Funktion $\p$ ber"ucksichtigt werden.\\
+Es ist zu beachten, dass sich hier durch die Verwendung einer negativ orientierten Kurve, was aus der vierten und f"unften Zeile herauszulesen ist, Vorzeichenwechsel ergeben. Da bei einer entsprechenden Parametrisierung auf der rechten Seite der Identit"at \eqref{eq:chap3:kontur} der zus"atzliche Faktor $(-1)$ ben"otigt wird, muss dies entsprechend bei der Konstruktion der rationalen Funktion $\p$ ber"ucksichtigt werden.\\
 
 Die weiteren Abschnitte des Papers besch"aftigen sich vornehmlich mit numerischen Experimenten. Polizzi demonstriert anhand elektronenstrukturell bezogenen Berechnungen auf Kohlenstoffnanor"ohren die numerische Stabilit"at, Robustheit und Skalierbarkeit des FEAST-Algorithmus. Dabei vergleicht er FEAST mit ARPACK -- einer Bibliothek auf FORTAN77 basierenden Methoden zum L"osen hochdimensionaler Eigenwertprobleme.\\
 
-Abschlie"send hebt der Autor einige Merkmale seines Algorithmus' heraus, von denen an dieser Stelle eine bescheidene Auswahl vorgestellt wird. Zun"achst einmal kommt FEAST g"anzlich ohne Orthogonalisierungsmethoden aus, wie es etwa bei der unbeschleunigten Rayleigh-Ritz Iteration n"otig ist. Des Weiteren weist Polizzi auf auf das Potential der parallelen Implementierung hin.\\
+Abschlie"send hebt der Autor einige Merkmale seines Algorithmus' heraus, von denen an dieser Stelle eine bescheidene Auswahl vorgestellt wird. Zun"achst einmal kommt FEAST g"anzlich ohne Orthogonalisierungsmethoden aus, wie es etwa bei der unbeschleunigten Rayleigh-Ritz Iteration n"otig ist. Des Weiteren weist Polizzi auf das Potential bez"uglich paralleler Implementierbarkeit hin.\\
 
 In Papern aus den vergangenen zwei Jahren, wie etwa in \cite[Abschnitt 4.1]{kpt}, wird auf dieses Potential genauer eingegangen. Inzwischen wurden auch Versuche unternommen, FEAST auf nicht hermitesche Eigenwertprobleme auszuweiten.\footnote{Siehe \cite{kpt}.}
 
