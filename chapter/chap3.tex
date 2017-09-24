@@ -401,8 +401,7 @@ t \mapsto (t I_n - A)^{-1}
 \]
 definierte \emph{Resolventenfunktion} -- auch \emph{Green-Funktion} genannt (Vgl. \cite{polizzi}).
 Angenommen, die Menge $\Lambda_1$ liegt im Inneren eines von einer positiv orientierten Jordan-Kurve $\Gamma$ umschlossenen
-Gebiets und $\Lambda_2$ im Inneren des Komplementes dieses Gebiets.
-
+Gebiets und $\Lambda_2$ im Inneren des Komplementes dieses Gebiets.\footnote{Man beachte, dass im Folgenden stillschweigend die Identifikation $\R^2\cong\C$ benutzt wird.}
 Dann gilt die Identit"at
 \begin{equation}\label{eq:chap3:kontur}
 P_1 = \frac{1}{2\pi\iota}\int_\Gamma G(t)\text{ d}t
@@ -423,17 +422,16 @@ Da die Menge $\Lambda_2$ nach Vorgabe au"serhalb des umrandeten Gebietes liegt, 
 \]
 Um die Begr"undung, dass die Gleichheit \eqref{eq:chap3:konturMatrix} korrekt ist, fortsetzen zu k"onnen, ben"otigen wir die folgende Erkenntnis.
 
-\begin{thm}\label{potenzreihe}
+\begin{thm}\label{thm:chap3:potenzreihe}
 Ist $M\in\Cnn$ mit $\|M\|_2 < 1$, so ist $I_n - M$ invertierbar und es gilt
 \[
 (I_n - M)^{-1} = \sum_{j=0}^\infty M^j
 \]
 \end{thm}
 
-\begin{proof} (Vgl. \cite[Abschnitt 2.3.4]{loan})
+\textit{Beweis (Vgl. \cite[Abschnitt 2.3.4]{loan}).}
 Zun"achst zur Regularit"at: Angenommen, die Matrix $I_n-M$ w"are nicht invertierbar. Dann muss ein von Null verschiedener Vektor $x\in\Cn$ existieren, mit $(I_n-M)x = 0$.
-Wir erhalten insbesondere $x = Mx$. Die induzierte $2$-Norm f"ur Matrizen ist bekannterma"sen submultiplikativ.
-Es gilt daher $\|x\|_2 \le \|M\|_2\|x\|_2$. Dann f"uhrt aber die Konsequenz $\|M\|_2 \ge 1$ zum Widerspruch.
+Wir erhalten insbesondere $x = Mx$. Da die induzierte $2$-Norm f"ur Matrizen bekannterma"sen submultiplikativ ist, gilt $\|x\|_2 \le \|M\|_2\|x\|_2$. Dann f"uhrt aber die Konsequenz $\|M\|_2 \ge 1$ zum Widerspruch.
 
 \newpage
 
@@ -447,8 +445,7 @@ Schlie"slich folgt die Behauptung des Satzes aus
 \lim_{k\to\infty}\sum_{j=0}^k M^j (I_n-M) =
 \lim_{k\to\infty} I_n-M^{k+1} = I_n
 \]
-durch einfaches Umstellen.
-\end{proof}
+durch einfaches Umstellen. \hfill $\qed$
 
 \begin{kor}\label{kor:chap3:potenzreihe}
 Mit den obigen Notationen folgt f"ur alle $t\in\C$ mit $|t| > \|A_1\|_2$ die Identit"at
@@ -461,14 +458,14 @@ Man mache sich die Identit"at
 \[
 (t I_m - A_1)^{-1} = \frac{1}{t}(I_m - t^{-1}A_1)^{-1}
 \]
-klar und benutze obigen Satz.
+klar und benutze den Satz \ref{thm:chap3:potenzreihe}.
 \end{proof}
 
 Wenden wir uns nun wieder der Gleichung \eqref{eq:chap3:konturMatrix} zu. Es bleibt zu zeigen, dass
 \begin{equation}\label{eq:chap3:identitaet}
 \frac{1}{2\pi\iota}\int_\Gamma (t I_m - A_1)^{-1} \text{ d}t = I_m
 \end{equation}
-gilt. Dazu halten wir uns nachwievor an die Ausf"uhrungen von \cite[Abschnitt 4.9]{liesen}. Wie von den Autoren vorgeschlagen, setzen wir
+gilt. Dazu halten wir uns nach wie vor an die Ausf"uhrungen von \cite[Abschnitt 4.9]{liesen}. Wie von den Autoren vorgeschlagen, setzen wir
 \[
 F(A_1,t) := \frac{1}{t}\sum_{j=1}^\infty(t^{-1}A_1)^j
 \]
@@ -476,7 +473,7 @@ und erhalten mit Hilfe des Korollars \ref{kor:chap3:potenzreihe}
 \begin{equation}\label{eq:chap3:resolventenZerlegung}
 (t I_m - A_1)^{-1} = \frac{1}{t} I_m + F(A_1,t).
 \end{equation}
-Nach Konstruktion sind alle Eigenwerte von $A_1$ beziehungsweise die Singularit"aten von $(t I_m - A_1)^{-1}$ im Inneren von $\Gamma$. Auf der linken Seite von Gleichung \eqref{eq:chap3:identitaet} "andert sich der Wert des Integrals nicht, wenn wir anstelle von $\Gamma$ "uber eine
+Nach Konstruktion sind alle Eigenwerte von $A_1$ beziehungsweise die Singularit"aten von $(t I_m - A_1)^{-1}$ im Inneren des von $\Gamma$ umschlossenen Gebiets. Auf der linken Seite von Gleichung \eqref{eq:chap3:identitaet} "andert sich der Wert des Integrals nicht, wenn wir anstelle von $\Gamma$ "uber eine
 andere Jordan-Kurve, die das von $\Gamma$ umschlossene Gebiet enth"alt, integrieren. Daher k"onnen wir als Integrationskontur  $\widehat{\Gamma}$ ebenso gut den Kreis um den Nullpunkt mit hinreichend gro"sem Radius $r > \|A_1\|_2$
 w"ahlen.
 
@@ -545,25 +542,24 @@ f"ur eine entsprechende Matrix $P_1$.
 
 Bevor wir uns vom laufenden Kapitel verabschieden, soll die Theorie der vorangegangenen Abschnitte an einem konkreten Beispiel vorgef"uhrt werden. Dabei werden wir mit Hilfe der Konturintegration zun"achst den Spektralprojektor berechnen. Ist dies erledigt, reduzieren wir wie im Rayleigh-Ritz Verfahren die Dimension des Eigenwertproblems und konstruieren ausgehend vom transformierten Problem Eigenpaare des urspr"unglichen Problems.\\
 
-Daf"ur wenden wir uns den beiden Matrizen
+Daf"ur wenden wir uns den beiden HPD-Matrizen
 $A,B \in \C^{3,3}$ zu, welche durch
 \[
 A:= \text{diag}(3,1,4)\text{ und }
 B:= \text{diag}(1,5,9)
 \]
-gegeben sind. Dann ist $A$ hermitesch und $B$ eine HPD Matrix.
-Durch einfaches Nachrechnen "uberpr"uft man, dass sich das
-HPD-Eigenwertproblem $(A,B)$ durch Vektoren
+gegeben sind.
+Durch einfaches Nachrechnen "uberpr"uft man, dass sich das Eigenwertproblem $(A,B)$ durch Vektoren
 $x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
 $x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
 Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
 l"osen l"asst.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\C^3$ wie "ublich die Einheitsvektoren.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
-mit den Methoden, welche wir in den vorangegangenen Abschnitten besprochen haben, die Eigenpaare auf dem reellen Intervall $I = [-1,1]$ zu bestimmen.
-Gem"a"s Abschnitt \ref{sec:chap3:konturintegration} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
+mit den Methoden, welche wir in den vorangegangenen Abschnitten besprochen haben, die Eigenwerte im Inneren des reellen Intervalls $I = [-1,1]$ zu bestimmen.\footnote{Man beachte, dass weder $-1$ noch $1$ im Spektrum von $(A,B)$ liegen.}
+Gem"a"s dem Abschnitt \ref{sec:chap3:konturintegration} w"ahlen wir daher als Integrationskontur $\Gamma$ das Bild der Funktion
 \begin{equation}\label{kurve}
-\gamma\colon [0,2\pi]\to\Cn\text{, }\varphi\mapsto e^{\iota \varphi}
+\gamma\colon [0,2\pi[\ \to\C\text{, }\theta\mapsto e^{\iota \theta}
 \end{equation}
 und integrieren dar"uber die Green-Funktion
 \[
@@ -610,12 +606,12 @@ darstellen.
 \newpage
 
 Nachdem dies geschafft ist, lassen wir uns von der in Abschnitt \ref{sec:chap3:rayleighRitz} diskutierten Vorgehensweise inspirieren und reduzieren das Problem zun"achst mit
-Hilfe einer vollrangigen Matrix $S \in\C^{3,2}$ auf ein Problem kleinerer Dimension.
+Hilfe einer vollrangigen Matrix $Z \in\C^{3,2}$ auf ein Problem kleinerer Dimension.
 Zu diesem Zwecke w"ahlen wir
 \[
-S:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
+Z:=\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 1\end{bmatrix}
 \]
-und benutzen die Matrix $P :=X X^H S$ um das Ausgangsproblem vem"oge
+und benutzen die Matrix $P :=X X^H Z$ um das Ausgangsproblem vem"oge
 $\widetilde{A}:= P^H A P$ und $\widetilde{B}:=P^H B P$ auf das Problem
 \[
 \widetilde{A}y = \begin{bmatrix}1/36 & 0\\0 & 1/9 \end{bmatrix} y = \mu \begin{bmatrix}5/36 & 0\\0 & 1/4 \end{bmatrix} y = \mu \widetilde{B}y
@@ -649,6 +645,8 @@ Eine Bemerkung zum Abschluss: Erinnern wir und an Satz \ref{thm:chap3:invariant}
 exakte Eigenpaare liefert. Schlie"slich hat $P$
 vollen Rang und der Unterraum $\Bild(P)$ ist invariant unter $B^{-1}A$.
 
+\newpage
+\textcolor{white}{blind}
 
 %dem Projektor $P:= X_2 X_2^T B$ transformieren.\\
 %Zu l"osen ist daher das Eigenwertproblem

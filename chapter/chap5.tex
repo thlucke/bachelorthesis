@@ -1,6 +1,6 @@
-Nachdem wir uns der Thematik des Filterns von verschiedenen Seiten gen"ahert haben, ist es nun an der Zeit, die Kompetenz der besprochenen Methoden auf die Probe zu stellen. Dabei wollen wir Kriterien, wie ben"otigte Rechenzeit, Konsistenz und Genauigkeit am Beispiel von Eigenwertproblemen unterschiedlicher Dimension ber"ucksichtigen.\\
+Nachdem wir uns der Thematik des Filterns von verschiedenen Seiten gen"ahert haben, ist es nun an der Zeit, die Kompetenz der besprochenen Methoden auf die Probe zu stellen. Dabei wollen wir Kriterien wie ben"otigte Rechenzeit, Konsistenz und Genauigkeit am Beispiel von Eigenwertproblemen unterschiedlicher Dimension ber"ucksichtigen.\\
 
-Alle verwendeten Algorithmen wurden in \emph{MATLAB} (Version 2016b) implementiert und k"onnen bei Bedarf im Anhang \ref{appAlgorithms} nachgeschlagen werden. Entsprechende Verweise sind im Flie"stext zu finden.
+Alle verwendeten Algorithmen wurden in MATLAB (Version 2016b) implementiert und k"onnen bei Bedarf im Anhang \ref{appAlgorithms} nachgeschlagen werden. Entsprechende Verweise sind im Flie"stext zu finden.
 Bei der Durchf"uhrung der Experimente wurde eine Rechenmaschine mit folgenden Spezifikationen verwendet.
 
 \vspace{.5cm}
@@ -8,19 +8,19 @@ Bei der Durchf"uhrung der Experimente wurde eine Rechenmaschine mit folgenden Sp
 	\begin{tabular}{ll}
 	\hline
 	Bauart & Laptop \\
-	Hersteller & Packard bell \\
-	Modell & EasyNote TS \\
-	Betriebssystem & Microsoft Windows 7 Professional, 64 Bit \\
+	Hersteller & Packard Bell \\
+	Modell & EasyNote TSX66-HR-196GE \\
+	Betriebssystem & Microsoft Windows 7 Professional 64 Bit \\
 	Prozessor & Intel Core i5-2410M CPU, 2.30 GHz\\
 	Hauptspeicher & 1000 GB HDD\\
-	Platte & IDE ATA/ATAPI-Controller, NTFS-Dateisystem\\
+	Festplatte & IDE ATA/ATAPI-Controller\\
 	Grafikkarte & NVIDIA GeForce GT 540M, 2 GB VRAM\\
 	\hline
 	\end{tabular}
 \end{center}
 
 \vspace{.5cm}
-Zu Beginn wollen wir eine kurze Laufzeitanalyse der build-in Funktion \mcode{eig} von \emph{MATLAB} durchf"uhren und im Anschluss den FEAST-Algorithmus unter die Lupe nehmen. Dieser bietet sich an, da er sowohl das Rayleigh-Ritz Verfahren alsauch die Konturintegration benutzt. Dabei werden wir als Hilfsmittel die von S. G"uttel und M. Berfjala entwickelte \emph{RKToolbox} \cite{rkt} verwenden.
+Zu Beginn wollen wir eine kurze Laufzeitanalyse der build-in Funktion \mcode{eig} von MATLAB durchf"uhren und im Anschluss den FEAST-Algorithmus unter die Lupe nehmen. Dieser bietet sich an, da er sowohl das Rayleigh-Ritz Verfahren als auch die Konturintegration benutzt. Dabei werden wir als Hilfsmittel die von S. G"uttel und M. Berfjala entwickelte \emph{RKToolbox} \cite{rkt} verwenden.
 
 %Im abschlie"senden Kapitel werden wir die Methoden, die in den Kapiteln zwei und drei vorgestellt wurden, naiv implementieren.
 %Dabei werden wir uns auf reelle, symmetrische Eigenwertprobleme beschr"anken. Im Folgenden untersuchen wir also das Problem
@@ -35,15 +35,16 @@ Zu Beginn wollen wir eine kurze Laufzeitanalyse der build-in Funktion \mcode{eig
 %"ubersetzbar.
 \newpage
 \section{Qualit"atstests}
-Im Verlauf der Arbeit wurde mehrfach behauptet, dass das Berechnen von Eigenpaaren bei hinreichend gro"ser Dimension sehr zeitaufwendig werden kann. Um dies zu illustrieren, bem"uhen wir den Algorithmus \ref{alg:appAlgorithm:eigenPlot}. Diese Methode berechnet mit dem Aufruf
+Im Verlauf der Arbeit wurde mehrfach behauptet, dass das Berechnen von Eigenpaaren bei hinreichend gro"ser Dimension sehr zeitaufwendig werden kann. Um dies zu illustrieren, bem"uhen wir den Algorithmus \ref{alg:appAlgorithm:eigenPlot}. Dieser berechnet f"ur zufallsgenerierte Matrizen mit in Zehnerschritten aufsteigender Dimension -- von 10 beginnend und bei 1500 endend -- die Eigenpaare und misst die ben"otigte Rechenzeit.\\
+
+Als Routine zur Berechnung der Eigenpaare wird die \mcode{eig}-Funktion von MATLAB vewendet. Diese gibt durch den Aufruf
 \[
 \mcode{[X, D] = eig(A)}
 \]
-eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespondierenden Eigenwerten von $A$. Mit \mcode{eig(A,B)} l"asst sich eine analoge Berechnung f"ur beliebige Eigenwertprobleme $(A,B)$ durchf"uhren. Wir verweilen binnen dieses Abschnittes durchweg beim gew"ohnlichen Eigenwertproblem $(A,I)$.\\
+eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespondierenden Eigenwerten von $A$ aus.\footnote{Mit \mcode{eig(A,B)} l"asst sich eine analoge Berechnung f"ur beliebige Eigenwertprobleme $(A,B)$ durchf"uhren. Wir verweilen binnen dieses Abschnittes jedoch durchweg beim gew"ohnlichen Eigenwertproblem $(A,I)$.}
+ Zwischen den Dimensionen ist der Plot linear interpoliert. Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche die eben beschriebene Berechnung drei Mal durchf"uhrt. Die folgende Grafik zeigt das Ergebnis der Berechnungen. Dabei ist jede Iteration mit einer eigenen Farbe gekennzeichnet.\\
 
-Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschauung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. F"ur fundiertere Argumentationen wende sich der Leser vetrauensvoll an die bisher zitierte Literatur.\\
-
-Der Algorithmus \ref{alg:appAlgorithm:eigenPlot} berechnet nun f"ur zufallsgenerierte Matrizen mit in Zehnerschritten aufsteigender Dimension -- von 10 beginnend und bei 1500 endend -- die Eigenpaare und misst die ben"otigte Rechenzeit. Zwischen den Dimensionen ist der Plot linear interpoliert. Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche die eben beschriebene Berechnung drei Mal durchf"uhrt. Die folgende Grafik zeigt das Ergebnis der Berechnungen. Dabei ist jede Iteration mit einer eigenen Farbe gekennzeichnet.
+Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschaulichung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. Wir werden die geplotteten Grafiken benutzen, um bekannte numerische Resultate sichtbar zu machen.\\
 
 \begin{figure}[h!]
 \centering
@@ -60,7 +61,7 @@ Die Abbildung deutet quadratisches Wachstum der Laufzeit in Abh"angigkeit von de
 \begin{tabular}{lccccc}
 Dimension & 2000 & 3000 & 4000 & 5000 & 10000 \\
 \hline
-Rechenzeit in s & $\approx$ 12.2436 & $\approx$ 33.2689 & $\approx$ 75.5942 & $\approx$ 133.1339 & $\approx$ 1047.5028
+Rechenzeit in s & $\approx$ 12.2 & $\approx$ 33.3 & $\approx$ 75.6 & $\approx$ 133.1 & $\approx$ 1047.5
 \end{tabular}
 \end{center}
 
