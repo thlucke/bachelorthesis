@@ -41,10 +41,20 @@ Als Routine zur Berechnung der Eigenpaare wird die \mcode{eig}-Funktion von MATL
 \[
 \mcode{[X, D] = eig(A)}
 \]
-eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespondierenden Eigenwerten von $A$ aus.\footnote{Mit \mcode{eig(A,B)} l"asst sich eine analoge Berechnung f"ur beliebige Eigenwertprobleme $(A,B)$ durchf"uhren. Wir verweilen binnen dieses Abschnittes jedoch durchweg beim gew"ohnlichen Eigenwertproblem $(A,I)$.}
- Zwischen den Dimensionen ist der Plot linear interpoliert. Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche die eben beschriebene Berechnung drei Mal durchf"uhrt. Die folgende Grafik zeigt das Ergebnis der Berechnungen. Dabei ist jede Iteration mit einer eigenen Farbe gekennzeichnet.\\
+eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespondierenden Eigenwerten von einer gegebenen Matrix $A$ aus.\footnote{Mit \mcode{eig(A,B)} l"asst sich eine analoge Berechnung f"ur beliebige Eigenwertprobleme $(A,B)$ durchf"uhren. Wir verweilen binnen dieses Abschnittes jedoch durchweg beim gew"ohnlichen Eigenwertproblem $(A,I)$.} Speziell werden bei allen Tests ausschlie"slich symmetrische Matrizen betrachtet, welche wir durch
+\[
+\mcode{A = rand(N); A = A'*A;}
+\]
+generieren. Diese Einschr"ankung garantiert uns die Diagonalisierbarkeit der verwendeten Matrizen. Abweichend von der bisherigen Notation wird im Code $N$ anstelle von $n$ als Variable f"ur die Dimension verwendet.\\
 
-Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschaulichung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. Wir werden die geplotteten Grafiken benutzen, um bekannte numerische Resultate sichtbar zu machen.\\
+Laut Aussagen der Entwickler von MATLAB wird bei der L"osung des Eigenwertproblems mit der \mcode{eig}-Funktion das \textcolor{red}{geile Verfahren} benutzt. Die Komplexit"at dieses Verfahrens liegt in der Gr"o"senordnung $\mathcal{O}(n^3)$, wobei $n$ der Dimension von $A$ entspricht.\footnote{\textcolor{red}{Siehe Quelle}.} Die Laufzeit w"achst folglich im Allgemeinen kubisch mit gr"o"ser werdender Dimension und unterstreicht die These, dass ab einer entsprechenden Gr"o"se die Berechnung von Eigenpaaren einige Zeit in Anspruch nehmen kann.\\
+
+Die Grafik \ref{fig:chap5:laufzeit} zeigt das Ergebnis der Berechnungen des oben beschriebenen Algorithmus.
+Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche das beschriebene Verfahren drei Mal durchf"uhrt. Dabei ist jeder Durchlauf mit einer eigenen Farbe gekennzeichnet und der Plot zwischen den Matrixdimensionen linear interpoliert.\\
+
+Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschaulichung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. Wir werden die geplotteten Grafiken benutzen, um bekannte numerische Resultate sichtbar zu machen.
+
+\newpage
 
 \begin{figure}[h!]
 \centering
@@ -54,8 +64,7 @@ Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der gering
 \caption{Laufzeitplot bei der Berechnung des Spektrums.}\label{fig:chap5:laufzeit}
 \end{figure}
 
-Die Abbildung deutet quadratisches Wachstum der Laufzeit in Abh"angigkeit von der gew"ahlten Dimension an.
- Erh"ohen wir die Dimension noch weiter, so ergibt sich folgende Tabelle.
+Da das Warten auf Ergebnisse noch h"oherer Dimension etwas Geduld erfordert, zeigt die folgende Tabelle exemplarisch f"unf weitere Rechenresultate. Dabei wurde bei der angegebenen Rechenzeit das arithmetische Mittel bestimmt.
 
 \begin{center}
 \begin{tabular}{lccccc}
@@ -65,9 +74,14 @@ Rechenzeit in s & $\approx$ 12.2 & $\approx$ 33.3 & $\approx$ 75.6 & $\approx$ 1
 \end{tabular}
 \end{center}
 
-Diese Werte vermitteln eine Intuition, von der Gr"o"senordnung von Laufzeiten bei hochdimensionalen Eigenwertproblemen, wie sie etwa bei Berechnungen von Netflix, Facebook oder Amazon vorkommen. Hier sprechen wir von Dimensionen im Millionenbereich.\footnote{Siehe \cite{facebook}, \cite{amazon} und \cite{netflix}.}\\
+Die Berechnung best"atigen die theoretisch hergeleitete Laufzeit.
+Au"serdem vermitteln diese Werte eine Intuition, von der Gr"o"senordnung von Laufzeiten bei hochdimensionalen Eigenwertproblemen, wie sie etwa bei Berechnungen von Netflix, Facebook oder Amazon vorkommen. Hier sprechen wir von Dimensionen im Millionenbereich.\footnote{Siehe \cite{facebook}, \cite{amazon} und \cite{netflix}.}\\
 
-Die obigen Zahlen motivieren dazu einen Weg zu finden, beim Filtern von Eigenpaaren von einer Berechnung des gesamten Spektrums abzusehen. Wollen wir Eigenpaare durch Ritz-Paare zu einem gegebenen Unterraum ann"ahern, so zeigt sich, dass das Rayleigh-Ritz Verfahren zu einer k"urzeren Laufzeit f"uhrt. Das ist freilich nicht verwunderlich, da das Problem auf eine niedrigere Dimension reduziert wird. Der Algorithmus \ref{alg:appAlgorithm:rayleighRitz} zeichnet entsprechend folgendes Bild bei der Berechung von Ritz-Paaren.
+Die obigen Zahlen motivieren dazu, beim Filtern von Eigenpaaren von einer Berechnung des gesamten Spektrums abzusehen. Wollen wir Eigenpaare durch Ritz-Paare zu einem gegebenen Unterraum ann"ahern, so zeigt sich, dass das Rayleigh-Ritz Verfahren zu einer k"urzeren Laufzeit f"uhrt. Das ist freilich nicht verwunderlich, da das Problem auf eine niedrigere Dimension reduziert wird.\\
+
+Als Hilfsmittel zur Demonstration wurde dieses Mal der Algorithmus \ref{alg:appAlgorithm:rayleighRitz} verwendet. Diese Methode berechnet Ritz-Paare zu einem zuf"allig generierten Suchraum der Dimension $N/5$, wobei $N$ wieder der Dimension von $A$ entspricht. Die Basisvektoren des Suchraumes werden mit der \mcode{orth}-Funktion orthonormiert und die \mcode{eig}-Funktion hilft uns wie zuvor bei der Berechnung von Eigenpaaren. Diesmal jedoch vom Problem der reduzierten Dimension.
+
+\newpage
 
 \begin{figure}[h!]
 \centering
@@ -77,11 +91,9 @@ Die obigen Zahlen motivieren dazu einen Weg zu finden, beim Filtern von Eigenpaa
 \caption{Laufzeitplot bei der Berechnung von Ritzpaaren.}\label{fig:chap5:laufzeitRayleighRitz}
 \end{figure}
 
-Die Dimension des verwendeten Suchraums entsprach bei der Ausf"uhrung des Algorithmus' einem F"unftel der Dimension der untersuchten Matrix. Die Rechenzeit liegt f"ur alle hier betrachteten $N$ deutlich unterhalb der Sekundenmarke.\\
+Wenig "uberraschend ist die Laufzeit trotz des Orthonormiervorgangs und zus"atzlicher Matrixmultiplikationen deutlich geringer als zuvor und liegt f"ur die hier betrachteten $N$ unterhalb der Sekundenmarke.\\
 
-Es gibt jedoch die Kehrseite der Medaille: Die Willk"uhrlichkeit bei der Wahl der Suchr"aume spiegelt sich in der G"ute der Ritz-Paare wieder. Um dies einzusehen w"ahlen wir als G"utekritierum den \emph{minimalen kanonischen Winkel} zwischen dem von den Ritz-Vektoren aufgespannten Unterraum $\mathcal{R}$ und dem von den Eigenvekoren aufgespannten Unterraum $\mathcal{X}$.
-
-\newpage
+Es gibt jedoch die Kehrseite der Medaille: Die Willk"uhrlichkeit bei der Wahl der Suchr"aume spiegelt sich in der G"ute der Ritz-Paare wieder. Um dies einzusehen, w"ahlen wir als G"utekritierum den \emph{minimalen kanonischen Winkel} zwischen dem von den Ritz-Vektoren aufgespannten Unterraum $\mathcal{R}$ und dem von den Eigenvektoren aufgespannten Unterraum $\mathcal{X}$.\\
 
 Diesen minimalen kanonischen Winkel definiert man folgenderma"sen:
 \[
@@ -89,23 +101,29 @@ Diesen minimalen kanonischen Winkel definiert man folgenderma"sen:
 \min
 \left\{\arccos\frac{|x^H r|}{\|x\|\|r\|} : r\in\mathcal{R}\setminus\{0\}, x\in\mathcal{X}\setminus\{0\}\right\}.
 \]
-Sind $R$ und $X$ Matrizen mit $\Bild(R)=\mathcal{R}$ und $\Bild(X)=\mathcal{X}$, so l"asst sich $\theta_{\min}(\mathcal{R},\mathcal{X})$ mit Hilfe der \emph{MATLAB}-Funktion
+Sind $R$ und $X$ Matrizen mit $\Bild(R)=\mathcal{R}$ und $\Bild(X)=\mathcal{X}$, so l"asst sich $\theta_{\min}(\mathcal{R},\mathcal{X})$ mit Hilfe der MATLAB-Funktion
 \[
 \mcode{subspace(R,X)}
 \]
-n"aherungsweise bestimmen. Dies machen wir uns in Algorithmus \ref{alg:appAlgorithm:ritzVecAngle} zu Nutze.
-Diese Methode berechnet den kleinsten Winkel zwischen einem zweidimensionalen Suchraum und allen zweidimensionalen Unterr"aumen, die sich aus Eigenvektoren konstruieren lassen. Erneut wird die Berechnung dreimal durchgef"uhrt, um ein wenig Konsistenz zu erhalten. Speziell bedient sich die Methode symmetrischer Matrizen.
+n"aherungsweise bestimmen. Dies machen wir uns in Algorithmus \ref{alg:appAlgorithm:ritzVecAngle} zu Nutze.\\
+
+Diese Methode berechnet zun"achst Ritz-Paare bez"uglich eines zuf"allig generierten zweidimensionalen Suchraums. Anschlie"send wird das Minimum aller minimalen kanonischen Winkel zwischen dem von den Ritz-Vektoren aufgespannten Unterraums und allen zweidimensionalen Unterr"aumen, die sich aus Eigenvektoren konstruieren lassen, ermittelt. Die Dimension endet diesmal bei $N=500$, steigert sich aber wie bisher in Zehnerschritten. Erneut wird die Berechnung im Sinne der Konsistenz drei Mal durchgef"uhrt.
+
+\newpage
 
 \begin{figure}[h!]
 \centering
 
-\resizebox{.5\textwidth}{!}{\includegraphics{images/ritzPairAngle}}
+\resizebox{.7\textwidth}{!}{\includegraphics{images/ritzPairAngle}}
 
 \caption{Berechnung des Winkels zwischen Ritz- und Eigenvektoren.}\label{fig:chap5:winkel}
 \end{figure}
 
 Nach Konstruktion gilt $\theta_{\min}(\mathcal{R},\mathcal{X})\in[0,\pi/2]$.
-Demnach l"asst Abbildung \ref{fig:chap5:winkel} vermuten, dass diese Methode f"ur gewisse Gr"o"senordnungen vollkommen unbrauchbar ist: Mit gr"o"ser werdender Dimension n"ahert sich der Winkel $\pi/2$ an. Hingegen liefert die iterative Version des Rayleigh-Ritz Verfahrens folgenden Plot.
+Demnach l"asst Abbildung \ref{fig:chap5:winkel} vermuten, dass das nichtiterative Rayleigh-Ritz Verfahren f"ur gewisse Gr"o"senordnungen vollkommen unbrauchbar ist: Mit gr"o"ser werdender Dimension n"ahert sich der Winkel $\pi/2$ an -- die Trefferquote sinkt also.\\
+
+Dem gegen"uber steht die iterative Version des Rayleigh-Ritz Verfahrens: In Algorithmus \ref{alg:appAlgorithm:iterRitzVecAngle} wird getestet, wie sich Ritz-Vektoren und Eigenvektoren im Sinne ihres minimalen kanonischen Winkels ann"ahern. Die Dimension der verglichenen Unterr"aume entsprach dabei erneut 2.
+Die Methode zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss mit sich stets um 1 erh"ohendem Exponenten durchgef"uhrt. Im Gegensatz zur Prozedur ohne Iteration ist hier zumindest in dieser kleinen getesteten Stichprobe eine Konvergenz zu erkennen. Dies ist nicht weiter verwunderlich, da die Verwandtschaft zur Potenzmethode dazu f"uhrt, dass der zweidimensionale Suchraum gegen den zweidimensionalen Unterraum konvergiert, welcher von den zwei dominierenden Eigenvektoren aufgespannt wird.
 
 %Viel besser sieht es hingegen mit der iterativen Version des Rayleigh-Ritz Verfahrens aus. Der Algorithmus \ref{alg:appAlgorithm:iterRitzVecAngle} liefert -- ebenfalls f"ur symmetrische Matrizen -- folgenden Plot.\\
 
@@ -124,7 +142,6 @@ Demnach l"asst Abbildung \ref{fig:chap5:winkel} vermuten, dass diese Methode f"u
 
 \newpage
 
-Ausgehend von einer zufallsgenerierten Matrix, welche ebenfalls symmetrisch ist, wurde die Methode zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss mit sich stets um 1 erh"ohendem Exponenten durchgef"uhrt. Im Gegensatz zur Prozedur ohne Iteration ist hier zumindest in dieser kleinen getesteten Stichprobe eine Konvergenz zu erkennen. Dies ist nicht weiter verwunderlich, da die Verwandtschaft zur Potenzmethode dazu f"uhrt, dass der zweidimensionale Suchraum gegen den zweidimensionalen Unterraum konvergiert, welcher von den zwei dominierenden Eigenvektoren aufgespannt wird.\\
 
 Zum Abschluss wollen wir unsere Filterkriterien etwas konkreter angeben. Erscheint es bisher so, als h"atte man nicht so recht in der Hand, welche Unterr"aume approximiert werden, wollen wir nun gezielt Eigenpaare gewisser Art aus dem Spektrum extrahieren. Dazu betrachten wir abschlie"send den FEAST-Algorithmus.
 

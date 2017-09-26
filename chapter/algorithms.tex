@@ -97,7 +97,7 @@ xDimension = 10:10:500;
       [i, N]
       A = rand(N); A = A'*A; % Erzeuge symmetrische Matrix
       [X,D] = eig(A);
-      S = rand(N, 2); % Suchraum der Dimension 5
+      S = rand(N, 2); % Suchraum der Dimension 2
 
       % Rayleigh-Ritz Verfahren
       S = orth(S);  % Orthogonalisierung der Basisvektoren
