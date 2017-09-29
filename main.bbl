@@ -54,6 +54,50 @@
   \field{year}{1996}
 \endentry
 
+\entry{zol}{article}{}
+  \name{author}{4}{}{%
+    {{}%
+     {Güttel}{G.}%
+     {Stefan}{S.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tang}{T.}%
+     {Ping Tak~Peter}{P.~T.~P.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Viaud}{V.}%
+     {Gautier}{G.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{GS+1}
+  \strng{fullhash}{GSPETPTPVG1}
+  \field{sortinit}{G}
+  \verb{doi}
+  \verb 10.1137/140980090
+  \endverb
+  \verb{eprint}
+  \verb https://doi.org/10.1137/140980090
+  \endverb
+  \field{number}{4}
+  \field{pages}{A2100\bibrangedash A2122}
+  \field{title}{Zolotarev Quadrature Rules and Load Balancing for the FEAST
+  Eigensolver}
+  \verb{url}
+  \verb https://doi.org/10.1137/140980090
+  \endverb
+  \field{volume}{37}
+  \field{journaltitle}{SIAM Journal on Scientific Computing}
+  \field{year}{2015}
+\endentry
+
 \entry{jaenich}{book}{}
   \name{author}{1}{}{%
     {{}%

@@ -143,52 +143,53 @@ Die Methode zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss 
 \newpage
 
 
-Zum Abschluss wollen wir unsere Filterkriterien etwas konkreter angeben. Erscheint es bisher so, als h"atte man nicht so recht in der Hand, welche Unterr"aume approximiert werden, wollen wir nun gezielt Eigenpaare gewisser Art aus dem Spektrum extrahieren. Dazu betrachten wir abschlie"send den FEAST-Algorithmus.
+Zum Abschluss wollen wir unsere Filterkriterien etwas konkreter angeben. Erscheint es bisher so, als h"atte man nicht so recht in der Hand, welche Unterr"aume approximiert werden, wollen wir nun gezielt Teilmengen aus der Menge aller Eigenpaare extrahieren. Dazu betrachten wir abschlie"send den FEAST-Algorithmus.
 
 \section{RKToolbox}
 
-Wir schr"anken uns nun nicht mehr auf das gew"ohnliche Eigenwertproblem ein, sondern betrachten stattdessen allgemeiner das HPD-Eigenwertproblem $(A,B)$ der Dimension $n$. Gesucht sind Eigenpaare, bei denen die Eigenwerte innerhalb eines gegebenen Intervalls $[\lambda_{\min}, \lambda_{\max}]$ liegen sollen.\\
+Wir schr"anken uns nun nicht mehr auf das gew"ohnliche Eigenwertproblem ein, sondern betrachten stattdessen allgemeiner das HPD-Eigenwertproblem $(A,B)$ der Dimension $n$. Gesucht sind Eigenpaare, bei denen die Eigenwerte innerhalb eines gegebenen reellen Intervalls $[\lambda_{\min}, \lambda_{\max}]$ liegen sollen.
+Zu diesem Zweck wollen wir den FEAST-Algorithmus so implementieren, dass er die gleiche Struktur wie Algorithmus \ref{alg:chap4:beschlRrIteration} hat. Dazu erinnern wir uns an den Fakt, dass das Ersetzen von $\p(B^{-1}A)$ durch eine geeignete rationale Funktion gerade zum FEAST-Algorithmus f"uhrt.\\
 
-Wir wollen den FEAST-Algorithmus wie in Algorithmus \ref{alg:chap4:beschlRrIteration} formuliert implementieren. Zur Erinnerung: Ersetzt man $\p(B^{-1}A)$ durch eine geeignete rationale Funktion, so entspricht der eben referenzierte Algorithmus dem Algorithmus \ref{alg:chap4:feast}.\\
-
-Zur Konstruktion dieser Funktion bedienen wir uns an der von S. G"uttel und M. Berfjala entwickelten \emph{RKToolbox} \cite{rkt}. Diese erm"oglicht uns das Erstellen eines sogenannten \mcode{rkfun}-Objektes, mit dessen Hilfe diverse Filterfunktionen konstruiert werden k"onnen. Da so erstellte Filterfunktionen standardm"a"sig die Indikatorfunktion auf dem Intervall $[-1,1]$ approximieren, muss dem Kontext entsprechend eine passende Transformation angewendet werden.\\
-
-Mit der RKToolbox k"onnen rationale Filterfunktionen \mcode{r} durch die Syntax
+Zur Konstruktion dieser Funktion bedienen wir uns an der von G"uttel und Berfjala entwickelten RKToolbox \cite{rkt}. Diese erm"oglicht uns das Erstellen eines sogenannten \mcode{rkfun}-Objektes, mit dessen Hilfe diverse rationale Funktionen konstruiert werden k"onnen. Neben konstanten Funktionen, Tschebyscheff-Polynomen oder Zolotarev'schen N"aherungen an die Wurzelfunktion kann durch den Aufruf
 \[
 \mcode{r = rkfun('step', k)}
 \]
-initialisiert werden. Dabei steuert der Parameter \mcode{'step'} welcher Funktionstyp zur Approximation benutzt werden soll und der Parameter $\mcode{k} \in \N$ steuert den Ausschlag der Funktionen.\footnote{F"ur genauere Ausf"uhrungen wende sich der Leser an die Dokumentation der RKToolbox \cite{rkt}.}
+eine rationale Funktion \mcode{r} initialisiert werden, welche die Indikatorfunktion zum Intervall $[-1,1]$ mit einer durch den Parameter $\mcode{k}\in\N$ gesteuerten Genauigkeit approximiert.\footnote{F"ur genauere Ausf"uhrungen wende sich der Leser an die Dokumentation der RKToolbox \cite{rkt}.}\\
 
-\newpage
-
-Zu Demonstrationszwecken setzen wir
+Um uns einen Eindruck von einer so initialisierten Funktion zu verschaffen, setzen wir zu Demonstrationszwecken
 \[
 \mcode{r4 = rkfun('step',4)}\text{,  }\mcode{r5 = rkfun('step',5)}\text{,  }
-\mcode{r6 = rkfun('step',6)}.
+\mcode{r6 = rkfun('step',6)}
 \]
-Wie im folgenden Plot zu erkennen ist, approximieren die Funktionen die Indikatorfunktion auf $[-1,1]$ zumindest nach optischen Kriterien recht gut.
+und betrachten den Plot in der Abbildung \ref{fig:chap5:ratFun}. Zun"achst halten wir fest, dass die Indikatorfunktion zumindest nach optischen Kritieren gut approximiert wird. Das ist jedoch kein Zufall.\\
+
+Nach Aussagen G"uttels bedient sich die eben beschriebene Routine bei der Interpolation an Ideen Zolotarevs. Im Wesentlichen werde eine optimale Approximation an die Signums-Funktion auf symmetrischen Intervallen $[-b,-a]$ und $[a,b]$ durch eine M"obiustransformation in eine optimale rationale Approximation der Indikatorfunktion "uberf"uhrt.\footnote{Diese Information entstammt einer m"undlichen R"ucksprache mit G"uttel. Die genaue Konstruktion wird zum Beispiel in \cite[Abschnitt 4]{zol} erkl"art.} Die Abbildung \ref{fig:chap5:ratFun} best"atigt die in \cite[Abschnitt 4]{zol} hergeleiteten Fehlerschranken.
+
+\newpage
 
 \begin{figure}[h!]
 \centering
 
-\resizebox{.5\textwidth}{!}{\includegraphics{images/ratFun}}
+\resizebox{.7\textwidth}{!}{\includegraphics{images/ratFun}}
 
 \caption{Plot der Filterfunktionen \mcode{r4}, \mcode{r5} und \mcode{r6}.}\label{fig:chap5:ratFun}
 \end{figure}
 
-Das Einbinden dieser Filterfunktion in die beschleunigte Rayleigh-Ritz Iteration f"uhrt zu der in Algorithmus \ref{alg:appAlgorithm:FEAST} vorgestellten Umsetzung des FEAST-Algorithmus mit folgendem Plot.
+Das Einbinden dieser Filterfunktion in die beschleunigte Rayleigh-Ritz Iteration f"uhrt zu der in Algorithmus \ref{alg:appAlgorithm:FEAST} vorgestellten Umsetzung des FEAST-Algorithmus. Hier legen wir zun"achst die Dimension, die Iterationszahl sowie das Intervall, auf dem Eigenwerte bestimmt werden sollen, fest. Da \mcode{rkfun('step',k)} f"ur ein $k\in\N$ standardm"a"sig auf dem Intervall $[-1,1]$ agiert, muss eine entsprechende Transformation auf das gew"unschte Intervall durchgef"uhrt werden.\\
+
+Beispielhaft betrachten wir Eigenwertprobleme $(A,B)$ mit reell symmetrischem $A$ und symmetrisch positiv definitem $B$.
+Zu Referenzzwecken bestimmen wir wie bisher mit der MATLAB internen \mcode{eig}-Funktion die Eigenpaare des Eigenwertproblems unter Ber"ucksichtigung des vorgegebenen Intervalls $[1,2.5]$. Zur Approximation der Indikatorfunktion benutzen wir eine \mcode{rkfun('step',5)}-Funktion.\\
+
+Der Algorithmus bestimmt wiederum drei Mal den minimalen kanonischen Winkel zwischen dem durch \mcode{eig} berechneten Eigenraum $\mathcal{X}$ und dem durch FEAST berechneten Eigenraum $\mathcal{R}$. In Abbildung \ref{fig:chap5:feast} zeigt sich, dass bereits im ersten Durchlauf der Winkel zwischen den Unterr"aumen verschwindend gering ist. Damit best"atigt sich die These, dass die beschleunigte Rayleigh-Ritz Iteration in einem Schritt konvergiert, falls $\p(B^{-1}A)$ der Spektralprojektor ist, $m$ der Anzahl der Eigenwerte auf $[1,2.5]$ entspricht und $\p(B^{-1}A)Y_{(0)}$ vollen Rang hat -- denn genau so wurden alle Werte bei der Umsetzung des FEAST-Algorithmus gew"ahlt.\footnote{Vgl. Seite \pageref{eq:quadratur} erster Absatz. F"ur weitere Demonstrationen siehe \cite{feast}.}
+
+\newpage
 
 \begin{figure}[h!]
 \centering
 
-\resizebox{.5\textwidth}{!}{\includegraphics{images/feastAngle}}
+\resizebox{.7\textwidth}{!}{\includegraphics{images/feastAngle}}
 
 \caption{Plot von Algorithmus \ref{alg:appAlgorithm:FEAST}.}\label{fig:chap5:feast}
 \end{figure}
 
-Mit $\mathcal{X}$ und $\mathcal{R}$ ist hier der zum Intervall $[1,2.5]$ korrespondierende Eigenraum beziehungsweise der ermittelte approximierte Suchraum gemeint.
-
-\newpage
-Es zeigt sich, dass bereits im ersten Durchlauf der Winkel zwischen den Unterraum verschwindend gering ist. Damit best"atigt sich die These, dass die beschleunigte Rayleigh-Ritz Iteration in einem Schritt konvergiert, falls $\p(B^{-1}A)$ der Spektralprojektor ist, $m$ der Anzahl der Eigenwerte auf $[1,2.5]$ entspricht und $\p(B^{-1}A)Y_{(0)}$ vollen Rang hat -- denn genau so wurden alle Werte bei der Umsetzung des FEAST-Algorithmus' gew"ahlt.\footnote{Vgl. Seite \pageref{eq:quadratur} erster Absatz. F"ur weitere Demonstrationen siehe \cite{feast}.}\\
-
-Mit diesen Eindr"ucken verabschiedet sich der Verfasser der vorliegenden Arbeit von seinem Leser und bedankt sich f"ur die Geduld und die investierte Zeit.
+Zum Abschluss f"uhren wir einen weiteren Test durch. We verh"alt sich blabla wenn nahe intervallgrenzen?
