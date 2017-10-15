@@ -47,14 +47,14 @@ eine Matrix $X$ mit Eigenvektoren und eine Diagonalmatrix $D$ mit den korrespond
 \]
 generieren. Diese Einschr"ankung garantiert uns die Diagonalisierbarkeit der verwendeten Matrizen. Abweichend von der bisherigen Notation wird im Code $N$ anstelle von $n$ als Variable f"ur die Dimension verwendet.\\
 
-Laut Aussagen der Entwickler von MATLAB wird bei der L"osung des Eigenwertproblems mit der \mcode{eig}-Funktion das \textcolor{red}{geile Verfahren} benutzt. Die Komplexit"at dieses Verfahrens liegt in der Gr"o"senordnung $\mathcal{O}(n^3)$, wobei $n$ der Dimension von $A$ entspricht.\footnote{\textcolor{red}{Siehe Quelle}.} Die Laufzeit w"achst folglich im Allgemeinen kubisch mit gr"o"ser werdender Dimension und unterstreicht die These, dass ab einer entsprechenden Gr"o"se die Berechnung von Eigenpaaren einige Zeit in Anspruch nehmen kann.\\
+Laut Aussagen der Entwickler von MATLAB werden bei der L"osung des Eigenwertproblems mit der \mcode{eig}-Funktion Routinen von LAPACK benutzt. Da hierbei einige Matrixmultiplikationen verwendet werden\footnote{Siehe \cite{lapack}.} und sowohl Eigenwerte als auch Eigenvektoren berechnet werden, haben wir mit der Komplexit"at $\mathcal{O}(N^3)$ zu rechnen.\footnote{Siehe zum Beispiel \cite[Abschnitt 6]{Demmel2007}.} Die Laufzeit w"achst folglich im Allgemeinen kubisch mit gr"o"ser werdender Dimension und unterstreicht die These, dass ab einer entsprechenden Gr"o"se die Berechnung von Eigenpaaren einige Zeit in Anspruch nehmen kann.\\
 
 Die Grafik \ref{fig:chap5:laufzeit} zeigt das Ergebnis der Berechnungen des oben beschriebenen Algorithmus.
 Um eine gewisse Konsistenz zu gew"ahrleisten, durchl"auft der Algorithmus eine Schleife, welche das beschriebene Verfahren drei Mal durchf"uhrt. Dabei ist jeder Durchlauf mit einer eigenen Farbe gekennzeichnet und der Plot zwischen den Matrixdimensionen linear interpoliert.\\
 
-Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschaulichung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. Wir werden die geplotteten Grafiken benutzen, um bekannte numerische Resultate sichtbar zu machen.
-
 \newpage
+
+Es sei noch darauf hingewiesen, dass die folgenden Diagramme aufgrund der geringen Gr"o"se der Stichproben in keinster Weise repr"asentativ sind. Sie dienen lediglich der Veranschaulichung und vermitteln h"ochstens eine Idee von Laufzeit- und Konvergenzverhalten. Wir werden die geplotteten Grafiken benutzen, um bekannte numerische Resultate sichtbar zu machen.
 
 \begin{figure}[h!]
 \centering
@@ -74,14 +74,14 @@ Rechenzeit in s & $\approx$ 12.2 & $\approx$ 33.3 & $\approx$ 75.6 & $\approx$ 1
 \end{tabular}
 \end{center}
 
-Die Berechnung best"atigen die theoretisch hergeleitete Laufzeit.
+Die Berechnung best"atigen die aus der Theorie bekannten Laufzeiten zur Berechnung von Eigenpaaren.
 Au"serdem vermitteln diese Werte eine Intuition, von der Gr"o"senordnung von Laufzeiten bei hochdimensionalen Eigenwertproblemen, wie sie etwa bei Berechnungen von Netflix, Facebook oder Amazon vorkommen. Hier sprechen wir von Dimensionen im Millionenbereich.\footnote{Siehe \cite{facebook}, \cite{amazon} und \cite{netflix}.}\\
 
-Die obigen Zahlen motivieren dazu, beim Filtern von Eigenpaaren von einer Berechnung des gesamten Spektrums abzusehen. Wollen wir Eigenpaare durch Ritz-Paare zu einem gegebenen Unterraum ann"ahern, so zeigt sich, dass das Rayleigh-Ritz Verfahren zu einer k"urzeren Laufzeit f"uhrt. Das ist freilich nicht verwunderlich, da das Problem auf eine niedrigere Dimension reduziert wird.\\
-
-Als Hilfsmittel zur Demonstration wurde dieses Mal der Algorithmus \ref{alg:appAlgorithm:rayleighRitz} verwendet. Diese Methode berechnet Ritz-Paare zu einem zuf"allig generierten Suchraum der Dimension $N/5$, wobei $N$ wieder der Dimension von $A$ entspricht. Die Basisvektoren des Suchraumes werden mit der \mcode{orth}-Funktion orthonormiert und die \mcode{eig}-Funktion hilft uns wie zuvor bei der Berechnung von Eigenpaaren. Diesmal jedoch vom Problem der reduzierten Dimension.
+Die obigen Zahlen motivieren dazu, beim Filtern von Eigenpaaren von einer Berechnung des gesamten Spektrums abzusehen. Wollen wir Eigenpaare durch Ritz-Paare zu einem gegebenen Unterraum ann"ahern, so zeigt sich, dass das Rayleigh-Ritz Verfahren zu einer k"urzeren Laufzeit f"uhrt. Das ist freilich nicht verwunderlich, da das Problem auf eine niedrigere Dimension reduziert wird.
 
 \newpage
+
+Als Hilfsmittel zur Demonstration wurde dieses Mal der Algorithmus \ref{alg:appAlgorithm:rayleighRitz} verwendet. Diese Methode berechnet Ritz-Paare zu einem zuf"allig generierten Suchraum der Dimension $N/5$, wobei $N$ wieder der Dimension von $A$ entspricht. Die Basisvektoren des Suchraumes werden mit der \mcode{orth}-Funktion orthonormiert und die \mcode{eig}-Funktion hilft uns wie zuvor bei der Berechnung von Eigenpaaren. Diesmal jedoch vom Problem der reduzierten Dimension.
 
 \begin{figure}[h!]
 \centering
@@ -105,11 +105,11 @@ Sind $R$ und $X$ Matrizen mit $\Bild(R)=\mathcal{R}$ und $\Bild(X)=\mathcal{X}$,
 \[
 \mcode{subspace(R,X)}
 \]
-n"aherungsweise bestimmen. Dies machen wir uns in Algorithmus \ref{alg:appAlgorithm:ritzVecAngle} zu Nutze.\\
-
-Diese Methode berechnet zun"achst Ritz-Paare bez"uglich eines zuf"allig generierten zweidimensionalen Suchraums. Anschlie"send wird das Minimum aller minimalen kanonischen Winkel zwischen dem von den Ritz-Vektoren aufgespannten Unterraums und allen zweidimensionalen Unterr"aumen, die sich aus Eigenvektoren konstruieren lassen, ermittelt. Die Dimension endet diesmal bei $N=500$, steigert sich aber wie bisher in Zehnerschritten. Erneut wird die Berechnung im Sinne der Konsistenz drei Mal durchgef"uhrt.
+n"aherungsweise bestimmen. Dies machen wir uns in Algorithmus \ref{alg:appAlgorithm:ritzVecAngle} zu Nutze.
 
 \newpage
+
+Diese Methode berechnet zun"achst Ritz-Paare bez"uglich eines zuf"allig generierten zweidimensionalen Suchraums. Anschlie"send wird das Minimum aller minimalen kanonischen Winkel zwischen dem von den Ritz-Vektoren aufgespannten Unterraums und allen zweidimensionalen Unterr"aumen, die sich aus Eigenvektoren konstruieren lassen, ermittelt. Die Dimension endet diesmal bei $N=500$, steigert sich aber wie bisher in Zehnerschritten. Erneut wird die Berechnung im Sinne der Konsistenz drei Mal durchgef"uhrt.
 
 \begin{figure}[h!]
 \centering
@@ -123,7 +123,7 @@ Nach Konstruktion gilt $\theta_{\min}(\mathcal{R},\mathcal{X})\in[0,\pi/2]$.
 Demnach l"asst Abbildung \ref{fig:chap5:winkel} vermuten, dass das nichtiterative Rayleigh-Ritz Verfahren f"ur gewisse Gr"o"senordnungen vollkommen unbrauchbar ist: Mit gr"o"ser werdender Dimension n"ahert sich der Winkel $\pi/2$ an -- die Trefferquote sinkt also.\\
 
 Dem gegen"uber steht die iterative Version des Rayleigh-Ritz Verfahrens: In Algorithmus \ref{alg:appAlgorithm:iterRitzVecAngle} wird getestet, wie sich Ritz-Vektoren und Eigenvektoren im Sinne ihres minimalen kanonischen Winkels ann"ahern. Die Dimension der verglichenen Unterr"aume entsprach dabei erneut 2.
-Die Methode zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss mit sich stets um 1 erh"ohendem Exponenten durchgef"uhrt. Im Gegensatz zur Prozedur ohne Iteration ist hier zumindest in dieser kleinen getesteten Stichprobe eine Konvergenz zu erkennen. Dies ist nicht weiter verwunderlich, da die Verwandtschaft zur Potenzmethode dazu f"uhrt, dass der zweidimensionale Suchraum gegen den zweidimensionalen Unterraum konvergiert, welcher von den zwei dominierenden Eigenvektoren aufgespannt wird.
+Die Methode wurde zun"achst mit konstant bleibendem Exponenten $k=1$ und im Anschluss mit sich stets um 1 erh"ohendem Exponenten durchgef"uhrt. Im Gegensatz zur Prozedur ohne Iteration ist hier zumindest in dieser kleinen getesteten Stichprobe eine Konvergenz zu erkennen. Dies ist nicht weiter verwunderlich, da die Verwandtschaft zur Potenzmethode dazu f"uhrt, dass der zweidimensionale Suchraum gegen den zweidimensionalen Unterraum konvergiert, welcher von den zwei dominierenden Eigenvektoren aufgespannt wird.
 
 %Viel besser sieht es hingegen mit der iterativen Version des Rayleigh-Ritz Verfahrens aus. Der Algorithmus \ref{alg:appAlgorithm:iterRitzVecAngle} liefert -- ebenfalls f"ur symmetrische Matrizen -- folgenden Plot.\\
 
@@ -154,18 +154,16 @@ Zur Konstruktion dieser Funktion bedienen wir uns an der von G"uttel und Berfjal
 \[
 \mcode{r = rkfun('step', k)}
 \]
-eine rationale Funktion \mcode{r} initialisiert werden, welche die Indikatorfunktion zum Intervall $[-1,1]$ mit einer durch den Parameter $\mcode{k}\in\N$ gesteuerten Genauigkeit approximiert.\footnote{F"ur genauere Ausf"uhrungen wende sich der Leser an die Dokumentation der RKToolbox \cite{rkt}.}\\
+eine rationale Funktion \mcode{r} initialisiert werden, welche die Indikatorfunktion zum Intervall $[-1,1]$ mit einer durch den Parameter $\mcode{k}\in\N$ gesteuerten Genauigkeit approximiert.\footnote{F"ur genauere Ausf"uhrungen wende sich der Leser an die Dokumentation der RKToolbox \cite{rkt}.}
+
+\newpage
 
 Um uns einen Eindruck von einer so initialisierten Funktion zu verschaffen, setzen wir zu Demonstrationszwecken
 \[
 \mcode{r4 = rkfun('step',4)}\text{,  }\mcode{r5 = rkfun('step',5)}\text{,  }
 \mcode{r6 = rkfun('step',6)}
 \]
-und betrachten den Plot in der Abbildung \ref{fig:chap5:ratFun}. Zun"achst halten wir fest, dass die Indikatorfunktion zumindest nach optischen Kritieren gut approximiert wird. Das ist jedoch kein Zufall.\\
-
-Nach Aussagen G"uttels bedient sich die eben beschriebene Routine bei der Interpolation an Ideen Zolotarevs. Im Wesentlichen werde eine optimale Approximation an die Signums-Funktion auf symmetrischen Intervallen $[-b,-a]$ und $[a,b]$ durch eine M"obiustransformation in eine optimale rationale Approximation der Indikatorfunktion "uberf"uhrt.\footnote{Diese Information entstammt einer m"undlichen R"ucksprache mit G"uttel. Die genaue Konstruktion wird zum Beispiel in \cite[Abschnitt 4]{zol} erkl"art.} Die Abbildung \ref{fig:chap5:ratFun} best"atigt die in \cite[Abschnitt 4]{zol} hergeleiteten Fehlerschranken.
-
-\newpage
+und betrachten den Plot in der folgenden Abbildung.
 
 \begin{figure}[h!]
 \centering
@@ -175,14 +173,17 @@ Nach Aussagen G"uttels bedient sich die eben beschriebene Routine bei der Interp
 \caption{Plot der Filterfunktionen \mcode{r4}, \mcode{r5} und \mcode{r6}.}\label{fig:chap5:ratFun}
 \end{figure}
 
-Das Einbinden dieser Filterfunktion in die beschleunigte Rayleigh-Ritz Iteration f"uhrt zu der in Algorithmus \ref{alg:appAlgorithm:FEAST} vorgestellten Umsetzung des FEAST-Algorithmus. Hier legen wir zun"achst die Dimension, die Iterationszahl sowie das Intervall, auf dem Eigenwerte bestimmt werden sollen, fest. Da \mcode{rkfun('step',k)} f"ur ein $k\in\N$ standardm"a"sig auf dem Intervall $[-1,1]$ agiert, muss eine entsprechende Transformation auf das gew"unschte Intervall durchgef"uhrt werden.\\
+Zun"achst halten wir fest, dass die Indikatorfunktion zumindest nach optischen Kritieren gut approximiert wird. Das ist jedoch kein Zufall.
+Nach Aussagen G"uttels bedient sich die eben beschriebene Routine bei der Interpolation an Ideen Zolotarevs: Im Wesentlichen werde eine optimale Approximation an die Signums-Funktion auf symmetrischen Intervallen $[-b,-a]$ und $[a,b]$ durch eine M"obiustransformation in eine optimale rationale Approximation der Indikatorfunktion "uberf"uhrt.\footnote{Diese Information entstammt einer m"undlichen R"ucksprache mit G"uttel. Die genaue Konstruktion wird zum Beispiel in \cite[Abschnitt 4]{zol} erkl"art.} Die Abbildung \ref{fig:chap5:ratFun} best"atigt die in \cite[Abschnitt 4]{zol} hergeleiteten Fehlerschranken.\\
+
+Das Einbinden dieser Filterfunktion in die beschleunigte Rayleigh-Ritz Iteration f"uhrt zu der in Algorithmus \ref{alg:appAlgorithm:FEAST} vorgestellten Umsetzung des FEAST-Algorithmus. Hier legen wir zun"achst die Dimension, die Iterationszahl sowie das Intervall, auf dem Eigenwerte bestimmt werden sollen, fest. Da \mcode{rkfun('step',k)} f"ur ein $k\in\N$ standardm"a"sig auf dem Intervall $[-1,1]$ agiert, muss eine entsprechende Transformation auf das gew"unschte Intervall durchgef"uhrt werden.
+
+\newpage
 
 Beispielhaft betrachten wir Eigenwertprobleme $(A,B)$ mit reell symmetrischem $A$ und symmetrisch positiv definitem $B$.
 Zu Referenzzwecken bestimmen wir wie bisher mit der MATLAB internen \mcode{eig}-Funktion die Eigenpaare des Eigenwertproblems unter Ber"ucksichtigung des vorgegebenen Intervalls $[1,2.5]$. Zur Approximation der Indikatorfunktion benutzen wir eine \mcode{rkfun('step',5)}-Funktion.\\
 
 Der Algorithmus bestimmt wiederum drei Mal den minimalen kanonischen Winkel zwischen dem durch \mcode{eig} berechneten Eigenraum $\mathcal{X}$ und dem durch FEAST berechneten Eigenraum $\mathcal{R}$. In Abbildung \ref{fig:chap5:feast} zeigt sich, dass bereits im ersten Durchlauf der Winkel zwischen den Unterr"aumen verschwindend gering ist. Damit best"atigt sich die These, dass die beschleunigte Rayleigh-Ritz Iteration in einem Schritt konvergiert, falls $\p(B^{-1}A)$ der Spektralprojektor ist, $m$ der Anzahl der Eigenwerte auf $[1,2.5]$ entspricht und $\p(B^{-1}A)Y_{(0)}$ vollen Rang hat -- denn genau so wurden alle Werte bei der Umsetzung des FEAST-Algorithmus gew"ahlt.\footnote{Vgl. Seite \pageref{eq:quadratur} erster Absatz. F"ur weitere Demonstrationen siehe \cite{feast}.}
-
-\newpage
 
 \begin{figure}[h!]
 \centering
@@ -191,5 +192,3 @@ Der Algorithmus bestimmt wiederum drei Mal den minimalen kanonischen Winkel zwis
 
 \caption{Plot von Algorithmus \ref{alg:appAlgorithm:FEAST}.}\label{fig:chap5:feast}
 \end{figure}
-
-Zum Abschluss f"uhren wir einen weiteren Test durch. We verh"alt sich blabla wenn nahe intervallgrenzen?

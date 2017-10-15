@@ -1,16 +1,15 @@
-Wie versprochen, widmet sich das hiesige Kapitel mit der Wiederholung und Einf"uhrung wichtigen Vokabulars, welches im Rahmen dieser Arbeit h"aufig zum Einsatz kommen wird.
-Von zentraler Bedeutung werden dabei Inhalte der linearen Algebra sein.\\
+Wie versprochen, widmet sich das hiesige Kapitel der Wiederholung und Einf"uhrung wichtigen Vokabulars, welches im Rahmen dieser Arbeit h"aufig zum Einsatz kommen wird.\\
 
 Um es nicht bei einer blo"sen Auflistung von Definitionen zu belassen, werden zudem Resultate pr"asentiert, auf die wir sp"ater zur"uckgreifen werden.
 Obschon sich der Autor bem"uht hat,
 in der Literatur g"angige Notation zu benutzen, bittet er den
-verst"andnisvollen Leser bei Unklarheiten im Anhang \ref{appNotation} nachzuschlagen.\\
+verst"andnisvollen Leser bei Unklarheiten in Anhang \ref{appNotation} nachzuschlagen.\\
 
 Mit den Buchstaben $m$ und $n$ werden wir -- sofern nicht anders vermerkt -- zwei nat"urliche Zahlen bezeichnen. Dabei wollen wir die Null aus den nat"urlichen Zahlen $\N$ ausgeschlossen wissen.
 Falls die Null zugelassen ist, schreiben wir explizit $\N_0 := \N\cup\{0\}$.
 Des Weiteren bezeichnen wir mit $\R$ und $\C$ wie "ublich die Mengen der reellen respektive komplexen Zahlen und entsprechend mit $\R^{m,n}$ und $\C^{m,n}$ die Mengen der reell- beziehungsweise komplexwertigen $(m\times n)$-Matrizen. Wir unterschlagen $n$ im Fall $n=1$.\\
 
-In Anlehnung an die in \textsc{matlab} verwendete Syntax werden wir Gebrauch von der Notation $i=m:n$ an Stelle von $i=m,m+1,\ldots,n-1,n$ machen.
+In Anlehnung an die in MATLAB verwendete Syntax werden wir Gebrauch von der Notation $i=m:n$ an Stelle von $i=m,m+1,\ldots,n-1,n$ machen.
 Diese Kurzschreibweise wird etwa bei der Einf"uhrung von Indizierungen zum Einsatz kommen.
 So l"asst sich beispielsweise eine Menge $\{x_1,x_2,\ldots,x_n\}$ mit hier nicht n"aher bestimmten Elementen kurz durch $\{x_k\}_{k=1:n}$ ausdr"ucken.\\
 
@@ -20,7 +19,9 @@ f"ur alle Vektoren $x\in\Co$ die Absch"atzung
 x^H A x > 0
 \]
 gilt. Folglich werden wir eine Matrix \emph{hermitesch positiv definit} (HPD)
-nennen, wenn sie sowohl hermitesch als auch positiv definit ist.\\
+nennen, wenn sie sowohl hermitesch als auch positiv definit ist.
+
+\newpage
 
 Ist $A$ solch eine HPD-Matrix,
 dann nennen wir eine Menge von Vektoren $\{x_k\}_{k=1:m}\subseteq\Cn$ \emph{orthonormal
@@ -35,9 +36,9 @@ f"ur alle $i,j = 1:m$ gilt. Allgemeiner hei"st eine Matrix $X\in\Cnn$ \emph{orth
 \[
 X^H A X = I_n := [\delta_{i,j}]_{i,j=1:n}
 \]
-erf"ullt.\footnote{Wir werden Matrizen in ihrer komponentenweisen Darstellung konsequent durch eckige Klammern, also durch \glqq$[$\grqq\ und \glqq$]$\grqq, beranden.} Aus der Hermitizit"at von $A$ und $I_n$ folgt nat"urlich ebenfalls $XAX^H = I_n$. F"ur den Fall $A=I_n$ ignorieren wir in der Formulierung den Bezug zu $A$ und sprechen lediglich von Orthogonalit"at beziehungsweise Orthonormalit"at.\footnote{Streng genommen sollte hier zwischen \emph{orthogonal} und \emph{unit"ar} unterschieden werden. Wir werden jedoch im Rahmen dieser Arbeit auf diese Unterscheidung verzichten und die Worte "aquivalent gebrauchen.}\\
+erf"ullt.\footnote{Wir werden Matrizen in ihrer komponentenweisen Darstellung konsequent durch eckige Klammern, also durch \glqq$[$\grqq\ und \glqq$]$\grqq, beranden.} Aus der Hermitizit"at von $A$ und $I_n$ folgt nat"urlich ebenfalls $XAX^H = I_n$. F"ur den Fall $A=I_n$ ignorieren wir in der Formulierung den Bezug zu $A$ und sprechen lediglich von \emph{Orthogonalit"at} beziehungsweise \emph{Orthonormalit"at}.\footnote{Streng genommen sollte hier zwischen \emph{orthogonal} und \emph{unit"ar} unterschieden werden. Wir werden jedoch im Rahmen dieser Arbeit auf diese Unterscheidung verzichten und die Worte "aquivalent gebrauchen.}\\
 
-Sei im Folgenden $A$ wieder eine beliebige komplexwertige Matrix. Neben dieser betrachten wir nun noch eine weitere Matrix $B\in\Cnn$.
+Sei im Folgenden $A$ wieder eine beliebige quadratische, komplexwertige Matrix. Neben dieser betrachten wir nun eine weitere Matrix $B\in\Cnn$.
 Unter einem \emph{$n$-dimensionalen Eigenwertproblem} wollen wir die Aufgabe verstehen, Paare $(\lambda,x)\in\C\times(\Co)$ zu finden, die der Gleichung
 \begin{equation}\label{eq:chap2:evp}
 Ax = \lambda Bx

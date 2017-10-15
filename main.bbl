@@ -24,6 +24,28 @@
   Quartal 2008 bis zum 2. Quartal 2017}
 \endentry
 
+\entry{vanbarel}{article}{}
+  \name{author}{1}{}{%
+    {{}%
+     {Barel}{B.}%
+     {Marc~Van}{M.~V.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{BMV1}
+  \strng{fullhash}{BMV1}
+  \field{sortinit}{B}
+  \field{pages}{346\bibrangedash 365}
+  \field{title}{Designing rational filter functions for solving eigenvalue
+  problems by contour integration}
+  \verb{url}
+  \verb https://lirias.kuleuven.be/handle/123456789/498035
+  \endverb
+  \field{volume}{502}
+  \field{journaltitle}{Linear Algebra and its Applications}
+  \field{year}{2016}
+\endentry
+
 \entry{amazon}{misc}{}
   \field{sortinit}{B}
   \field{howpublished}{\url{https://de.statista.com/statistik/daten/studie/158229/umfrage/online-shops-in-deutschland-nach-besucherzahlen/}}
@@ -46,7 +68,6 @@
   \strng{namehash}{CFVLGHGu1}
   \strng{fullhash}{CFVLGHGu1}
   \field{sortinit}{C}
-  \field{isbn}{0-8018-5414-8}
   \field{title}{Matrix Computations (3rd Ed.)}
   \list{location}{1}{%
     {Baltimore, MD, USA}%
@@ -54,10 +75,42 @@
   \field{year}{1996}
 \endentry
 
+\entry{Demmel2007}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Demmel}{D.}%
+     {James}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Dumitriu}{D.}%
+     {Ioana}{I.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Holtz}{H.}%
+     {Olga}{O.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{DJDIHO1}
+  \strng{fullhash}{DJDIHO1}
+  \field{sortinit}{D}
+  \field{number}{1}
+  \field{pages}{59\bibrangedash 91}
+  \field{title}{Fast linear algebra is stable}
+  \verb{url}
+  \verb https://doi.org/10.1007/s00211-007-0114-x
+  \endverb
+  \field{volume}{108}
+  \field{journaltitle}{Numerische Mathematik}
+  \field{year}{2007}
+\endentry
+
 \entry{zol}{article}{}
   \name{author}{4}{}{%
     {{}%
-     {Güttel}{G.}%
+     {G\"{u}ttel}{G.}%
      {Stefan}{S.}%
      {}{}%
      {}{}}%
@@ -80,12 +133,6 @@
   \strng{namehash}{GS+1}
   \strng{fullhash}{GSPETPTPVG1}
   \field{sortinit}{G}
-  \verb{doi}
-  \verb 10.1137/140980090
-  \endverb
-  \verb{eprint}
-  \verb https://doi.org/10.1137/140980090
-  \endverb
   \field{number}{4}
   \field{pages}{A2100\bibrangedash A2122}
   \field{title}{Zolotarev Quadrature Rules and Load Balancing for the FEAST
@@ -112,12 +159,40 @@
   \strng{namehash}{JK1}
   \strng{fullhash}{JK1}
   \field{sortinit}{J}
-  \field{isbn}{978-3-540-35015-6}
   \field{title}{Funktionentheorie: Eine Einführung}
-  \list{location}{1}{%
-    {Berlin New York}%
-  }
   \field{year}{2004}
+\endentry
+
+\entry{kpt}{article}{}
+  \name{author}{3}{}{%
+    {{}%
+     {Kestyn}{K.}%
+     {James}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tang}{T.}%
+     {Ping Tak~Peter}{P.~T.~P.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{KJPETPTP1}
+  \strng{fullhash}{KJPETPTP1}
+  \field{sortinit}{K}
+  \field{number}{5}
+  \field{pages}{772\bibrangedash 799}
+  \field{title}{FEAST eigensolver for Non-Hermitian Problems}
+  \verb{url}
+  \verb https://doi.org/10.1137/15M1026572
+  \endverb
+  \field{volume}{38}
+  \field{journaltitle}{SIAM Journal on Scientific Computing}
+  \field{year}{2016}
 \endentry
 
 \entry{lzp}{article}{}
@@ -138,16 +213,11 @@
      {}{}%
      {}{}}%
   }
-  \keyw{FEAST}
   \strng{namehash}{LARZDPE1}
   \strng{fullhash}{LARZDPE1}
   \field{sortinit}{L}
-  \verb{doi}
-  \verb http://dx.doi.org/10.1016/j.cpc.2012.06.004
-  \endverb
-  \field{issn}{0010-4655}
   \field{number}{11}
-  \field{pages}{2370 \bibrangedash  2375}
+  \field{pages}{2370\bibrangedash 2375}
   \field{title}{FEAST fundamental framework for electronic structure
   calculations: Reformulation and solution of the muffin-tin problem}
   \verb{url}
@@ -156,21 +226,6 @@
   \field{volume}{183}
   \field{journaltitle}{Computer Physics Communications}
   \field{year}{2012}
-\endentry
-
-\entry{kpt}{article}{}
-  \name{author}{1}{}{%
-    {{}%
-     {P.~Tang}{P.~T.}%
-     {J.~Kestyn}{J.~K.}%
-     {und E. Polizzi~und}{u.~E. P.~u.}%
-     {}{}}%
-  }
-  \strng{namehash}{PTJKuEPu1}
-  \strng{fullhash}{PTJKuEPu1}
-  \field{sortinit}{P}
-  \field{title}{FEAST eigensolver for non-hermitian problems}
-  \field{year}{2015}
 \endentry
 
 \entry{page}{report}{}
@@ -240,7 +295,6 @@
   \strng{namehash}{PBN1}
   \strng{fullhash}{PBN1}
   \field{sortinit}{P}
-  \field{isbn}{0-89871-402-8}
   \field{title}{The Symmetric Eigenvalue Problem}
   \list{location}{1}{%
     {Upper Saddle River, NJ, USA}%
@@ -262,7 +316,6 @@
   \strng{namehash}{PR1}
   \strng{fullhash}{PR1}
   \field{sortinit}{P}
-  \field{isbn}{978-3-8348-9644-5}
   \field{title}{Numerische Mathematik kompakt Grundlagenwissen für Studium
   und Praxis}
   \list{location}{1}{%
@@ -279,25 +332,46 @@
      {}{}%
      {}{}}%
   }
-  \list{publisher}{1}{%
-    {American Physical Society}%
-  }
   \strng{namehash}{PE1}
   \strng{fullhash}{PE1}
   \field{sortinit}{P}
-  \verb{doi}
-  \verb 10.1103/PhysRevB.79.115112
-  \endverb
-  \field{issue}{11}
+  \field{number}{11}
   \field{pages}{115112}
   \field{title}{Density-matrix-based algorithm for solving eigenvalue problems}
   \verb{url}
   \verb https://link.aps.org/doi/10.1103/PhysRevB.79.115112
   \endverb
   \field{volume}{79}
-  \field{journaltitle}{Phys. Rev. B}
+  \field{journaltitle}{Physical Review B}
   \field{year}{2009}
-  \warn{\item Invalid format of field 'month'}
+\endentry
+
+\entry{ptep}{article}{}
+  \name{author}{2}{}{%
+    {{}%
+     {Polizzi}{P.}%
+     {Eric}{E.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Tang}{T.}%
+     {Ping Tak~Peter}{P.~T.~P.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{PETPTP1}
+  \strng{fullhash}{PETPTP1}
+  \field{sortinit}{P}
+  \field{number}{2}
+  \field{pages}{354\bibrangedash 390}
+  \field{title}{FEAST As A Subspace Iteration Eigensolver Accelerated By
+  Approximate Spectral Projection}
+  \verb{url}
+  \verb https://doi.org/10.1137/13090866X
+  \endverb
+  \field{volume}{35}
+  \field{journaltitle}{SIAM Journal on Matrix Analysis and Applications}
+  \field{year}{2014}
 \endentry
 
 \entry{saad}{book}{}
@@ -314,9 +388,6 @@
   \strng{namehash}{SY1}
   \strng{fullhash}{SY1}
   \field{sortinit}{S}
-  \verb{doi}
-  \verb 10.1137/1.9781611970739
-  \endverb
   \field{title}{Numerical methods for large eigenvalue problems}
   \field{year}{2011}
 \endentry
@@ -331,7 +402,7 @@
 \entry{rkt}{misc}{}
   \name{author}{1}{}{%
     {{}%
-     {Stefan~Güttel}{S.~G.}%
+     {Stefan~G\"{u}ttel}{S.~G.}%
      {Mario~Berljafa}{M.~B.}%
      {und}{u.}%
      {}{}}%
@@ -359,47 +430,17 @@
   \strng{namehash}{SGW1}
   \strng{fullhash}{SGW1}
   \field{sortinit}{S}
-  \field{isbn}{9780898715033}
   \field{series}{Other Titles in Applied Mathematics}
   \field{title}{Matrix Algorithms Volume 2: Eigensystems}
-  \verb{url}
-  \verb https://books.google.de/books?id=Y3k5TNTnEmEC
-  \endverb
   \field{year}{2001}
 \endentry
 
-\entry{ptep}{article}{}
-  \name{author}{2}{}{%
-    {{}%
-     {Tang}{T.}%
-     {Ping Tak~Peter}{P.~T.~P.}%
-     {}{}%
-     {}{}}%
-    {{}%
-     {Polizzi}{P.}%
-     {Eric}{E.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{TPTPPE1}
-  \strng{fullhash}{TPTPPE1}
-  \field{sortinit}{T}
-  \verb{doi}
-  \verb 10.1137/13090866X
-  \endverb
-  \verb{eprint}
-  \verb https://doi.org/10.1137/13090866X
-  \endverb
-  \field{number}{2}
-  \field{pages}{354\bibrangedash 390}
-  \field{title}{FEAST As A Subspace Iteration Eigensolver Accelerated By
-  Approximate Spectral Projection}
-  \verb{url}
-  \verb https://doi.org/10.1137/13090866X
-  \endverb
-  \field{volume}{35}
-  \field{journaltitle}{SIAM Journal on Matrix Analysis and Applications}
-  \field{year}{2014}
+\entry{lapack}{misc}{}
+  \field{sortinit}{S}
+  \field{howpublished}{\url{
+  https://software.intel.com/en-us/mkl-developer-reference-fortran-symmetric-eigenvalue-problems-lapack-computational-routines}}
+  \field{note}{Letzter Zugriff: 30.09.2017}
+  \field{title}{Symmetric eigencvalue problems: LAPACK computational routines}
 \endentry
 
 \entry{feast}{misc}{}
@@ -409,51 +450,22 @@
   \field{title}{The FEAST algorithm for Hermitian eigenproblems}
 \endentry
 
-\entry{vanbarel}{article}{}
-  \name{author}{1}{}{%
-    {{}%
-     {Van~Barel}{V.~B.}%
-     {Marc}{M.}%
-     {}{}%
-     {}{}}%
-  }
-  \strng{namehash}{VBM1}
-  \strng{fullhash}{VBM1}
-  \field{sortinit}{V}
-  \verb{doi}
-  \verb 10.1016/j.laa.2015.05.029
-  \endverb
-  \field{pages}{346\bibrangedash 365}
-  \field{title}{Designing rational filter functions for solving eigenvalue
-  problems by contour integration}
-  \verb{url}
-  \verb https://lirias.kuleuven.be/handle/123456789/498035
-  \endverb
-  \field{volume}{502}
-  \field{journaltitle}{Linear Algebra and Its Applications}
-  \field{month}{08}
-  \field{year}{2016}
-\endentry
-
 \entry{liesen}{book}{}
   \name{author}{1}{}{%
     {{}%
-     {Zdenek~Strakos}{Z.~S.}%
+     {Zden\v{e}k~Strako\v{s}}{Z.~S.}%
      {J\"{o}rg~Liesen}{J.~L.}%
      {und}{u.}%
      {}{}}%
   }
   \list{publisher}{1}{%
-    {OUP Oxford}%
+    {Oxford University Press}%
   }
   \strng{namehash}{ZSJLu1}
   \strng{fullhash}{ZSJLu1}
   \field{sortinit}{Z}
   \field{series}{Numerical Mathematics and Scientific Computation}
   \field{title}{Krylov Subspace Methods: Principles and Analysis}
-  \verb{url}
-  \verb https://books.google.de/books?id=hDZoAgAAQBAJ
-  \endverb
   \field{year}{2013}
 \endentry
 

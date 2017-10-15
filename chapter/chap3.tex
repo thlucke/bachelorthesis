@@ -2,12 +2,12 @@ In der Einleitung dieser Arbeit wurde bereits h"aufiger vom \emph{Filtern} gespr
 Bevor wir uns mit Techniken des Filterns besch"aftigen k"onnen, wollen wir formal festhalten, was unter einem Filter zu verstehen ist.
 
 \begin{defn}[Filter]\label{defn:chap3:filter}
-Sei $M$ eine nicht leere Menge. Eine Abbildung der Gestalt
+Sei $M$ eine nichtleere Menge. Eine Abbildung der Gestalt
 \[
 \mathfrak{F}\colon M \to \{0,1\},\ % \text{ mit }
 m\mapsto\mathfrak{F}(m)
 \]
-hei"st \emph{Filterfunktion} oder \emph{Filter auf der Menge $M$}. Die Zuordnung $m\mapsto\mathfrak{F}(m)$ hei"st \emph{Filtern von $m$ aus $M$}.
+hei"st \emph{Filterfunktion} oder \emph{Filter auf der Menge $M$}. Die Zuordnung $m\mapsto\mathfrak{F}(m)$ nennen wir das \emph{Filtern von $m$ aus $M$}.
 \end{defn}
 
 Damit k"onnen wir uns nun in diesem Kapitel der Frage widmen, ob und wie man aus der Menge aller Eigenpaare eines Eigenwertproblems mit der zugeh"origen Eigenwertgleichung
@@ -18,10 +18,10 @@ eine gew"unschte Teilmenge ausw"ahlen kann.
 Dabei wollen wir an die Matrizen $A$ und $B$ zun"achst keine weiteren Anforderungen stellen.\\
 
 Ist $M$ entweder die Potenzmenge des Spektrums oder die Menge aller Eigenpaare von $(A,B)$ und $\mathfrak{F}$ eine Filterfunktion auf $M$, so wollen wir vereinbaren, dass wir stets auf der Suche nach der Urbildmenge $\mathfrak{F}^{-1}(\{ 1\})$ sind.
-Wollen wir etwa die Menge $G$ aller ganzzahligen Eigenwerte eines gewissen Eigenwertproblems finden, so gelte $\mathfrak{F}^{-1}(\{1\}) = G$. In den meisten F"allen werden wir zwar nicht von einer konkreten Filterfunktion der oben definierten Art sprechen, wollen sie aber als latent vorhanden wissen.\\
+Wollen wir etwa die Menge $G$ aller ganzzahligen Eigenwerte eines Eigenwertproblems finden, so gelte $\mathfrak{F}^{-1}(\{1\}) = G$. In den meisten F"allen werden wir zwar nicht von einer konkreten Filterfunktion der oben definierten Art sprechen, wollen sie aber als latent vorhanden wissen.\\
 
 Die Methoden zur Bestimmung von Teilmengen von Eigenpaaren oder Eigenwerten sind ebenso vielf"altig wie die M"oglichkeiten, das gesamte Spektrum und entsprechende Eigenvektoren zu bestimmen.
-Wir wollen aber im Rahmen dieser Arbeit aus dem Katalog der Verfahren lediglich zwei diskutieren: \emph{Rayleigh-Ritz Verfahren} und \emph{Konturintegration}.
+Wir wollen aber im Rahmen dieser Arbeit aus dem Katalog der Verfahren lediglich zwei diskutieren: das \emph{Rayleigh-Ritz Verfahren} und die \emph{Konturintegration}.
 
 \newpage
 
@@ -29,7 +29,7 @@ Wir wollen aber im Rahmen dieser Arbeit aus dem Katalog der Verfahren lediglich 
 %\footnote{Dieser Abschnitt orientiert sich in Formulierung und Dramaturgie an Abschnitt 4.3.1 aus Y. Saad Solving large evp. Hier verallgemeinern wir aber die Konzepte direkt auf allg. ewp.}
 Die Idee dieser Klasse von Verfahren ist die Approximation des von
 den gesuchten Eigenvektoren aufgespannten Unterraums.
-Bevor wir uns mit beliebigen Eigenwertproblemen $(A,B)$ auseinandersetzen, betrachten wir den Spezialfall $B=I_n$ und wenden uns der entsprechenden Eigenwertgleichung
+Bevor wir uns mit beliebigen Eigenwertproblemen $(A,B)$ auseinandersetzen, betrachten wir den Spezialfall $B=I_n$ und wenden uns entsprechend der Eigenwertgleichung
 \[
 Ax = \lambda x
 \]
@@ -52,7 +52,7 @@ ist dann zu der Gleichung
 S_m^H(AS_m y - \widetilde{\lambda} S_m y) = 0
 \]
 "aquivalent. Als direkte Konsequenz dieser Umformulierung erhalten wir unter Ausnutzung
-der Orthogonalit"at der Spalten von $S_m$ mit
+der Orthonormalit"at der Spalten von $S_m$ mit
 \begin{equation}\label{eq:chap3:transform}
 (S_m^H A S_m) y = \widetilde{\lambda}y
 \end{equation}
@@ -111,7 +111,7 @@ Nun, da wir uns mit der Idee der Rayleigh-Ritz Methode vertraut gemacht haben, e
 Ax = \lambda Bx.
 \end{equation}
 Dabei gehen wir ganz analog zum gew"ohnlichen Eigenwertproblem vor und betrachten wieder
-einen $m$-dimensionaler Suchraum $\S_m\subseteq \Cn$.
+einen $m$-dimensionalen Suchraum $\S_m\subseteq \Cn$.
 Gefunden werden sollen dieses Mal Paare $ (\widetilde{\lambda}, \widetilde{x}) \in \C
 \times (\S_m \setminus\{ 0\})$, die der Orthogonalit"atsbedingung
 \begin{equation}\label{eq:chap3:borthogonal}
@@ -165,7 +165,7 @@ Doch warum ist das so? Dies zu beantworten verpflichtet sich der folgende Satz.
 \newpage
 
 \begin{thm}\label{thm:chap3:invariant}
-Neben zwei Matrizen $A,B\in\Cnn$ -- wobei wir Hermitizit"at und positive Definitheit von $B$ fordern -- sei ein $m$-dimensionaler Unterraum $\S_m \subseteq \C_n$ gegeben.
+Neben zwei Matrizen $A,B\in\Cnn$ -- wobei wir Hermitizit"at und positive Definitheit von $B$ fordern -- sei ein $m$-dimensionaler Unterraum $\S_m \subseteq \C^n$ gegeben.
 Ist dieser invariant unter $B^{-1}A$, so ist jedes Ritz-Paar von $B^{-1}A$
 bez"uglich $\S_m$ auch ein Eigenpaar von $(A,B)$.
 \end{thm}
@@ -178,7 +178,7 @@ die Gleichung
 \begin{equation}\label{eq:chap3:thminvariant}
 B^{-1}A S_m = S_m V_m
 \end{equation}
-erf"ullt. Insbesondere folgt unter Ausnutzung der Orthogonalit"at der Spalten
+erf"ullt. Insbesondere folgt unter Ausnutzung der Orthonormalit"at der Spalten
 von $S_m$ die Identit"at $S_m^H B^{-1}A S_m = V_m$.
 Sind nun $\lambda\in\C$ und $y\in\C^m\setminus\{0\}$ so gew"ahlt, dass $(\lambda, S_m y)$
 ein Ritz-Paar von $B^{-1}A$ bez"uglich $\S_m$ ist, so ist $(\lambda, y)$ ein Eigenpaar von $V_m$. Es folgt daher
@@ -303,12 +303,12 @@ Rayleigh-Ritz-Verfahren zu integrieren.
 Da jedoch der Unterraum $\S_m$ im Allgemeinen nicht bekannt ist, stellt sich die Frage, ob es
 "uberhaupt sinnvoll ist nach dem Projektor zu suchen.
 Wir werden jedoch alsbald feststellen, dass %zumindest
-die Matrix $S_m S_m^H$ mit Methoden der Funktionentheorie berechnbar ist.
+die Matrix $S_m S_m^H$ mit Methoden der Funktionentheorie berechenbar ist.
 
 \section{Konturintegration}\label{sec:chap3:konturintegration}
 
-Betrachten wir ein $n$-dimensionales Eigenwertproblem $(A,B)$. Zu einer gegebenen Teilmenge $\Lambda_1$ vom Spektrum des besagten Problems wollen wir
-den Spektralprojektor konstruieren, welcher Vektoren auf den von den zu $\Lambda_1$ korrespondierenden Eigenvektoren aufgespannten Unterraum $\S_1$ projiziert.
+Betrachten wir ein $n$-dimensionales Eigenwertproblem $(A,B)$. Zu einer gegebenen Teilmenge $\Lambda_1$ vom Spektrum dieses Problems wollen wir
+den Spektralprojektor $P_1$ konstruieren, welcher Vektoren auf den von den zu $\Lambda_1$ korrespondierenden Eigenvektoren aufgespannten Unterraum $\S_1$ projiziert.
 Dazu schr"anken wir uns vorerst auf das gew"ohnliche Eigenwertproblem $(A,I_n)$ ein und orientieren
 %/präsentieren in den folgenden zeilen die Gedankengänge aus ...
 uns in
@@ -357,7 +357,7 @@ Dann hei"st $\Gamma := \Bild(\gamma)$ \emph{Jordan-Kurve}.
 \center
 \begin{subfigure}[c]{.3\textwidth}
 \includegraphics[width=.9\linewidth]{images/jKurve}
-\subcaption{Einfache geschl. Kurve.}
+\subcaption{Jordan-Kurve.}
 \end{subfigure}
 \qquad
 \begin{subfigure}[c]{.3\textwidth}
@@ -518,7 +518,7 @@ Welche Schlussfolgerungen lassen sich hieraus f"ur ein Eigenwertproblem $(A,B)$ 
 Sei also $(A,B)$ ein HPD-Eigenwertproblem. Dann ist $B$ invertierbar und jede Singularit"at der Greenfunktion $G_1(t) := (t I_n - B^{-1}A)^{-1}$
 ist auch eine Singularit"at der Funktion $G_2(t):=(t B - A)^{-1}$. Ist wie eben $\Lambda_1$ eine Teilmenge des Spektrums, $\Gamma$ eine umschlie"sende Jordan-Kurve und die Zerlegung
 \[
-B^{-1}A = S\begin{bmatrix} B^{-1}_1 A_1 & 0 \\ 0 & B^{-1}_2 A_2 \end{bmatrix} S^{-1}
+B^{-1}A = S\begin{bmatrix} (B^{-1} A)_1 & 0 \\ 0 & (B^{-1} A)_2 \end{bmatrix} S^{-1}
 \]
 analog zu Gleichung \ref{eq:chap3:factorization} gegeben, so schlie"st man auf "ahnliche Weise
 \[
@@ -550,9 +550,9 @@ B:= \text{diag}(1,5,9)
 \]
 gegeben sind.
 Durch einfaches Nachrechnen "uberpr"uft man, dass sich das Eigenwertproblem $(A,B)$ durch Vektoren
-$x_1 \in \spn_\C\{e_1\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
-$x_2 \in \spn_\C\{e_2\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
-Vektoren $x_3 \in\spn_\C\{e_3\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
+$x_1 \in \spn_\C\{e_1\}\setminus\{0\}$ mit zugeh"origem Eigenwert $\lambda_1 = 3$, Vektoren
+$x_2 \in \spn_\C\{e_2\}\setminus\{0\}$ mit zugeh"origem Eigenwert $\lambda_2 = 1/5$, sowie
+Vektoren $x_3 \in\spn_\C\{e_3\}\setminus\{0\}$ mit zugeh"origem Eigenwert $\lambda_3 = 4/9$
 l"osen l"asst.\footnote{Hier bezeichnen $e_1, e_2, e_3 \in\C^3$ wie "ublich die Einheitsvektoren.}\\
 
 Vergessen wir f"ur den Moment, dass uns die Eigenpaare bekannt sind und versuchen
